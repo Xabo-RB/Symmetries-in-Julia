@@ -1,0 +1,100 @@
+read "C:/Users/Even/Documents/GitHub/Symmetries/script.mpl"
+
+XT := Array(1..nx);
+eq := Array(1..nx);
+for i from 1 to nx do
+    fT := Tt[i]:
+    fX := Xt[i]:
+
+    XT[i] := fX/fT:
+
+    eq[i] := numer(F[i]-XT[i]):
+end do;
+
+#Create the variables for the states, automatically for any number
+var_name := Array(1..nx):
+for i from 1 to nx do
+    var_name[i] := parse(cat("x", i, "(t)"));
+end do;
+
+eq1 := Array(1..nx):
+for i from 1 to nx do
+    eq1[i]:= expand(subs( diff(var_name[i],t)= f[i] ,eq[i]))
+end do;
+
+eqClustered := Array(1..nx,1..nx):
+#Organized
+for i from 1 to nx do
+    for j from 1 to nx do
+        #In the rows the equations, and in the columns the coefficients for each variable x1, x2, x3, x4.
+        eqClustered[i,j]:= (collect(eq1[i], var_name[j]))
+    end do;
+end do;
+
+#####################################################################
+tt := Array(1..2*nx):
+k:= 1:
+eqExtract := Array(1..nx, 1..nx):
+#Extract
+#for i from 2 to nx do
+for i to nx do
+    for j to nx do
+        k := k+1:
+        print(eqClustered[i, j]);
+        print(var_name[j]);
+
+        if has(eqClustered[i,j], var_name[j]) then
+            eqCoefs := [coeffs(eqClustered[i, j], var_name[j], 'tt')]:
+            eqExtract[i, j] := eqCoefs;
+            tt[k]:= tt:
+        else
+            tt[k]:=0:
+             eqExtract[i, j] := 0:
+        end if;
+
+    end do;
+end do;
+
+#######################################################################
+eqExtract := Array(1..nx, 1..nx):
+for i from 2 to nx do
+    for j from 1 to nx do
+        #In the rows the equations, and in the columns the coefficients for each variable x1, x2, x3, x4.
+        eqCoef[i,j]:= [coeffs(eqClustered[i, j], var_name[j], 'tt')]
+    end do;
+end do;
+#######################################################################
+
+exExtract := Array(1..nx,1..nx):
+#Organized
+for i from 2 to nx do
+    print(eq1[i])
+    for j from 1 to nx do
+        eqClustered[i,j]:= (coeffs(eq1[i], var_name[j], 'tt'))
+    end do;
+end do;
+
+
+#Equation state x1
+---eqClustered[4, 1] := coeffs(eq1[1], var_name[1], 'tt');
+eqClustered[4, 2] := coeffs(eq1[1], var_name[2], 'tt');
+eqClustered[4, 3] := coeffs(eq1[1], var_name[3], 'tt');
+eqClustered[4, 4] := coeffs(eq1[1], var_name[4], 'tt');
+
+#Equation state x2
+eqClustered[1, 1] := coeffs(eq1[2], var_name[1], 'tt');
+---eqClustered[1, 2] := coeffs(eq1[2], var_name[2], 'tt');
+eqClustered[1, 3] := coeffs(eq1[2], var_name[3], 'tt');
+eqClustered[1, 4] := coeffs(eq1[2], var_name[4], 'tt');
+
+#Equation state x3
+eqClustered[2, 1] := coeffs(eq1[3], var_name[1], 'tt');
+eqClustered[2, 2] := coeffs(eq1[3], var_name[2], 'tt');
+---eqClustered[2, 3] := coeffs(eq1[3], var_name[3], 'tt');
+eqClustered[2, 4] := coeffs(eq1[3], var_name[4], 'tt');
+
+#Equation state x4
+eqClustered[3, 1] := coeffs(eq1[4], var_name[1], 'tt');
+eqClustered[3, 2] := coeffs(eq1[4], var_name[2], 'tt');
+eqClustered[3, 3] := coeffs(eq1[4], var_name[3], 'tt');
+---eqClustered[3, 4] := coeffs(eq1[4], var_name[4], 'tt');

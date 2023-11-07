@@ -1,0 +1,5 @@
+libname := "C:/Users/Even/Documents/GitHub/Symmetries", libname;
+read "C:/Users/Even/OneDrive - Universidade de Vigo/Escritorio/Softwares Benchmarking/Sedoglavich/examples/BJakstatS.mpl";
+
+BJakstatS
+C:\Users\Even\OneDrive - Universidade de Vigo\Escritorio\Sedoglavich\examples
