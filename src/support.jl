@@ -1,19 +1,17 @@
 function chainDer(model)
     
-    eqns = model.ode
+    eqns = model.states
 
     # Crea los operadores diferenciales
     Dt = Differential(t)
-    Dx = Differential(x)
-
-    # Calcula la derivada total de X con respecto al tiempo
-    dX_dt = Dt(X) + Dx(X) * Dt(x)
-
-    # Simplifica el resultado
-    simplified_result = Symbolics.simplify(dX_dt)
-
-    # Muestra el resultado simplificado
-    println(simplified_result)
+    dX = Num[]
+    for i in eachindex(eqns)
+        Dx = Differential(eqns[i])
+        @variables X(t, eqns[i])
+        # Calcula la derivada total de X con respecto al tiempo
+        dX_dt = Dt(X) + Dx(X) * Dt(eqns[i])
+        push!(dX, dX_dt)
+    end
 
 end
 

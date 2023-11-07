@@ -75,7 +75,7 @@ for m in inputs
 end
 
 equations = Num[]
-for i in 1:length(ecuaciones)
+for i in eachindex(ecuaciones)
     str = Meta.parse(ecuaciones[i])
     eqn1 = eval(str)
     push!(equations, eqn1)
