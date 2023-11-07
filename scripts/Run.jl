@@ -1,9 +1,8 @@
 using DrWatson
 using Symbolics
 
-initialize_project("Symmetries in Julia"; authors="Xabo", force=true)
-
 @quickactivate "Julia"
+include(srcdir("support.jl"))
 
 struct Model
 
@@ -84,5 +83,5 @@ end
 
 M = Model(st,pr,inU,equations)
 
-
+derivatives = chainDer(M)
 

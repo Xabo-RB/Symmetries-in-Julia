@@ -1,5 +1,6 @@
-function chainDer(model)
+function chainDer(model::Model)
     
+    eqns = model.ode
 
     # Crea los operadores diferenciales
     Dt = Differential(t)
