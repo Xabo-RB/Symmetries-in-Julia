@@ -6,6 +6,7 @@ function chainDer(model,t)
     Dt = Differential(t)
     dX = Num[]
     dT = Num[]
+    dotx = Num[]
 
     for i in eachindex(eqns)
         Dx = Differential(eqns[i])

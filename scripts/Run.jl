@@ -74,6 +74,7 @@ for m in inputs
     push!(inU, var)
 end
 
+#   - Equations
 equations = Num[]
 for i in eachindex(ecuaciones)
     str = Meta.parse(ecuaciones[i])
@@ -83,6 +84,8 @@ end
 
 M = Model(st,pr,inU,equations)
 
+# Symbolic derivatives of the states, equation (2b)
 xdot = chainDer(M,t)
 
-println(xdot)
+#==
+for i in eachindex(xdot)
