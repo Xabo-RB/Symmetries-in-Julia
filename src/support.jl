@@ -5,17 +5,23 @@ function chainDer(model,t)
     # Crea los operadores diferenciales
     Dt = Differential(t)
     dX = Num[]
+    dT = Num[]
+
     for i in eachindex(eqns)
         Dx = Differential(eqns[i])
         @variables X(t, eqns[i])
         @variables T(t, eqns[i])
-        dT_dt
+
+        dT_dt = Dt(T) + Dx(T) * Dt(eqns[i])
+        
         # Calcula la derivada total de X con respecto al tiempo
         dX_dt = Dt(X) + Dx(X) * Dt(eqns[i])
         push!(dX, dX_dt)
+        push!(dT, dT_dt)
+
     end
 
-    return dX
+    return dX, dT
 end
 
 #==
