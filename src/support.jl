@@ -13,6 +13,7 @@ function chainDer(model,t)
         push!(dX, dX_dt)
     end
 
+    return dX
 end
 
 #==
