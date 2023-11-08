@@ -1,4 +1,4 @@
-function chainDer(model)
+function chainDer(model,t)
     
     eqns = model.states
 

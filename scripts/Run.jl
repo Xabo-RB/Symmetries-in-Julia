@@ -83,5 +83,5 @@ end
 
 M = Model(st,pr,inU,equations)
 
-derivatives = chainDer(M)
+derivatives = chainDer(M,t)
 
