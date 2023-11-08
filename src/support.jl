@@ -13,15 +13,20 @@ function chainDer(model,t)
         @variables T(t, eqns[i])
 
         dT_dt = Dt(T) + Dx(T) * Dt(eqns[i])
-        
+
         # Calcula la derivada total de X con respecto al tiempo
         dX_dt = Dt(X) + Dx(X) * Dt(eqns[i])
+
+        dotxEle = dX_dt/dT_dt
+
         push!(dX, dX_dt)
         push!(dT, dT_dt)
+        push!(dotx, dotxEle)
 
     end
 
-    return dX, dT
+
+    return dotx
 end
 
 #==

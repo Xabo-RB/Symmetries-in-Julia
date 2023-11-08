@@ -83,6 +83,6 @@ end
 
 M = Model(st,pr,inU,equations)
 
-der1X, der1T = chainDer(M,t)
+xdot = chainDer(M,t)
 
-println(der1T)
+println(xdot)
