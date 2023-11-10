@@ -87,13 +87,14 @@ end
 
 #   - Equations
 equations = Num[]
-TransfEqns = Num[]
+TrEquations = Num[]
 for i in eachindex(ecuaciones)
     str = Meta.parse(ecuaciones[i])
     eqn1 = eval(str)
     push!(equations, eqn1)
 
-    TransfEqns[i] = transformVariables(st,equations[i],t)
+    transf_eqn = transformVariables(equations[i], st, ST) 
+    push!(TrEquations, transf_eqn)
 end
 
 #To pass variables to the Model Struct
@@ -102,5 +103,11 @@ M = Model(st,ST,pr,inU,equations)
 # Symbolic derivatives of the states, equation (2b)
 xdot = chainDer(M,t)
 
-#==
+eqn3a = Num[]
 for i in eachindex(xdot)
+    expresion = TrEquations[i] - xdot[i]
+    push!(eqn3a, expresion)
+end
+
+println(eqn3a)
+println(eqn3a[1])

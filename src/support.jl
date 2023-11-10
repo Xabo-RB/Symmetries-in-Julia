@@ -82,11 +82,10 @@ println(simplified_result)
 function transformVariables(expr, vars, varsM)
 
     #Initialize the dictionary that will contain symbolic expressions
-    subs = Dict{SymbolicUtils.Symbolic, SymbolicUtils.Symbolic}()
-    #subs = Dict{Any, Any}()
+    subs = Dict{Any, Any}()
 
-    for v in vars
-        subs = Dict(vars[i] => varsM[i])
+    for i in eachindex(vars)
+        subs[vars[i]] = varsM[i]
     end
 
     #Substitute in the equations:
