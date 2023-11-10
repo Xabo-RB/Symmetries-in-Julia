@@ -7,6 +7,7 @@ include(srcdir("support.jl"))
 struct Model
 
     states::Vector{Num}
+    TransStates::Vector{Num}
     params::Vector{Num}
     inputs::Vector{Num}
     ode::Vector{Num}
@@ -54,6 +55,16 @@ for q in states
     push!(st, var)
 end
 
+#   - Transformed variable of States
+ST = Num[]
+for q in states
+    Mayus = uppercase(q)
+    str = "@syms $(Mayus)(t)"
+    eval(Meta.parse(str))
+    var = eval(Meta.parse("$(Mayus)(t)"))
+    push!(ST, var)
+end
+
 #   - Parameters
 pr = Num[]
 for p in parameters
@@ -82,7 +93,8 @@ for i in eachindex(ecuaciones)
     push!(equations, eqn1)
 end
 
-M = Model(st,pr,inU,equations)
+#To pass variables to the Model Struct
+M = Model(st,ST,pr,inU,equations)
 
 # Symbolic derivatives of the states, equation (2b)
 xdot = chainDer(M,t)

@@ -78,3 +78,8 @@ simplified_result = Symbolics.simplify(dX_dt)
 # Muestra el resultado simplificado
 println(simplified_result)
 ==#
+
+function to_uppercase_variables(expr::SymbolicUtils.Symbolic, vars::Vector{<:SymbolicUtils.Symbolic})
+    subs = Dict(v => Symbolics.Variable(Symbol(uppercase(string(v)))) for v in vars)
+    return substitute(expr, subs)
+end
