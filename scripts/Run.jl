@@ -106,6 +106,7 @@ xdot = chainDer(M,t)
 eqn3a = Num[]
 for i in eachindex(xdot)
     expresion = TrEquations[i] - xdot[i]
+    expresion = Symbolics.cancel(expresion)
     push!(eqn3a, expresion)
 end
 
