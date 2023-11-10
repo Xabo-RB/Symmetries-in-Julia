@@ -112,3 +112,6 @@ end
 
 println(eqn3a)
 println(eqn3a[1])
+
+#https://symbolicutils.juliasymbolics.org/rewrite/
+#https://symbolics.juliasymbolics.org/dev/manual/expression_manipulation/#SymbolicUtils.simplify
