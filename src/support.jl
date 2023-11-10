@@ -79,7 +79,27 @@ simplified_result = Symbolics.simplify(dX_dt)
 println(simplified_result)
 ==#
 
-function to_uppercase_variables(expr::SymbolicUtils.Symbolic, vars::Vector{<:SymbolicUtils.Symbolic})
-    subs = Dict(v => Symbolics.Variable(Symbol(uppercase(string(v)))) for v in vars)
-    return substitute(expr, subs)
+function transformVariables(expr::SymbolicUtils.Symbolic, vars::Vector{<:SymbolicUtils.Symbolic},t)
+    #Estoy SOLICITANDO que 'expr' sea una variable o expresión  simbólica. 
+    #'vars' tiene que ser un vector que contenga variab o exprs simbólicas, subtipos que hereden de Symbolics
+    #eso es lo que signicia <:
+    #subs = Dict(v => Symbolics.Variable(Symbol(uppercase(string(v)))) for v in vars)
+
+    #Inicializo el diccionario, que va a contener expresiones simbólicas
+    subs = Dict{SymbolicUtils.Symbolic, SymbolicUtils.Symbolic}()
+
+    for v in vars
+        #  ExprSymbolic to String -> Uppercase -> to Symbol -> Variable symbolic with the symbol
+        upper = uppercase(string(v))
+        upperSymb = Symbol(upper)
+        transVar = Symbolics.Variable(upperSymb)(t)
+        
+        # Add to the dictionary. Variable 'v' will be associated to the uppercase variable 'transVar'
+        subs[v] = transVar
+    end
+
+    #Substitute in the equations:
+    newExpr = substitute(expr, subs)
+    return newExpr
+
 end

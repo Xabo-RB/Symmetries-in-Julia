@@ -87,10 +87,13 @@ end
 
 #   - Equations
 equations = Num[]
+TransfEqns = Num[]
 for i in eachindex(ecuaciones)
     str = Meta.parse(ecuaciones[i])
     eqn1 = eval(str)
     push!(equations, eqn1)
+
+    TransfEqns[i] = transformVariables(st,equations[i],t)
 end
 
 #To pass variables to the Model Struct
