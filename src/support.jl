@@ -93,3 +93,20 @@ function transformVariables(expr, vars, varsM)
     return newExpr
 
 end
+
+#Esta es lo mismo pero poniendo paréntesis para 
+function transformVariables1(expr, vars, varsM)
+
+    #Initialize the dictionary that will contain symbolic expressions
+    subs = Dict{Any, Any}()
+
+    for i in eachindex(vars)
+        varsM[i] = (varsM[i])
+        subs[vars[i]] = varsM[i]
+    end
+
+    #Substitute in the equations:
+    newExpr = substitute(expr, subs)
+    return newExpr
+
+end

@@ -113,10 +113,16 @@ for i in eachindex(xdot)
 end
 
 #Substitute de derivatives of the states for the correspondent ode equation
+derx =  Num[]
+for s in st
+    dxt = Differential(t)(s)
+    push!(derx,dxt)
+end
+seqns = equations[1:end-1]
+eqn3a2 = Num[]
 for i in eachindex(eqn3a)
-    
-    transf_eqn = transformVariables(eqn3a[i], st, ST) 
-
+    treqn = transformVariables(eqn3a[i], derx, seqns) 
+    push!(eqn3a2,treqn)
 end
 
 println(eqn3a)
