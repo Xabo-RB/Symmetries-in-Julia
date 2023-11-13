@@ -103,12 +103,20 @@ M = Model(st,ST,pr,inU,equations)
 # Symbolic derivatives of the states, equation (2b)
 xdot = chainDer(M,t)
 
+# The whole equation in the same side
 eqn3a = Num[]
 for i in eachindex(xdot)
     # xdot (num/den) = TrEquations
     expresion = TrEquations[i] - xdot[i]
     expresion = simplify(expresion)
     push!(eqn3a, expresion)
+end
+
+#Substitute de derivatives of the states for the correspondent ode equation
+for i in eachindex(eqn3a)
+    
+    transf_eqn = transformVariables(eqn3a[i], st, ST) 
+
 end
 
 println(eqn3a)
