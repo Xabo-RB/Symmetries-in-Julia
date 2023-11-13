@@ -48,6 +48,9 @@ ecuaciones = [
 
 CreateModel = userDefined(Number_of_States,states,Number_of_Outputs,Number_of_Parameters,parameters,inputs,ecuaciones)
 
+#LLAMAR AL MAIN CODE Y COMENZAR A FUNCIONAR. PASAR LOS RESULTADOS A LATEX PARA QUE WERNER PUEDA VER LOS RESULTADOS
+# ME QUEDA OBTENER LOS COEFICIENTES, ANTES TENGO QUE QUITAR LOS DENOMINADORES PROGRAMANDO CON STRINGS
+
 #_________________________________________________________________________#
 #Convert the model into a symbolic one:
 
