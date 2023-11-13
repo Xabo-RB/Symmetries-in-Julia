@@ -4,6 +4,18 @@ using Symbolics
 @quickactivate "Julia"
 include(srcdir("support.jl"))
 
+struct userDefined
+
+    nEstados::Int
+    estados::Vector{String}
+    nSalidas::Int
+    nParams::Int
+    parametros::Vector{String}
+    entradas::Vector{String}
+    ecuaciones::Vector{String}
+
+end
+
 struct Model
 
     states::Vector{Num}
@@ -32,6 +44,9 @@ ecuaciones = [
     "k41*x1(t) - k14*x4(t)",
     "x1(t)"
 ]
+#_________________________________________________________________________#
+
+CreateModel = userDefined(Number_of_States,states,Number_of_Outputs,Number_of_Parameters,parameters,inputs,ecuaciones)
 
 #_________________________________________________________________________#
 #Convert the model into a symbolic one:
@@ -122,13 +137,11 @@ seqns = equations[1:end-1]
 eqn3a2 = Num[]
 for i in eachindex(eqn3a)
     treqn = transformVariables(eqn3a[i], derx, seqns) 
+    treqn = simplify(treqn)
     push!(eqn3a2,treqn)
 end
 
-println(eqn3a)
-println(eqn3a[1])
-println(eqn3a[2])
-
+#coefs = Symbolics.coeff(eqn3a2[1],u)
 
 #https://symbolicutils.juliasymbolics.org/rewrite/
 #https://symbolics.juliasymbolics.org/dev/manual/expression_manipulation/#SymbolicUtils.simplify
