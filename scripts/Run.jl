@@ -105,13 +105,16 @@ xdot = chainDer(M,t)
 
 eqn3a = Num[]
 for i in eachindex(xdot)
+    # xdot (num/den) = TrEquations
     expresion = TrEquations[i] - xdot[i]
-    expresion = Symbolics.cancel(expresion)
+    expresion = simplify(expresion)
     push!(eqn3a, expresion)
 end
 
 println(eqn3a)
 println(eqn3a[1])
+println(eqn3a[2])
+
 
 #https://symbolicutils.juliasymbolics.org/rewrite/
 #https://symbolics.juliasymbolics.org/dev/manual/expression_manipulation/#SymbolicUtils.simplify
