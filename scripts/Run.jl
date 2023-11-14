@@ -1,5 +1,8 @@
 using DrWatson
 using Symbolics
+using Latexify
+using LaTeXStrings
+#using SymPy
 
 @quickactivate "Julia"
 include(srcdir("support.jl"))
@@ -16,8 +19,7 @@ struct userDefined
     ecuaciones::Vector{String}
 
 end
-
-struct Model
+struct ModelSym
 
     states::Vector{Num}
     TransStates::Vector{Num}
@@ -26,6 +28,8 @@ struct Model
     ode::Vector{Num}
 
 end
+
+
 #_____________________________ User defined _____________________________#
 @variables t
 
@@ -49,6 +53,14 @@ ecuaciones = [
 
 CreateModel = userDefined(Number_of_States,states,Number_of_Outputs,Number_of_Parameters,parameters,inputs,ecuaciones)
 
-#LLAMAR AL MAIN CODE Y COMENZAR A FUNCIONAR. PASAR LOS RESULTADOS A LATEX PARA QUE WERNER PUEDA VER LOS RESULTADOS
+# Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
+equation3apaper = main(CreateModel,t)
+
+latex_expr = latexify(equation3apaper[2])
+render(latex_expr)
+
+
+#NOTAS PARA MI:
 # ME QUEDA OBTENER LOS COEFICIENTES, ANTES TENGO QUE QUITAR LOS DENOMINADORES PROGRAMANDO CON STRINGS
+# Probar obtener los denominadores con Sympy?
 

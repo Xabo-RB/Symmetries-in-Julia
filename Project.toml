@@ -1,7 +1,13 @@
 name = "Symmetries in Julia"
 authors = ["Xabo"]
-[compat]
-julia = "1.9.3"
-DrWatson = "2.12.7"
+
 [deps]
 DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
+Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
+PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
+
+[compat]
+DrWatson = "2.12.7"
+julia = "1.9.3"

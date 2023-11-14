@@ -72,7 +72,7 @@ function main(Model,t)
     end
 
     #To pass variables to the Model Struct
-    M = Model(st,ST,pr,inU,equations)
+    M = ModelSym(st,ST,pr,inU,equations)
 
     # Symbolic derivatives of the states, equation (2b)
     xdot = chainDer(M,t)
@@ -105,6 +105,6 @@ function main(Model,t)
     #https://symbolicutils.juliasymbolics.org/rewrite/
     #https://symbolics.juliasymbolics.org/dev/manual/expression_manipulation/#SymbolicUtils.simplify
 
-
+    return eqn3a2
 
 end
