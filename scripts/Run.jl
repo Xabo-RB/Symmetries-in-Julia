@@ -56,9 +56,10 @@ CreateModel = userDefined(Number_of_States,states,Number_of_Outputs,Number_of_Pa
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
 equation3apaper = main(CreateModel,t)
 
-latex_expr = latexify(equation3apaper[2])
-render(latex_expr)
-
+for eq in equation3apaper
+    latex_expr = latexify(eq)
+    render(latex_expr)
+end
 
 #NOTAS PARA MI:
 # ME QUEDA OBTENER LOS COEFICIENTES, ANTES TENGO QUE QUITAR LOS DENOMINADORES PROGRAMANDO CON STRINGS
