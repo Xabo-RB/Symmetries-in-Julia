@@ -2,7 +2,7 @@ function chainDer(model,t)
     
     eqns = model.states
 
-    # Crea los operadores diferenciales
+    # Creates the differential operators
     Dt = Differential(t)
     dX = Num[]
     dT = Num[]
@@ -15,7 +15,7 @@ function chainDer(model,t)
 
         dT_dt = Dt(T) + Dx(T) * Dt(eqns[i])
 
-        # Calcula la derivada total de X con respecto al tiempo
+        # Calculate the total derivative of X with respect to time.
         dX_dt = Dt(X) + Dx(X) * Dt(eqns[i])
 
         dotxEle = dX_dt/dT_dt
@@ -94,7 +94,7 @@ function transformVariables(expr, vars, varsM)
 
 end
 
-#Esta es lo mismo pero poniendo paréntesis para 
+# This is the same but with parentheses for the added equation
 function transformVariables1(expr, vars, varsM)
 
     #Initialize the dictionary that will contain symbolic expressions

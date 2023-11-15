@@ -24,7 +24,7 @@ function main(Model,t)
         # Meta-programming, this line writes a meta-line code to create the symbolic variable stored in q, that is called as (q)
         str = "@syms $(q)(t)"
         eval(Meta.parse(str))
-        # Evalúa la expresión para obtener la variable simbólica recién creada y la almacena en 'var'
+        # Evaluates the expression to get the newly created symbolic variable and stores it in 'var'.
         var = eval(Meta.parse("$(q)(t)"))
         push!(st, var)
     end
