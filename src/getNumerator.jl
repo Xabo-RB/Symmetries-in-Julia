@@ -13,7 +13,11 @@ function getNumerator(eqn3a)
     clave = '/'
     for tx in texto
 
-        nveces = count( c -> c == clave, cadena)
+        nveces = count( c -> c == clave, tx)
+
+        if nveces < 1
+            # ... el código
+        end
     
     end
 
