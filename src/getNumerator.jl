@@ -16,6 +16,20 @@ function getNumerator(eqn3a)
         nveces = count( c -> c == clave, tx)
 
         if nveces < 1
+            # Where is the /
+            donde = findfirst(==(clave), tx)
+            # Cut the string in Numerator and Denominator
+            numerador = tx[1:donde-1]
+            denominador = tx[donde+1:end]
+
+            # Check if there is the same number of Parenthesis in numerator and denominator
+            clavep = '('
+            clavep1 = ')'
+            nParentNum = count( d -> d == clavep, numerador)
+            nParentNum1 = count( e -> e == clavep1, numerador)
+            nParentDen = count( d -> d == clavep, denominador)
+            nParentDen1 = count( e -> e == clavep1, denominador)
+
             # ... el código
         end
     
