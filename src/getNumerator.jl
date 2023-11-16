@@ -30,12 +30,15 @@ function getNumerator(eqn3a)
             nParentDen = count( d -> d == clavep, denominador)
             nParentDen1 = count( e -> e == clavep1, denominador)
 
-            # ... el código
+            if nParentNum == nParentNum1 & nParentDen == nParentDen1
+                return numerador, denominador
+            else
+                println("Equation is not basic (Num)/(Den)")
+            end
+
         end
     
     end
-
-
 
 end
 

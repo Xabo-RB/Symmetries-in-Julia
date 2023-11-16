@@ -61,6 +61,8 @@ for eq in equation3apaper
     render(latex_expr)
 end
 
+Num, Den = getNumerator(equation3apaper)
+
 #NOTAS PARA MI:
 # ME QUEDA OBTENER LOS COEFICIENTES, ANTES TENGO QUE QUITAR LOS DENOMINADORES PROGRAMANDO CON STRINGS
 # Probar obtener los denominadores con Sympy?
