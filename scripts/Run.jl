@@ -7,6 +7,7 @@ using LaTeXStrings
 @quickactivate "Julia"
 include(srcdir("support.jl"))
 include(srcdir("main.jl"))
+include(srcdir("getNumerator.jl"))
 
 struct userDefined
 
