@@ -11,6 +11,10 @@ function getNumerator(eqn3a)
 
     # First, how many '/'
     clave = '/'
+
+    NUM = String[]
+    DEN = String[]
+
     for tx in texto
 
         nveces = count( c -> c == clave, tx)
@@ -30,15 +34,17 @@ function getNumerator(eqn3a)
             nParentDen = count( d -> d == clavep, denominador)
             nParentDen1 = count( e -> e == clavep1, denominador)
 
-            if nParentNum == nParentNum1 & nParentDen == nParentDen1
-                return numerador, denominador
-            else
+            if nParentNum != nParentNum1 & nParentDen != nParentDen1
                 println("Equation is not basic (Num)/(Den)")
+                push!(NUM,"ERROR")
+                push!(DEN,"ERROR")
+            elseif nParentNum == nParentNum1 & nParentDen == nParentDen1
+                push!(NUM,numerador)
+                push!(DEN,denominador)
             end
-
-        end
-    
+        end    
     end
+    return NUM, DEN
 
 end
 
