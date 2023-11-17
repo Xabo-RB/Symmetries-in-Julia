@@ -21,7 +21,6 @@ function main(Model,t)
     #   - States
     st = Num[]
     for q in states
-        global var
         # Meta-programming, this line writes a meta-line code to create the symbolic variable stored in q, that is called as (q)
         str = "@syms $(q)(t)"
         eval(Meta.parse(str))
@@ -33,12 +32,11 @@ function main(Model,t)
     #   - Transformed variable of States
     ST = Num[]
     for q in states
-        global VAR
         Mayus = uppercase(q)
         str = "@syms $(Mayus)(t)"
         eval(Meta.parse(str))
-        VAR = eval(Meta.parse("$(Mayus)(t)"))
-        push!(ST, VAR)
+        var = eval(Meta.parse("$(Mayus)(t)"))
+        push!(ST, var)
     end
 
     #   - Parameters
@@ -47,7 +45,7 @@ function main(Model,t)
         #Meta-programming, this line write a meta-line code to create the symbolic variable stored in q
         str = "@variables $(p)"
         #Evaluate the line above
-        global eval(Meta.parse(str))
+        eval(Meta.parse(str))
         #Now, the symbolic variable (q) exists, and I store it in the vector st
         push!(pr, eval(Meta.parse(p)))
     end
@@ -55,11 +53,10 @@ function main(Model,t)
     #   - Inputs
     inU = Num[]
     for m in inputs
-        global inp
         str = "@syms $(m)(t)"
         eval(Meta.parse(str))
-        inp = eval(Meta.parse("$(m)(t)"))
-        push!(inU, inp)
+        var = eval(Meta.parse("$(m)(t)"))
+        push!(inU, var)
     end
 
     #   - Equations
