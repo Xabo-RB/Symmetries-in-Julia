@@ -19,7 +19,7 @@ function getNumerator(eqn3a)
 
         nveces = count( c -> c == clave, tx)
 
-        if nveces < 1
+        if nveces == 1
             # Where is the /
             donde = findfirst(==(clave), tx)
             # Cut the string in Numerator and Denominator
@@ -34,6 +34,8 @@ function getNumerator(eqn3a)
             nParentDen = count( d -> d == clavep, denominador)
             nParentDen1 = count( e -> e == clavep1, denominador)
 
+            # If there are more '(' than ')' or inverse, it will say error (I need to implement another function
+            # for that). If there are the same number of '(' than ')', the num and den are good separated.
             if nParentNum != nParentNum1 & nParentDen != nParentDen1
                 println("Equation is not basic (Num)/(Den)")
                 push!(NUM,"ERROR")
@@ -44,6 +46,7 @@ function getNumerator(eqn3a)
             end
         end    
     end
+
     return NUM, DEN
 
 end
