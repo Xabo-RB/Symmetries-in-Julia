@@ -59,11 +59,16 @@ equation3apaper = main(CreateModel,t)
 
 Numer, Denom = getNumerator(equation3apaper)
 
+expresion = Meta.parse(Denom[3])
+resultado = eval(expresion)
 
 for eq in equation3apaper
     latex_expr = latexify(eq)
     render(latex_expr)
 end
+
+# ESTÁ MAL, LAS DERIVADAS DE LAS X MAYÚSCULAS SE CREAN SÓLO COMO X MAYÚSCULA Y NO COMO X1 MAYUSCULA.
+# T MAYÚSCULA NO ESTÁ DEFINIDO COMO UNA VARIABLE.
 
 #NOTAS PARA MI:
 # ME QUEDA OBTENER LOS COEFICIENTES, ANTES TENGO QUE QUITAR LOS DENOMINADORES PROGRAMANDO CON STRINGS
