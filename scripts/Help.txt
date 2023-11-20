@@ -13,3 +13,33 @@ push!(st, var): agrega la variable simbólica al arreglo st.
 La confusión podría surgir porque normalmente se espera que después de definir una variable simbólica con una macro, se pueda usar directamente. Sin embargo, debido a la manera en que se usa eval para interpretar las cadenas, necesitas recuperar la variable en un paso separado para poder usarla efectivamente.
 
 Por lo tanto, para tu requerimiento original de crear variables en mayúsculas, seguirías un proceso similar, asegurándote de que después de usar eval para crear la variable simbólica en mayúsculas, recuperas esa instancia para su uso posterior. El código que proporcioné anteriormente sigue siendo relevante y válido para este propósito.
+
+El error que estás experimentando se debe a un intento de convertir un objeto de tipo String a un objeto de tipo Symbol de una manera que Julia no espera. En este caso, parece estar relacionado con cómo se están creando las variables simbólicas en el bucle for. Vamos a ajustar este código para resolver este problema.
+
+En lugar de usar strings para los nombres de variables en @variables, deberíamos usar directamente Symbol. Aquí está la corrección:
+
+using Symbolics
+
+@variables t
+states = ["x1", "x2", "x3", "x4"]
+
+ST = Num[]
+for q in states
+    Mayus = uppercase(q)
+    var_symbol = Symbol(Mayus, "(t, ", q, ")")  # Crear un símbolo para la variable
+    @eval begin
+        @variables $var_symbol
+        push!(ST, $var_symbol)
+    end
+end
+
+# Evaluar las ecuaciones
+ecuaciones_simbolicas = [eval(Meta.parse(eq)) for eq in ecuaciones]
+
+En este código:
+
+Se utiliza Symbol(Mayus, "(t, ", q, ")") para crear un símbolo que representa la variable simbólica, por ejemplo, Symbol("X1(t, x1)").
+El uso de @eval y @variables luego crea y almacena la variable simbólica basada en este símbolo.
+push!(ST, $var_symbol) agrega la variable simbólica al vector ST.
+Este ajuste debería resolver el problema de conversión de tipo que estás experimentando. Además, asegúrate de que las ecuaciones en ecuaciones estén correctamente formateadas y que todas las variables y funciones necesarias estén definidas para ser interpretadas correctamente por Symbolics.jl.
+

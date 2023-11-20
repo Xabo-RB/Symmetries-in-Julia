@@ -12,17 +12,17 @@ function chainDer(model,t)
     dT = Num[]
     dotx = Num[]
 
+    
     for (i, value) in enumerate(estado)
         # Partial erivative with respect a estado[i]
         Dx = Differential(estado[i])
 
-        @variables X(t, estado[i])
         @variables T(t, estado[i])
 
         dT_dt = Dt(T) + Dx(T) * Dt(estado[i])
 
-        # Calculate the total derivative of X with respect to time.
-        dX_dt = Dt(X) + Dx(X) * Dt(estado[i])
+        # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
+        dX_dt = Dt(estM[i]) + Dx(estM[i]) * Dt(estado[i])
 
         dotxEle = dX_dt/dT_dt
 
