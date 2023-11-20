@@ -1,6 +1,6 @@
 function chainDer(model,t)
     
-    eqns = model.states
+    estado = model.states
 
     # Creates the differential operators
     Dt = Differential(t)
@@ -8,15 +8,15 @@ function chainDer(model,t)
     dT = Num[]
     dotx = Num[]
 
-    for i in eachindex(eqns)
-        Dx = Differential(eqns[i])
-        @variables X(t, eqns[i])
-        @variables T(t, eqns[i])
+    for i in eachindex(estado)
+        Dx = Differential(estado[i])
+        @variables X(t, estado[i])
+        @variables T(t, estado[i])
 
-        dT_dt = Dt(T) + Dx(T) * Dt(eqns[i])
+        dT_dt = Dt(T) + Dx(T) * Dt(estado[i])
 
         # Calculate the total derivative of X with respect to time.
-        dX_dt = Dt(X) + Dx(X) * Dt(eqns[i])
+        dX_dt = Dt(X) + Dx(X) * Dt(estado[i])
 
         dotxEle = dX_dt/dT_dt
 
