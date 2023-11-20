@@ -1,6 +1,10 @@
 function chainDer(model,t)
     
+    # Here I have already defined the states, x1(t), ... and the transformed states X1(t,x1), X2(t,x2), ...
+    # not appear defined as X1(t,x1), appears as X1(t) since it is not relevant. They will be treated as parameters
+    # in the determining system.
     estado = model.states
+    estM = model.TransStates 
 
     # Creates the differential operators
     Dt = Differential(t)
@@ -8,8 +12,10 @@ function chainDer(model,t)
     dT = Num[]
     dotx = Num[]
 
-    for i in eachindex(estado)
+    for (i, value) in enumerate(estado)
+        # Partial erivative with respect a estado[i]
         Dx = Differential(estado[i])
+
         @variables X(t, estado[i])
         @variables T(t, estado[i])
 
