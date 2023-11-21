@@ -44,7 +44,9 @@ function transformation(Model,t)
         transf_eqn = transformVariables(equations[i], St, transSt) 
         push!(TrEquations, transf_eqn)
     end
-
+    #To pass variables to the Model Struct
+    M = ModelSym(st,ST,pr,inU,equations)
+    
     return equations, TrEquations
 
 end
