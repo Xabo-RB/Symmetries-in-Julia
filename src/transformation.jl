@@ -1,13 +1,5 @@
 function transformation(Model,t)
 
-    states = Model.estados
-    Nstates = Model.nEstados
-    nOutputs = Model.nSalidas
-    nParams = Model.nParams
-    parameters = Model.parametros
-    inputs = Model.entradas
-    ecuaciones = Model.ecuaciones
-
     #   - States
     St = Num[]
     transSt = Num[]
@@ -43,12 +35,12 @@ function transformation(Model,t)
     #   - Equations
     equations = Num[]
     TrEquations = Num[]
-    for i in eachindex(ecuaciones)
-        str = Meta.parse(ecuaciones[i])
+    for i in eachindex(Model.ecuaciones)
+        str = Meta.parse(Model.ecuaciones[i])
         eqn1 = eval(str)
         push!(equations, eqn1)
 
-        transf_eqn = transformVariables(equations[i], st, ST) 
+        transf_eqn = transformVariables(equations[i], St, transSt) 
         push!(TrEquations, transf_eqn)
     end
 
