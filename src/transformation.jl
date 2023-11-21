@@ -32,7 +32,8 @@ function transformation(Model,t)
         push!(inU, eval(Meta.parse("$(m)")))
     end
 
-    #   - Equations
+    #   - Equations: equations (ode expression with the variables as type Num), TrEquations (the same ode 
+    #                ode expression but the states are the transformed states ~x or X)
     equations = Num[]
     TrEquations = Num[]
     for i in eachindex(Model.ecuaciones)
