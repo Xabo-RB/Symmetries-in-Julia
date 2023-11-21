@@ -8,26 +8,27 @@ function chainDer(model,t)
 
     # Creates the differential operators
     Dt = Differential(t)
-    dX = Num[]
-    dT = Num[]
     dotx = Num[]
 
     
+
     for (i, value) in enumerate(estado)
         # Partial erivative with respect a estado[i]
         Dx = Differential(estado[i])
 
-        @variables T(t, estado[i])
+        # Define the variables T(t,x1(t)) as Tx1, Tx2, ...
+        str = "@variables T$(value)"
+        eval(Meta.parse(str))
+        # To store the variable in a new one in order to use it below
+        var = eval(Meta.parse("$(m)(t)"))
 
-        dT_dt = Dt(T) + Dx(T) * Dt(estado[i])
+        dT_dt = Dt(var) + Dx(var) * Dt(estado[i])
 
         # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
         dX_dt = Dt(estM[i]) + Dx(estM[i]) * Dt(estado[i])
 
         dotxEle = dX_dt/dT_dt
 
-        push!(dX, dX_dt)
-        push!(dT, dT_dt)
         push!(dotx, dotxEle)
 
     end
@@ -83,6 +84,17 @@ simplified_result = Symbolics.simplify(dX_dt)
 
 # Muestra el resultado simplificado
 println(simplified_result)
+
+# EXPAND_DERIVATIVES
+@variables t 
+@variables Tx2
+Dt = Differential(t)
+
+# Calcula la derivada de Tx1 con respecto a t
+dTx1_dt = Dt(Tx2)
+Differential(t)(dTx1_dt)
+
+expand_derivatives(dTx1_dt)
 ==#
 
 function transformVariables(expr, vars, varsM)

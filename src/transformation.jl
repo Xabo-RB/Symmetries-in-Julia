@@ -45,8 +45,10 @@ function transformation(Model,t)
         push!(TrEquations, transf_eqn)
     end
     #To pass variables to the Model Struct
-    M = ModelSym(st,ST,pr,inU,equations)
-    
-    return equations, TrEquations
+    M = ModelSym(St,transSt,pr,inU,equations)
+    # Symbolic derivatives of the states, equation (2b)
+    xdot = chainDer(M,t)
+
+    return equations, TrEquations, xdot
 
 end
