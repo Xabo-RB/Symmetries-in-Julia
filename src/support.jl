@@ -14,15 +14,13 @@ function chainDer(model,t)
 
     for (i, value) in enumerate(estado)
         # Partial erivative with respect a estado[i]
-        Dx = Differential(estado[i])
+        Dx = Differential(value)
 
         # Define the variables T(t,x1(t)) as Tx1, Tx2, ...
-        str = "@variables T$(value)"
+        str = "@variables T"
         eval(Meta.parse(str))
-        # To store the variable in a new one in order to use it below
-        var = eval(Meta.parse("$(m)(t)"))
 
-        dT_dt = Dt(var) + Dx(var) * Dt(estado[i])
+        dT_dt = Dt(T) + Dx(T) * Dt(estado[i])
 
         # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
         dX_dt = Dt(estM[i]) + Dx(estM[i]) * Dt(estado[i])

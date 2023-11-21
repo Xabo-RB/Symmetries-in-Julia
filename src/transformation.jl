@@ -46,7 +46,8 @@ function transformation(Model,t)
     end
     #To pass variables to the Model Struct
     M = ModelSym(St,transSt,pr,inU,equations)
-    # Symbolic derivatives of the states, equation (2b)
+
+    # Symbolic derivatives of the states, equation (2b): Xt + Xx dot(x) / Tt + Tx dot(x)
     xdot = chainDer(M,t)
 
     return equations, TrEquations, xdot
