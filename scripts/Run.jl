@@ -53,7 +53,7 @@ ecuaciones = [
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
-transformation(CreateModel,t)
+eqn, Treqn = transformation(CreateModel,t)
 
 equation3apaper = main(CreateModel,t)
 
