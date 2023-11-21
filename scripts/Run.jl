@@ -54,6 +54,24 @@ ecuaciones = [
 
 CreateModel = userDefined(Number_of_States,states,Number_of_Outputs,Number_of_Parameters,parameters,inputs,ecuaciones)
 
+#==
+@variables t x y
+num_expr = x^2 + y + sin(t)
+
+# Función para convertir variables en una expresión Num a símbolos
+function convert_num_to_symbol(expr)
+    if expr isa SymbolicUtils.Symbolic
+        return Symbol(expr)
+    elseif expr isa Number
+        return expr
+    else
+        return map(convert_num_to_symbol, expr.args)
+    end
+end
+
+# Convertir la expresión Num
+symbol_expr = convert_num_to_symbol(num_expr)
+==#
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
 equation3apaper = main(CreateModel,t)
 
