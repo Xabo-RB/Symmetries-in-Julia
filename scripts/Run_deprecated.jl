@@ -8,7 +8,6 @@ using LaTeXStrings
 include(srcdir("support.jl"))
 include(srcdir("main.jl"))
 include(srcdir("getNumerator.jl"))
-include(srcdir("transformation.jl"))
 
 struct userDefined
 
@@ -74,8 +73,6 @@ end
 symbol_expr = convert_num_to_symbol(num_expr)
 ==#
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
-transformation(CreateModel,t)
-
 equation3apaper = main(CreateModel,t)
 
 Numer, Denom = getNumerator(equation3apaper)
@@ -94,4 +91,3 @@ end
 #NOTAS PARA MI:
 # ME QUEDA OBTENER LOS COEFICIENTES, ANTES TENGO QUE QUITAR LOS DENOMINADORES PROGRAMANDO CON STRINGS
 # Probar obtener los denominadores con Sympy?
-
