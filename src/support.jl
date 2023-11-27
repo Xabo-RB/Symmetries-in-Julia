@@ -131,9 +131,9 @@ function transformToCoeffs(mod,xd)
 
     nX = length(mod.St) #number of states
     for i in 1:nX
-        str = "@variables A_$i"
-        str1 = "@variables B_$i"
-        str2 = "@variables C_$i"
+        A_name = sp.symbols("A_$i")
+        B_name = sp.symbols("B_$i")
+        C_name = sp.symbols("C_$i")
         eval(Meta.parse(str))
         eval(Meta.parse(str1))
         eval(Meta.parse(str2))

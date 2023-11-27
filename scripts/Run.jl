@@ -2,6 +2,7 @@ using DrWatson
 using Symbolics
 using Latexify
 using LaTeXStrings
+import SymPy as sp
 #using SymPy
 
 @quickactivate "Symmetries in Julia"
