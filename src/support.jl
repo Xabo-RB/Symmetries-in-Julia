@@ -134,6 +134,14 @@ function transformToCoeffs(mod,xd)
         str = "@variables A_$i"
         str1 = "@variables B_$i"
         str2 = "@variables C_$i"
+        eval(Meta.parse(str))
+        eval(Meta.parse(str1))
+        eval(Meta.parse(str2))
+
+        #DICCCIONARIO
+        #Now, the symbolic variable (q) exists, and I store it in the vector st
+        push!(St, eval(Meta.parse(q)))
+        push!(transSt, eval(Meta.parse(Mayus)))
     end
 
 end
