@@ -51,7 +51,7 @@ function transformation(Model,t)
     xdot = chainDer(M,t)
 
     # This function is to convert de derivatives into coefficients
-    Numer, Denom = transformToCoeffs(M,xdot)
+    #Numer, Denom = transformToCoeffs(M,xdot)
 
     return equations, TrEquations, xdot
 

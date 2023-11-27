@@ -129,23 +129,24 @@ end
 
 function transformToCoeffs(mod,xd)
 
-    nX = length(mod.St) #number of states
+    nX = length(mod.states) #number of states
     for i in 1:nX
-        A_name = sp.symbols("A_$i")
-        B_name = sp.symbols("B_$i")
-        C_name = sp.symbols("C_$i")
+        # A's: dXi/dt
+        str = "@variables A_$i"
         eval(Meta.parse(str))
+        # B's: dXi/dxi
+        str1 = "@variables B_$i"
         eval(Meta.parse(str1))
+        # C's: dT/dxi
+        str2 = "@variables C_$i"     
         eval(Meta.parse(str2))
+
+
 
         #DICCCIONARIO
         #Now, the symbolic variable (q) exists, and I store it in the vector st
         push!(St, eval(Meta.parse(q)))
         push!(transSt, eval(Meta.parse(Mayus)))
     end
-
-end
-
-
 
 end
