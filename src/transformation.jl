@@ -50,6 +50,9 @@ function transformation(Model,t)
     # Symbolic derivatives of the states, equation (2b): Xt + Xx dot(x) / Tt + Tx dot(x)
     xdot = chainDer(M,t)
 
+    # This function is to convert de derivatives into coefficients
+    Numer, Denom = transformToCoeffs(M,xdot)
+
     return equations, TrEquations, xdot
 
 end

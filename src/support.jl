@@ -126,3 +126,18 @@ function transformVariables1(expr, vars, varsM)
     return newExpr
 
 end
+
+function transformToCoeffs(mod,xd)
+
+    nX = length(mod.St) #number of states
+    for i in 1:nX
+        str = "@variables A_$i"
+        str1 = "@variables B_$i"
+        str2 = "@variables C_$i"
+    end
+
+end
+
+
+
+end

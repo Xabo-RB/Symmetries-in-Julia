@@ -4,7 +4,7 @@ using Latexify
 using LaTeXStrings
 #using SymPy
 
-@quickactivate "Julia"
+@quickactivate "Symmetries in Julia"
 include(srcdir("support.jl"))
 include(srcdir("main.jl"))
 include(srcdir("getNumerator.jl"))
