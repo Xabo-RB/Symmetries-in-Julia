@@ -59,22 +59,25 @@ function creatingCoeffsForDiffs(mod,xd)
     nombresVar = map(string, mod.states)
     nombresVarT = map(string, mod.TransStates)
 
+    #d(States)/dt
     A_dSdt = Num[]
     for names in nombresVarT
-        # A's: dXi/dt : Xit : /state/t
+        # A's: dXi/dt : Xit : /State/t
         str = "@variables $(names)t"
         eval(Meta.parse(str))
         varsym = eval(Meta.parse("$(names)t"))
         push!(A_dSdt, varsym)
     end
 
-        # B's: dXi/dxi
-        str1 = "@variables B_$i"
-        eval(Meta.parse(str1))
-        # C's: dT/dxi
-        str2 = "@variables C_$i"     
-        eval(Meta.parse(str2))
-
+    #d(States)/dstates
+    B_dSds = Num[]
+    for i in eachindex(nombresVarT)
+        # B's: dSi/dsi : Sisi : /Statei//statei/
+        str = "@variables $(nombresVarT[i]nombresVar[i])"
+        eval(Meta.parse(str))
+        varsym = eval(Meta.parse("$(nombresVarT[i]nombresVar[i])"))
+        push!(B_dSds, varsym)
+    end
 
 
         #DICCCIONARIO
