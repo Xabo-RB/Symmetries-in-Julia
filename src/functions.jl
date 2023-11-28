@@ -64,7 +64,8 @@ function creatingCoeffsForDiffs(mod,xd)
         # A's: dXi/dt : Xit : /state/t
         str = "@variables $(names)t"
         eval(Meta.parse(str))
-        push!(A_dSdt, eval(Meta.parse(str)))
+        varsym = eval(Meta.parse("$(names)t"))
+        push!(A_dSdt, varsym)
     end
 
         # B's: dXi/dxi
@@ -80,7 +81,7 @@ function creatingCoeffsForDiffs(mod,xd)
         #Now, the symbolic variable (q) exists, and I store it in the vector st
         push!(St, eval(Meta.parse(q)))
         push!(transSt, eval(Meta.parse(Mayus)))
-    end
+    
 
 end
 

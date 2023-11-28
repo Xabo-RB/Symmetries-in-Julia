@@ -51,7 +51,7 @@ function transformation(Model,t)
     xdot = chainDer(M,t)
 
     # ( [As -> dXi/dt], [Bs -> dXi/dxi], [Cs -> dT/dxi], [xdot1 -> dxi/dt], derTemporal )
-    tuplaDerivadas = creatingDifferential(mod)
+    tuplaDerivadas = creatingDifferential(M)
 
     # This function is to convert de derivatives into coefficients
     #Numer, Denom = transformToCoeffs(M,xdot)
