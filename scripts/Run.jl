@@ -6,7 +6,7 @@ import SymPy as sp
 #using SymPy
 
 @quickactivate "Symmetries in Julia"
-include(srcdir("support.jl"))
+include(srcdir("functions.jl"))
 include(srcdir("main.jl"))
 include(srcdir("getNumerator.jl"))
 include(srcdir("transformation.jl"))
