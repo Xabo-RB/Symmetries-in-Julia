@@ -80,15 +80,39 @@ end
 
 function creatingDifferential(mod)
 
-    nombresVar = vcat(string(mod.states),string(mod.TransStates))
-    nombresVar = 
+    # Vector with all de variable names, states and Mayusculas States as strings
+    nombresVar = map(string, mod.states)
+    nombresVarT = map(string, mod.TransStates)
 
-    strings_derivadas = []
-    for nombre in nombres_variables
+    # A's coefficients dXi/dt
+    As = []
+    for nombre in nombresVarT
         derivada_str = "Differential(t)($(nombre))"
-        push!(strings_derivadas, derivada_str)
+        push!(As, derivada_str)
     end
 
+    # B's coefficients dXi/dxi
+    Bs = []
+    for i in eachindex(nombresVarT)
+        derivada_str = "Differential($(nombresVar[i]))($(nombresVarT[i]))"
+        push!(Bs, derivada_str)
+    end
 
+    # C's coefficients dT/dxi
+    Cs = []
+    for i in eachindex(nombresVarT)
+        derivada_str = "Differential($(nombresVar[i]))(T)"
+        push!(Cs, derivada_str)
+    end    
 
+    # derivadas primera coefficients dxi/dt
+    xdot1 = []
+    for i in eachindex(nombresVarT)
+        derivada_str = "Differential(t)($(nombresVar[i]))"
+        push!(xdot1, derivada_str)
+    end 
+    
+    derTemporal = "Differential(t)(T)"
+
+    return (As, Bs, Cs, xdot1, derTemporal)
 end
