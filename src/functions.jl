@@ -56,11 +56,17 @@ end
 # derives.
 function creatingCoeffsForDiffs(mod,xd)
 
-    for i in 1:nX
-        # A's: dXi/dt : Xit : /state/t
+    nombresVar = map(string, mod.states)
+    nombresVarT = map(string, mod.TransStates)
 
-        str = "@variables A_$i"
+    A_dSdt = Num[]
+    for names in nombresVarT
+        # A's: dXi/dt : Xit : /state/t
+        str = "@variables $(names)t"
         eval(Meta.parse(str))
+        push!(A_dSdt, eval(Meta.parse(str)))
+    end
+
         # B's: dXi/dxi
         str1 = "@variables B_$i"
         eval(Meta.parse(str1))

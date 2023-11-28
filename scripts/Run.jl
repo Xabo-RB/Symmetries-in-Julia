@@ -56,6 +56,10 @@ CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
 eqn, Treqn, derxT = transformation(CreateModel,t)
 
+namess = "xxx"
+str = "@variables $(namess)t"
+variable_simbolica = eval(Meta.parse(str))
+
 equation3apaper = main(CreateModel,t)
 
 Numer, Denom = getNumerator(equation3apaper)
