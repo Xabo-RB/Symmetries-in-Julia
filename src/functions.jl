@@ -51,11 +51,14 @@ function transformVariables(expr, vars, varsM)
 
 end
 
-function transformToCoeffs(mod,xd)
+# This function is to create the variable which represent the differential, in the sense of:
+# Differential(t)(X1) -> X1t for example. The name of the state or Uppercase State followed by the variable which 
+# derives.
+function creatingCoeffsForDiffs(mod,xd)
 
-    nX = length(mod.states) #number of states
     for i in 1:nX
-        # A's: dXi/dt
+        # A's: dXi/dt : Xit : /state/t
+
         str = "@variables A_$i"
         eval(Meta.parse(str))
         # B's: dXi/dxi
@@ -77,7 +80,6 @@ end
 
 # Esta función va a ser para definir los strings que contengan las derivadas de los estados, "(Differential(t)(X1)"
 # y luego convertirlos en símbolos para meterlos en un diccionario y substituirlos.
-
 function creatingDifferential(mod)
 
     # Vector with all de variable names, states and Mayusculas States as strings
