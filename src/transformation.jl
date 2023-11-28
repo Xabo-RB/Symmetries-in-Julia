@@ -51,11 +51,46 @@ function transformation(Model,t)
     xdot = chainDer(M,t)
 
     # ( [As -> dXi/dt], [Bs -> dXi/dxi], [Cs -> dT/dxi], [xdot1 -> dxi/dt], derTemporal )
+    # Tupla with the strings representing the derivatives, such as: Differential(t)(X1)
     tuplaDerivadas = creatingDifferential(M)
+
+    #==
+    As1 = []
+    for deriv_str in As
+        expr_julia = Meta.parse(deriv_str)
+        expr_simbolica = eval(expr_julia)
+        push!(As1, expr_simbolica)
+    end
+    Bs1 = []
+    for deriv_str in Bs
+        expr_julia = Meta.parse(deriv_str)
+        expr_simbolica = eval(expr_julia)
+        push!(Bs1, expr_simbolica)
+    end
+    Cs1 = []
+    for deriv_str in Cs
+        expr_julia = Meta.parse(deriv_str)
+        expr_simbolica = eval(expr_julia)
+        push!(Cs1, expr_simbolica)
+    end
+    xdot11 = []
+    for deriv_str in xdot1
+        expr_julia = Meta.parse(deriv_str)
+        expr_simbolica = eval(expr_julia)
+        push!(xdot1, expr_simbolica)
+    end
+    derTemporal1 = []
+    push!(derTemporal1, eval(Meta.parse(deriv_str)))
+    ==#
+    
+
+    # Coefficients for substituting the derivatives, such as Xit = dXi/dt
+    coeficientes = creatingCoeffsForDiffs(M)
 
     # This function is to convert de derivatives into coefficients
     #Numer, Denom = transformToCoeffs(M,xdot)
 
-    return equations, TrEquations, xdot
+
+    return equations, TrEquations, xdot, tuplaDerivadas, coeficientes
 
 end

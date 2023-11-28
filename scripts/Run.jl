@@ -6,6 +6,7 @@ import SymPy as sp
 #using SymPy
 
 @quickactivate "Symmetries in Julia"
+
 include(srcdir("functions.jl"))
 include(srcdir("main.jl"))
 include(srcdir("getNumerator.jl"))
@@ -54,9 +55,13 @@ ecuaciones = [
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
-eqn, Treqn, derxT = transformation(CreateModel,t)
+eqn, Treqn, derxT, trt, tret = transformation(CreateModel,t)
 
+str = "Differential(t)(x1)"
+expr = Meta.parse(str)
 
+# Convertir la expresión de Julia a una expresión simbólica del tipo Num
+num_expr = Symbolics.toexpr(expr)
 # _______________________________________________________________
 
 
