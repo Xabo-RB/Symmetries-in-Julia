@@ -54,43 +54,50 @@ function transformation(Model,t)
     # Tupla with the strings representing the derivatives, such as: Differential(t)(X1)
     tuplaDerivadas = creatingDifferential(M)
 
-    #==
-    As1 = []
-    for deriv_str in As
+    # ------------------ ------------------ ------------------ ------------------ ------------------
+    # Convert the derivatives in tuplaDerivadas to Num
+    As = Num[]
+    As1 = tuplaDerivadas[1]
+    for deriv_str in As1
         expr_julia = Meta.parse(deriv_str)
         expr_simbolica = eval(expr_julia)
-        push!(As1, expr_simbolica)
+        push!(As, expr_simbolica)
     end
-    Bs1 = []
-    for deriv_str in Bs
+    Bs = Num[]
+    Bs1 = tuplaDerivadas[2]
+    for deriv_str in Bs1
         expr_julia = Meta.parse(deriv_str)
         expr_simbolica = eval(expr_julia)
-        push!(Bs1, expr_simbolica)
+        push!(Bs, expr_simbolica)
     end
-    Cs1 = []
-    for deriv_str in Cs
+    Cs = Num[]
+    Cs1 = tuplaDerivadas[3]
+    for deriv_str in Cs1
         expr_julia = Meta.parse(deriv_str)
         expr_simbolica = eval(expr_julia)
-        push!(Cs1, expr_simbolica)
+        push!(Cs, expr_simbolica)
     end
-    xdot11 = []
-    for deriv_str in xdot1
+    xdot1_str = Num[]
+    xdot11 = tuplaDerivadas[4]
+    for deriv_str in xdot11
         expr_julia = Meta.parse(deriv_str)
         expr_simbolica = eval(expr_julia)
-        push!(xdot1, expr_simbolica)
-    end
-    derTemporal1 = []
-    push!(derTemporal1, eval(Meta.parse(deriv_str)))
-    ==#
+        push!(xdot1_str, expr_simbolica)
+    end  
+    derTemporal1 = Num[]
+    push!(derTemporal1, eval(Meta.parse(tuplaDerivadas[5])))
+    # ------------------ ------------------ ------------------ ------------------ ------------------
     
 
     # Coefficients for substituting the derivatives, such as Xit = dXi/dt
     coeficientes = creatingCoeffsForDiffs(M)
 
-    # This function is to convert de derivatives into coefficients
-    #Numer, Denom = transformToCoeffs(M,xdot)
+    # Substitute the coefficients in the equation xdot.
+    for i in eachindex(xdot)
 
+    end
+    transf_eqn = transformVariables(xdot[1], tuplosa[1], tret[1]) 
 
-    return equations, TrEquations, xdot, tuplaDerivadas, coeficientes
+    return equations, TrEquations, xdot, tuplaDerivadas, coeficientes, (As,Bs,Cs,xdot1_str,derTemporal1)
 
 end
