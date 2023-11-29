@@ -103,9 +103,21 @@ function creatingCoeffsForDiffs(mod)
         push!(C_dTds, varsym)
     end
 
+    #d(states)/dt
+    D_dsdt = Num[]
+    for i in eachindex(nombresVarT)
+        # D's: dsi/dt : sit : /statei/t
+        str = "@variables $(nombresVar[i])t"
+        eval(Meta.parse(str))
+        varsym = eval(Meta.parse("$(nombresVar[i])t"))
+        push!(D_dsdt, varsym)
+    end
+
+
+
     @variables Tt
 
-    return (A_dSdt, B_dSds, C_dTds, Tt)
+    return (A_dSdt, B_dSds, C_dTds, D_dsdt, Tt)
 
 end
 
