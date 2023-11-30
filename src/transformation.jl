@@ -109,7 +109,18 @@ function transformation(Model,t)
         #push!(xdot_transformed, varsym)
     end
     
+    # A/B = (...) -> A = (...)B -> (...)B - A
+    # Firtsly, I need to get A and B from 'xdot_transformed'
+    num_xdotT = Num[]
+    den_xdotT = Num[]
+    for ecuacion in xdot_transformed
+        num_str, den_str = getNumerator(ecuacion)
+        num = eval(Meta.parse(num_str))
+        den = eval(Meta.parse(den_str))
+        push!(num_xdotT, num)
+        push!(den_xdotT, den)
+    end
 
-    return equations, TrEquations, xdot, xdot_transformed
+    return equations, TrEquations, xdot, xdot_transformed, num_xdotT, den_xdotT
 
 end
