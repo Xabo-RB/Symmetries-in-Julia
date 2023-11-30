@@ -121,6 +121,8 @@ function transformation(Model,t)
         push!(den_xdotT, den)
     end
 
+    
+
     return equations, TrEquations, xdot, xdot_transformed, num_xdotT, den_xdotT
 
 end
