@@ -55,32 +55,8 @@ ecuaciones = [
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
-eqn, Treqn, derxT, trt, tret, tuplosa, sol = transformation(CreateModel,t)
+eqn, Treqn, derxT, sol = transformation(CreateModel,t)
 
-
-# Substitute the coefficients in the equation xdot.
-tuplaStringsNums = tuplosa
-xdot_transformed = Num[]
-for j in eachindex(derxT)
-    for i in eachindex(tuplaStringsNums)
-
-        substituyoEsto = tuplaStringsNums[i]
-        porEsto = tret[i]
-
-        varsym = transformVariables(derxT[j], substituyoEsto, porEsto) 
-        derxT[j] = varsym
-    end
-    push!(xdot_transformed, derxT[j])
-end
-
-transf_eqn = transformVariables(derxT[1], tuplosa[1], tret[1]) 
-
-
-str = "Differential(t)(x1)"
-expr = Meta.parse(str)
-
-# Convertir la expresión de Julia a una expresión simbólica del tipo Num
-num_expr = Symbolics.toexpr(expr)
 # _______________________________________________________________
 
 

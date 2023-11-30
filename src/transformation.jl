@@ -93,22 +93,23 @@ function transformation(Model,t)
     # (A_dSdt, B_dSds, C_dTds, D_dsdt, Tt)
     coeficientes = creatingCoeffsForDiffs(M)
     
+    # For substituting I use 'coeficientes' and 'tuplaStringsNums'
     # Substitute the coefficients in the equation xdot.
     tuplaStringsNums = (As,Bs,Cs,xdot1_str,derTemporal1)
-    xdot_transformed = xdot
-    for j in eachindex(xdot)
+    xdot_transformed = copy(xdot)
+    for j in eachindex(xdot_transformed)
         for i in eachindex(tuplaStringsNums)
 
             substituyoEsto = tuplaStringsNums[i]
             porEsto = coeficientes[i]
 
-            varsym = transformVariables(xdot[j], substituyoEsto, porEsto) 
+            varsym = transformVariables(xdot_transformed[j], substituyoEsto, porEsto) 
             xdot_transformed[j] = varsym
         end
         #push!(xdot_transformed, varsym)
     end
     
 
-    return equations, TrEquations, xdot, tuplaDerivadas, coeficientes, tuplaStringsNums, xdot_transformed
+    return equations, TrEquations, xdot, xdot_transformed
 
 end
