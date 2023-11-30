@@ -55,7 +55,7 @@ ecuaciones = [
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
-eqn, Treqn, derxT, sol, n, d = transformation(CreateModel,t)
+eqn, Treqn, derxT, sol, n, d, nw, nw1 = transformation(CreateModel,t)
 
 # _______________________________________________________________
 

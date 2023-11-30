@@ -121,8 +121,17 @@ function transformation(Model,t)
         push!(den_xdotT, den)
     end
 
-    
+    # Now: A/B = (...) -> A = (...)B -> (...)B - A
+    finalSol = Num[]
+    finalSol1 = Num[]
+    for i in eachindex(den_xdotT)
+        new = TrEquations[i]*den_xdotT[i] - num_xdotT[i]
+        new1 = simplify(new)
+        push!(finalSol, new)
+        push!(finalSol1, new1)
+    end
 
-    return equations, TrEquations, xdot, xdot_transformed, num_xdotT, den_xdotT
+
+    return equations, TrEquations, xdot, xdot_transformed, num_xdotT, den_xdotT, finalSol, finalSol1
 
 end
