@@ -92,10 +92,10 @@ function transformation(Model,t)
     # Coefficients for substituting the derivatives, such as Xit = dXi/dt. Its a tupla, with As, Bs, Cs, Ds and dT/dt
     # (A_dSdt, B_dSds, C_dTds, D_dsdt, Tt)
     coeficientes = creatingCoeffsForDiffs(M)
-
+    
     # Substitute the coefficients in the equation xdot.
     tuplaStringsNums = (As,Bs,Cs,xdot1_str,derTemporal1)
-    xdot_transformed = Num[]
+    xdot_transformed = xdot
     for j in eachindex(xdot)
         for i in eachindex(tuplaStringsNums)
 
@@ -103,12 +103,12 @@ function transformation(Model,t)
             porEsto = coeficientes[i]
 
             varsym = transformVariables(xdot[j], substituyoEsto, porEsto) 
-            xdot[j] = varsym
+            xdot_transformed[j] = varsym
         end
-        push!(xdot_transformed, varsym)
+        #push!(xdot_transformed, varsym)
     end
+    
 
-
-    return equations, TrEquations, xdot, tuplaDerivadas, coeficientes, (As,Bs,Cs,xdot1_str,derTemporal1), xdot_transformed
+    return equations, TrEquations, xdot, tuplaDerivadas, coeficientes, tuplaStringsNums, xdot_transformed
 
 end
