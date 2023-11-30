@@ -111,12 +111,12 @@ function transformation(Model,t)
     
     # A/B = (...) -> A = (...)B -> (...)B - A
     # Firtsly, I need to get A and B from 'xdot_transformed'
+    num_str, den_str = getNumerator(xdot_transformed)
     num_xdotT = Num[]
     den_xdotT = Num[]
-    for ecuacion in xdot_transformed
-        num_str, den_str = getNumerator(ecuacion)
-        num = eval(Meta.parse(num_str))
-        den = eval(Meta.parse(den_str))
+    for i in eachindex(xdot_transformed)
+        num = eval(Meta.parse(num_str[i]))
+        den = eval(Meta.parse(den_str[i]))
         push!(num_xdotT, num)
         push!(den_xdotT, den)
     end

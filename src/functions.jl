@@ -114,7 +114,7 @@ function creatingCoeffsForDiffs(mod)
     end
 
 
-
+    global Tt
     @variables Tt
 
     return (A_dSdt, B_dSds, C_dTds, D_dsdt, Tt)
