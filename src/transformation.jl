@@ -36,7 +36,7 @@ function transformation(Model,t)
     #                ode expression but the states are the transformed states ~x or X)
     equations = Num[]
     TrEquations = Num[]
-    for i in eachindex(Model.ecuaciones)[1:end-model.salidas]
+    for i in eachindex(Model.ecuaciones)[1:end-Model.nSalidas]
         str = Meta.parse(Model.ecuaciones[i])
         eqn1 = eval(str)
         push!(equations, eqn1)
@@ -121,30 +121,33 @@ function transformation(Model,t)
         push!(den_xdotT, den)
     end
 
-    #==
-    ecuac = equations[1:end-1]
+
     #Substitute dxdt por la ecuación diferencial de dicho estado
+    finalNum = Num[]
+    finalDen = Num[]
     for i in eachindex(num_xdotT)
         # Differential equations
-        substituyoEsto = ecuac
+        substituyoEsto = coeficientes[4]
         #dsi/dt
-        porEsto = coeficientes[3]
-        varsym = transformVariables(num_xdotT, substituyoEsto, porEsto) 
-        nu = num_xdotT[i]
+        porEsto = equations
+        varsym = transformVariables(num_xdotT[i], substituyoEsto, porEsto) 
+        varsym1 = transformVariables(den_xdotT[i], substituyoEsto, porEsto) 
+        push!(finalNum, varsym)
+        push!(finalDen, varsym1)
     end
-    ==#
+    
 
     # Now: A/B = (...) -> A = (...)B -> (...)B - A
     finalSol = Num[]
     finalSol1 = Num[]
-    for i in eachindex(den_xdotT)
-        new = TrEquations[i]*den_xdotT[i] - num_xdotT[i]
+    for i in eachindex(finalDen)
+        new = TrEquations[i]*finalDen[i] - finalNum[i]
         new1 = expand(new)
         push!(finalSol, new)
         push!(finalSol1, new1)
     end
 
 
-    return equations, TrEquations, xdot, xdot_transformed, num_xdotT, den_xdotT, finalSol, finalSol1
+    return finalSol, finalSol1
 
 end
