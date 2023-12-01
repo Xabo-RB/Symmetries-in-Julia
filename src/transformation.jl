@@ -121,6 +121,13 @@ function transformation(Model,t)
         push!(den_xdotT, den)
     end
 
+    #==
+    #Substitute dxdt por la ecuación diferencial de dicho estado
+    for i in eachindex(num_xdotT)
+        nu = num_xdotT[i]
+    end
+    ==#
+
     # Now: A/B = (...) -> A = (...)B -> (...)B - A
     finalSol = Num[]
     finalSol1 = Num[]
