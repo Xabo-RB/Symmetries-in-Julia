@@ -36,7 +36,7 @@ function transformation(Model,t)
     #                ode expression but the states are the transformed states ~x or X)
     equations = Num[]
     TrEquations = Num[]
-    for i in eachindex(Model.ecuaciones)
+    for i in eachindex(Model.ecuaciones)[1:end-model.salidas]
         str = Meta.parse(Model.ecuaciones[i])
         eqn1 = eval(str)
         push!(equations, eqn1)
@@ -122,8 +122,14 @@ function transformation(Model,t)
     end
 
     #==
+    ecuac = equations[1:end-1]
     #Substitute dxdt por la ecuación diferencial de dicho estado
     for i in eachindex(num_xdotT)
+        # Differential equations
+        substituyoEsto = ecuac
+        #dsi/dt
+        porEsto = coeficientes[3]
+        varsym = transformVariables(num_xdotT, substituyoEsto, porEsto) 
         nu = num_xdotT[i]
     end
     ==#
