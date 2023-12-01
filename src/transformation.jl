@@ -126,7 +126,7 @@ function transformation(Model,t)
     finalSol1 = Num[]
     for i in eachindex(den_xdotT)
         new = TrEquations[i]*den_xdotT[i] - num_xdotT[i]
-        new1 = simplify(new)
+        new1 = expand(new)
         push!(finalSol, new)
         push!(finalSol1, new1)
     end
