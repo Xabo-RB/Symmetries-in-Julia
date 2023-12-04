@@ -61,7 +61,7 @@ determiningSystem, determiningSystemExpanded = transformation(CreateModel,t)
 # _______________________________________________________________
 
 # Select coefficients
-variablesSys = set()
+variablesSys = Set()
 for vrs in determiningSystemExpanded
     vSys = Symbolics.get_variables(vrs)
     for var in vSys
@@ -69,6 +69,19 @@ for vrs in determiningSystemExpanded
     end
 end
 
+variablesSys = string.(collect(variablesSys))
+
+variables_sympy = Dict()
+for k in variablesSys
+    variables_sympy[k] = sp.symbols(k)
+end
+
+for eqq in determiningSystemExpanded
+
+    expr_sympy  = sp.sympyfy(eqq, locals=var_map)
+    expr_collect = sp.collect(expr_sympy, u, evaluate=False)
+
+end
 
 @variables x22 y22 z22
 expr_num = x22 + y22^2 - z22
