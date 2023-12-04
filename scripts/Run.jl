@@ -10,7 +10,7 @@ import SymPy as sp
 include(srcdir("functions.jl"))
 include(srcdir("main.jl"))
 include(srcdir("getNumerator.jl"))
-include(srcdir("transformation.jl"))
+include(srcdir("getDeterminingSystem.jl"))
 
 struct userDefined
 
@@ -57,6 +57,25 @@ CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
 determiningSystem, determiningSystemExpanded = transformation(CreateModel,t)
+
+# _______________________________________________________________
+
+# Select coefficients
+variablesSys = set()
+for vrs in determiningSystemExpanded
+    vSys = Symbolics.get_variables(vrs)
+    for var in vSys
+        push!(variablesSys, var)
+    end
+end
+
+
+@variables x22 y22 z22
+expr_num = x22 + y22^2 - z22
+
+# Extraer los nombres de las variables de la expresión Num
+vars_num = Symbolics.get_variables(expr_num)
+var_names = string.(vars_num)
 
 # _______________________________________________________________
 

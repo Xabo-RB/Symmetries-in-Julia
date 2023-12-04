@@ -1,4 +1,4 @@
-function transformation(Model,t)
+function getDeterminingSystem(Model,t)
 
     #   - States
     St = Num[]
