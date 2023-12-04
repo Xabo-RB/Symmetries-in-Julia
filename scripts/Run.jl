@@ -79,7 +79,7 @@ end
 for eqq in determiningSystemExpanded
 
     expr_sympy  = sp.sympyfy(eqq, locals=var_map)
-    expr_collect = sp.collect(expr_sympy, u, evaluate=False)
+    expr_collect = sp.collect(expr_sympy, u)
 
 end
 
