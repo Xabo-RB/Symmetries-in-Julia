@@ -8,7 +8,6 @@ import SymPy as sp
 @quickactivate "Symmetries in Julia"
 
 include(srcdir("functions.jl"))
-include(srcdir("main.jl"))
 include(srcdir("getNumerator.jl"))
 include(srcdir("getDeterminingSystem.jl"))
 
@@ -56,7 +55,7 @@ ecuaciones = [
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
-determiningSystem, determiningSystemExpanded = transformation(CreateModel,t)
+determiningSystem, determiningSystemExpanded = getDeterminingSystem(CreateModel,t)
 
 # _______________________________________________________________
 
@@ -71,24 +70,25 @@ end
 
 variablesSys = string.(collect(variablesSys))
 
-variables_sympy = Dict()
+varsSymbol = Dict()
 for k in variablesSys
-    variables_sympy[k] = sp.symbols(k)
+    varsSymbol[k] = sp.symbols(k)
+end
+u_sym = sp.symbols("u")
+varsSymbol["u"] = u_sym
+
+ecuacionesString = string.(determiningSystemExpanded)
+coeffsCollected = []
+
+expr_sympy  = sp.sympify(ecuacionesString[1], locals = varsSymbol)
+for eqq in ecuacionesString
+
+    expr_sympy  = sp.sympify(eqq, locals = varsSymbol)
+    expr_collect = sp.collect(expr_sympy, u_sym)
+    push!(coeffsCollected, expr_collect)
+
 end
 
-for eqq in determiningSystemExpanded
-
-    expr_sympy  = sp.sympyfy(eqq, locals=variables_sympy)
-    expr_collect = sp.collect(expr_sympy, u)
-
-end
-
-@variables x22 y22 z22
-expr_num = x22 + y22^2 - z22
-
-# Extraer los nombres de las variables de la expresión Num
-vars_num = Symbolics.get_variables(expr_num)
-var_names = string.(vars_num)
 
 # _______________________________________________________________
 
