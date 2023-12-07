@@ -9,6 +9,7 @@ import SymPy as sp
 
 include(srcdir("functions.jl"))
 include(srcdir("getDeterminingSystem.jl"))
+include(srcdir("coefficients.jl"))
 
 struct userDefined
 
@@ -58,41 +59,7 @@ determiningSystem, determiningSystemExpanded = getDeterminingSystem(CreateModel,
 
 # _______________________________________________________________
 
-# Select coefficients
-variablesSys = Set()
-for vrs in determiningSystemExpanded
-    vSys = Symbolics.get_variables(vrs)
-    for var in vSys
-        push!(variablesSys, var)
-    end
-end
-
-variablesSys = string.(collect(variablesSys))
-
-varsSymbol = Dict()
-for k in variablesSys
-    varsSymbol[k] = sp.symbols(k)
-end
-u_sym = sp.symbols("u")
-varsSymbol["u"] = u_sym
-
-ecuacionesString = string.(determiningSystem)
-
-
-
-
-
-coeffsCollected = []
-
-expr_sympy  = sp.sympify(ecuacionesString[1], locals = varsSymbol)
-for eqq in ecuacionesString
-
-    expr_sympy  = sp.sympify(eqq, locals = varsSymbol)
-    expr_collect = sp.collect(expr_sympy, u_sym)
-    push!(coeffsCollected, expr_collect)
-
-end
-
+coeffs = coefficients(determiningSystem)
 
 # _______________________________________________________________
 
