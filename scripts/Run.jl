@@ -8,7 +8,6 @@ import SymPy as sp
 @quickactivate "Symmetries in Julia"
 
 include(srcdir("functions.jl"))
-include(srcdir("getNumerator.jl"))
 include(srcdir("getDeterminingSystem.jl"))
 
 struct userDefined
@@ -77,7 +76,12 @@ end
 u_sym = sp.symbols("u")
 varsSymbol["u"] = u_sym
 
-ecuacionesString = string.(determiningSystemExpanded)
+ecuacionesString = string.(determiningSystem)
+
+
+
+
+
 coeffsCollected = []
 
 expr_sympy  = sp.sympify(ecuacionesString[1], locals = varsSymbol)
@@ -91,6 +95,31 @@ end
 
 
 # _______________________________________________________________
+
+
+# _______________________________________________________________
+# Tu expresión en forma de cadena
+expr_str = "-X2t + Tt*X1*k21 - Tt*X2*k12 + X2x2*k12*x2 - X2x2*k21*x1 - Tx2*X1*k12*k21*x2 + Tx2*X1*(k21^2)*x1 + Tx2*X2*(k12^2)*x2 - Tx2*X2*k12*k21*x1"
+expr_str= ecuacionesString[2]
+# Convertir la cadena a una expresión de SymPy
+expr_sympy = sp.sympify(expr_str)
+expr_collect = sp.collect(expr_sympy, u_sym)
+x1 = sp.symbols("x1")
+expr_collect = sp.collect(expr_sympy, x1)
+expr_sympy  = sp.sympify(expr_str, locals = varsSymbol)
+
+# No funciona
+expr_str1= ecuacionesString[1]
+expr_sympy  = sp.sympify(expr_str1, locals = varsSymbol)
+open("expression.txt", "w") do file
+    write(file, expr_str1)
+end
+# Funciona sin expandirlo antes
+ecuacionesString1 = string.(determiningSystem)
+expr_str2= ecuacionesString1[1]
+expr_sympy  = sp.sympify(expr_str2, locals = varsSymbol)
+# _______________________________________________________________
+
 
 
 equation3apaper = main(CreateModel,t)
