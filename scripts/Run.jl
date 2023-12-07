@@ -63,7 +63,7 @@ coeffs = coefficients(determiningSystem)
 
 # _______________________________________________________________
 
-
+#==
 # _______________________________________________________________
 # Tu expresión en forma de cadena
 expr_str = "-X2t + Tt*X1*k21 - Tt*X2*k12 + X2x2*k12*x2 - X2x2*k21*x1 - Tx2*X1*k12*k21*x2 + Tx2*X1*(k21^2)*x1 + Tx2*X2*(k12^2)*x2 - Tx2*X2*k12*k21*x1"
@@ -86,12 +86,10 @@ ecuacionesString1 = string.(determiningSystem)
 expr_str2= ecuacionesString1[1]
 expr_sympy  = sp.sympify(expr_str2, locals = varsSymbol)
 # _______________________________________________________________
+==#
 
-
-
+#==
 equation3apaper = main(CreateModel,t)
-
-
 
 Numer, Denom = getNumerator(equation3apaper)
 
@@ -102,6 +100,7 @@ for eq in equation3apaper
     latex_expr = latexify(eq)
     render(latex_expr)
 end
+==#
 
 # ESTÁ MAL, LAS DERIVADAS DE LAS X MAYÚSCULAS SE CREAN SÓLO COMO X MAYÚSCULA Y NO COMO X1 MAYUSCULA.
 # T MAYÚSCULA NO ESTÁ DEFINIDO COMO UNA VARIABLE.
