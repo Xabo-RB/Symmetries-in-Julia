@@ -60,6 +60,11 @@ determiningSystem, determiningSystemExpanded = getDeterminingSystem(CreateModel,
 # _______________________________________________________________
 
 coeffs = coefficients(determiningSystem)
+for eq in coeffs
+    latex_expr = latexify(eq)
+    render(latex_expr)
+end
+
 
 # _______________________________________________________________
 
