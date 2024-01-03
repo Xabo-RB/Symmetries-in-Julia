@@ -53,7 +53,7 @@ ecuaciones = [
 ]
 
 # ________________________LLW1987__________________________
-#==
+
 @variables t
 
 states = ["x1", "x2", "x3"]
@@ -70,7 +70,7 @@ ecuaciones = [
     "-theta1*x3 - theta3*x3 + theta4*x1*u + theta2*x2*u",
     "x3"
 ]
-==#
+
 #_________________________________________________________________________#
 
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
