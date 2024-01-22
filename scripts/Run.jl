@@ -10,6 +10,7 @@ import SymPy as sp
 include(srcdir("functions.jl"))
 include(srcdir("getDeterminingSystem.jl"))
 include(srcdir("coefficients.jl"))
+include(srcdir("convertToMaple.jl"))
 
 struct userDefined
 
@@ -84,7 +85,9 @@ for eq in coeffs
     render(latex_expr)
 end
 
-print(coeffs)
+#print(coeffs)
+
+convertToMaple(coeffs)
 
 # _______________________________________________________________
 
