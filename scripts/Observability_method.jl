@@ -63,6 +63,7 @@ ecuaciones = [
 ]
 
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
+Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
 function getDeterminingSystemComplete(Model,t)
 
@@ -113,15 +114,12 @@ function getDeterminingSystemComplete(Model,t)
     #To pass variables to the Model Struct
     M = ModelSym(St,transSt,pr,inU,equations)
 
-
+    # ---------------------- CHAIN DER --------------------- #
     estado = M.states
     estM = M.TransStates 
 
     # Creates the differential operators
     Dt = Differential(t)
-    # --- Hacer esto para varias salidas de control posibles --- #
-    Du = Differential(inU)
-    Du = Differential(u)
 
     dotx = Num[]
 
@@ -133,14 +131,10 @@ function getDeterminingSystemComplete(Model,t)
         str = "@variables T"
         eval(Meta.parse(str))
 
-        # Ojo aquí en la u, si hubiera varias variables control habría que cambiarlo
-        dT_dt = Dt(T) + Dx(T) * Dt(estado[i]) + Du(T)*Dt(u)
-
-
         # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
-        dX_dt = Dt(estM[i]) + Dx(estM[i]) * Dt(estado[i]) + Du(estM[i])*Dt(u)
+        dX_dt = Dt(estM[i]) + Dx(estM[i]) * Dt(estado[i])
 
-        dotxEle = dX_dt/dT_dt
+        dotxEle = dX_dt
 
         push!(dotx, dotxEle)
 
@@ -167,13 +161,6 @@ function getDeterminingSystemComplete(Model,t)
             push!(Bs, derivada_str)
         end
 
-        # C's coefficients dT/dxi
-        Cs = []
-        for i in eachindex(nombresVarT)
-            derivada_str = "Differential($(nombresVar[i]))(T)"
-            push!(Cs, derivada_str)
-        end    
-
         # derivadas primera coefficients dxi/dt
         xdot1 = []
         for i in eachindex(nombresVarT)
@@ -181,21 +168,7 @@ function getDeterminingSystemComplete(Model,t)
             push!(xdot1, derivada_str)
         end 
 
-        derTemporal = "Differential(t)(T)"
-
-        # --- NEW --- #
-        # E's coefficients dXi/du
-        Es = []
-        for nombre in nombresVarT
-            derivada_str = "Differential(u)($(nombre))"
-            push!(Es, derivada_str)
-        end
-
-        derTemporalU = "Differential(u)(T)"
-
-        udot = "Differential(t)(u)"
-
-        return (As, Bs, Cs, xdot1, derTemporal, Es, derTemporalU, udot)
+        return (As, Bs, xdot1)
     end
 
     tuplaDerivadas = creatingDifferentialComplete(M)
@@ -214,35 +187,13 @@ function getDeterminingSystemComplete(Model,t)
         expr_simbolica = eval(expr_julia)
         push!(Bs, expr_simbolica)
     end
-    Cs = Num[]
-    Cs1 = tuplaDerivadas[3]
-    for deriv_str in Cs1
-        expr_julia = Meta.parse(deriv_str)
-        expr_simbolica = eval(expr_julia)
-        push!(Cs, expr_simbolica)
-    end
     xdot1_str = Num[]
-    xdot11 = tuplaDerivadas[4]
+    xdot11 = tuplaDerivadas[3]
     for deriv_str in xdot11
         expr_julia = Meta.parse(deriv_str)
         expr_simbolica = eval(expr_julia)
         push!(xdot1_str, expr_simbolica)
-    end  
-    derTemporal1 = Num[]
-    push!(derTemporal1, eval(Meta.parse(tuplaDerivadas[5])))
-
-    # ------ NEW -------- #
-    Es = Num[]
-    Es1 = tuplaDerivadas[6]
-    for deriv_str in Es1
-        expr_julia = Meta.parse(deriv_str)
-        expr_simbolica = eval(expr_julia)
-        push!(Es, expr_simbolica)
     end
-    derTemporalU = Num[]
-    push!(derTemporalU, eval(Meta.parse(tuplaDerivadas[7])))
-    udot = Num[]
-    push!(udot, eval(Meta.parse(tuplaDerivadas[8])))
 
     function creatingCoeffsForDiffsComplete(mod)
         nombresVar = map(string, mod.states)
@@ -268,16 +219,6 @@ function getDeterminingSystemComplete(Model,t)
             push!(B_dSds, varsym)
         end
 
-        #dT/d(states)
-        C_dTds = Num[]
-        for i in eachindex(nombresVarT)
-            # C's: dT/dsi : Tsi : T/statei/
-            str = "@variables T$(nombresVar[i])"
-            eval(Meta.parse(str))
-            varsym = eval(Meta.parse("T$(nombresVar[i])"))
-            push!(C_dTds, varsym)
-        end
-
         #d(states)/dt
         D_dsdt = Num[]
         for i in eachindex(nombresVarT)
@@ -288,27 +229,7 @@ function getDeterminingSystemComplete(Model,t)
             push!(D_dsdt, varsym)
         end
 
-        global Tt
-        @variables Tt
-
-        # ------ NEW -------- #
-        #d(States)/du
-        E_dSdt = Num[]
-        for names in nombresVarT
-            # E's: dXi/du : Xiu : /State/u
-            str = "@variables $(names)u"
-            eval(Meta.parse(str))
-            varsym = eval(Meta.parse("$(names)u"))
-            push!(E_dSdt, varsym)
-        end
-
-        global Tu
-        @variables Tu
-
-        global u_t
-        @variables u_t
-
-        return (A_dSdt, B_dSds, C_dTds, D_dsdt, Tt, E_dSdt, Tu, u_t)
+        return (A_dSdt, B_dSds, D_dsdt)
 
     end
 
@@ -316,7 +237,7 @@ function getDeterminingSystemComplete(Model,t)
 
     # For substituting I use 'coeficientes' and 'tuplaStringsNums'
     # Substitute the coefficients in the equation xdot.
-    tuplaStringsNums = (As, Bs, Cs, xdot1_str, derTemporal1, Es, derTemporalU, udot)
+    tuplaStringsNums = (As, Bs, xdot1_str)
     xdot_transformed = copy(xdot)
     for j in eachindex(xdot_transformed)
         for i in eachindex(tuplaStringsNums)
@@ -332,35 +253,33 @@ function getDeterminingSystemComplete(Model,t)
 
     # A/B = (...) -> A = (...)B -> (...)B - A
     # Firtsly, I need to get A and B from 'xdot_transformed'
-    num_str, den_str = getNumerator(xdot_transformed)
+    
+    #num_str, den_str = getNumerator(xdot_transformed)
+    num_str = string.(xdot_transformed)
+
     num_xdotT = Num[]
     den_xdotT = Num[]
     for i in eachindex(xdot_transformed)
         num = eval(Meta.parse(num_str[i]))
-        den = eval(Meta.parse(den_str[i]))
         push!(num_xdotT, num)
-        push!(den_xdotT, den)
     end
 
     #Substitute dxdt por la ecuación diferencial de dicho estado
     finalNum = Num[]
-    finalDen = Num[]
     for i in eachindex(num_xdotT)
         # Differential equations
-        substituyoEsto = coeficientes[4]
+        substituyoEsto = coeficientes[3]
         #dsi/dt
         porEsto = equations
         varsym = transformVariables(num_xdotT[i], substituyoEsto, porEsto) 
-        varsym1 = transformVariables(den_xdotT[i], substituyoEsto, porEsto) 
         push!(finalNum, varsym)
-        push!(finalDen, varsym1)
     end
 
     # Now: A/B = (...) -> A = (...)B -> (...)B - A
     finalSol = Num[]
     finalSol1 = Num[]
-    for i in eachindex(finalDen)
-        new = TrEquations[i]*finalDen[i] - finalNum[i]
+    for i in eachindex(finalNum)
+        new = TrEquations[i] - finalNum[i]
         new1 = expand(new)
         push!(finalSol, new)
         push!(finalSol1, new1)
@@ -379,5 +298,5 @@ end
 
 #print(coeffs)
 
-convertToMaple(coeffs)
+convertToMaple(coeffs, name)
 
