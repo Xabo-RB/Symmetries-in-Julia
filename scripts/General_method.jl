@@ -134,6 +134,7 @@ for (i, value) in enumerate(estado)
 
 end
 
+xdot = copy(dotx)
 
 function creatingDifferentialComplete(mod)
     # Vector with all de variable names, states and Mayusculas States as strings
@@ -185,7 +186,7 @@ function creatingDifferentialComplete(mod)
     return (As, Bs, Cs, xdot1, derTemporal, Es, derTemporalU, udot)
 end
 
-tuplaDerivadas = creatingDifferential(M)
+tuplaDerivadas = creatingDifferentialComplete(M)
 
 As = Num[]
 As1 = tuplaDerivadas[1]
@@ -301,18 +302,44 @@ end
 
 coeficientes = creatingCoeffsForDiffsComplete(M)
 
-    # For substituting I use 'coeficientes' and 'tuplaStringsNums'
-    # Substitute the coefficients in the equation xdot.
-    tuplaStringsNums = (As,Bs,Cs,xdot1_str,derTemporal1)
-    xdot_transformed = copy(xdot)
-    for j in eachindex(xdot_transformed)
-        for i in eachindex(tuplaStringsNums)
+# For substituting I use 'coeficientes' and 'tuplaStringsNums'
+# Substitute the coefficients in the equation xdot.
+tuplaStringsNums = (As, Bs, Cs, xdot1_str, derTemporal1, Es, derTemporalU, udot)
+xdot_transformed = copy(xdot)
+for j in eachindex(xdot_transformed)
+    for i in eachindex(tuplaStringsNums)
 
-            substituyoEsto = tuplaStringsNums[i]
-            porEsto = coeficientes[i]
+        substituyoEsto = tuplaStringsNums[i]
+        porEsto = coeficientes[i]
 
-            varsym = transformVariables(xdot_transformed[j], substituyoEsto, porEsto) 
-            xdot_transformed[j] = varsym
-        end
-        #push!(xdot_transformed, varsym)
+        varsym = transformVariables(xdot_transformed[j], substituyoEsto, porEsto) 
+        xdot_transformed[j] = varsym
     end
+    #push!(xdot_transformed, varsym)
+end
+
+# A/B = (...) -> A = (...)B -> (...)B - A
+# Firtsly, I need to get A and B from 'xdot_transformed'
+num_str, den_str = getNumerator(xdot_transformed)
+num_xdotT = Num[]
+den_xdotT = Num[]
+for i in eachindex(xdot_transformed)
+    num = eval(Meta.parse(num_str[i]))
+    den = eval(Meta.parse(den_str[i]))
+    push!(num_xdotT, num)
+    push!(den_xdotT, den)
+end
+
+#Substitute dxdt por la ecuación diferencial de dicho estado
+finalNum = Num[]
+finalDen = Num[]
+for i in eachindex(num_xdotT)
+    # Differential equations
+    substituyoEsto = coeficientes[4]
+    #dsi/dt
+    porEsto = equations
+    varsym = transformVariables(num_xdotT[i], substituyoEsto, porEsto) 
+    varsym1 = transformVariables(den_xdotT[i], substituyoEsto, porEsto) 
+    push!(finalNum, varsym)
+    push!(finalDen, varsym1)
+end
