@@ -33,47 +33,8 @@ end
 
 
 #_____________________________ User defined _____________________________#
-
-# ________________________Bilirubin2__________________________
-@variables t
-
-states = ["x1", "x2", "x3", "x4"]
-
-salidas = 1
-
-parameters = ["k01","k12","k21","k13","k31","k14","k41"]
-
-inputs = ["u"]
-
-ecuaciones = [
-    "- (-(k21+k31+k41+k01)*x1 + k12*x2 + k13*x3 + k14*x4 + u)",
-    "k21*x1 - k12*x2",
-    "k31*x1 - k13*x3",
-    "k41*x1 - k14*x4",
-    "x1"
-]
-
-# ________________________LLW1987__________________________
-
-@variables t
-
-states = ["x1", "x2", "x3"]
-
-salidas = 1
-
-parameters = ["theta1","theta2","theta3","theta4"]
-
-inputs = ["u"]
-
-ecuaciones = [
-    "-theta1*x1 + theta2*u",
-    "-theta3*x2 + theta4*u",
-    "-theta1*x3 - theta3*x3 + theta4*x1*u + theta2*x2*u",
-    "x3"
-]
-
-#_________________________________________________________________________#
-# ________________________ Example 4.3 SEIR __________________________
+# ________________________ Example 4.3 SEIR __________________________ NOT YET WORKING
+name = "Example_4_3_SEIR"
 
 @variables t
 
@@ -96,6 +57,50 @@ ecuaciones = [
 
 #_________________________________________________________________________#
 
+# ________________________Bilirubin2__________________________
+name = "Bilirubin2"
+
+@variables t
+
+states = ["x1", "x2", "x3", "x4"]
+
+salidas = 1
+
+parameters = ["k01","k12","k21","k13","k31","k14","k41"]
+
+inputs = ["u"]
+
+ecuaciones = [
+    "- (-(k21+k31+k41+k01)*x1 + k12*x2 + k13*x3 + k14*x4 + u)",
+    "k21*x1 - k12*x2",
+    "k31*x1 - k13*x3",
+    "k41*x1 - k14*x4",
+    "x1"
+]
+
+# ________________________LLW1987__________________________
+name = "LLW1987"
+
+@variables t
+
+states = ["x1", "x2", "x3"]
+
+salidas = 1
+
+parameters = ["theta1","theta2","theta3","theta4"]
+
+inputs = ["u"]
+
+ecuaciones = [
+    "-theta1*x1 + theta2*u",
+    "-theta3*x2 + theta4*u",
+    "-theta1*x3 - theta3*x3 + theta4*x1*u + theta2*x2*u",
+    "x3"
+]
+
+#_________________________________________________________________________#
+
+
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
 # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
@@ -109,7 +114,7 @@ end
 
 #print(coeffs)
 
-convertToMaple(coeffs)
+convertToMaple(coeffs, name)
 
 # _______________________________________________________________
 
