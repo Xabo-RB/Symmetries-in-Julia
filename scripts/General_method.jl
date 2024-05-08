@@ -135,7 +135,7 @@ for (i, value) in enumerate(estado)
 end
 
 
-function creatingDifferential(mod)
+function creatingDifferentialComplete(mod)
     # Vector with all de variable names, states and Mayusculas States as strings
     nombresVar = map(string, mod.states)
     nombresVarT = map(string, mod.TransStates)
@@ -170,6 +170,7 @@ function creatingDifferential(mod)
 
     derTemporal = "Differential(t)(T)"
 
+    # --- NEW --- #
     # E's coefficients dXi/du
     Es = []
     for nombre in nombresVarT
@@ -216,3 +217,102 @@ for deriv_str in xdot11
 end  
 derTemporal1 = Num[]
 push!(derTemporal1, eval(Meta.parse(tuplaDerivadas[5])))
+
+# ------ NEW -------- #
+Es = Num[]
+Es1 = tuplaDerivadas[6]
+for deriv_str in Es1
+    expr_julia = Meta.parse(deriv_str)
+    expr_simbolica = eval(expr_julia)
+    push!(Es, expr_simbolica)
+end
+derTemporalU = Num[]
+push!(derTemporalU, eval(Meta.parse(tuplaDerivadas[7])))
+udot = Num[]
+push!(udot, eval(Meta.parse(tuplaDerivadas[8])))
+
+function creatingCoeffsForDiffsComplete(mod)
+    nombresVar = map(string, mod.states)
+    nombresVarT = map(string, mod.TransStates)
+
+    #d(States)/dt
+    A_dSdt = Num[]
+    for names in nombresVarT
+        # A's: dXi/dt : Xit : /State/t
+        str = "@variables $(names)t"
+        eval(Meta.parse(str))
+        varsym = eval(Meta.parse("$(names)t"))
+        push!(A_dSdt, varsym)
+    end
+
+    #d(States)/d(states)
+    B_dSds = Num[]
+    for i in eachindex(nombresVarT)
+        # B's: dSi/dsi : Sisi : /Statei//statei/
+        str = "@variables $(nombresVarT[i]nombresVar[i])"
+        eval(Meta.parse(str))
+        varsym = eval(Meta.parse("$(nombresVarT[i]nombresVar[i])"))
+        push!(B_dSds, varsym)
+    end
+
+    #dT/d(states)
+    C_dTds = Num[]
+    for i in eachindex(nombresVarT)
+        # C's: dT/dsi : Tsi : T/statei/
+        str = "@variables T$(nombresVar[i])"
+        eval(Meta.parse(str))
+        varsym = eval(Meta.parse("T$(nombresVar[i])"))
+        push!(C_dTds, varsym)
+    end
+
+    #d(states)/dt
+    D_dsdt = Num[]
+    for i in eachindex(nombresVarT)
+        # D's: dsi/dt : sit : /statei/t
+        str = "@variables $(nombresVar[i])t"
+        eval(Meta.parse(str))
+        varsym = eval(Meta.parse("$(nombresVar[i])t"))
+        push!(D_dsdt, varsym)
+    end
+
+    global Tt
+    @variables Tt
+
+    # ------ NEW -------- #
+    #d(States)/du
+    E_dSdt = Num[]
+    for names in nombresVarT
+        # E's: dXi/du : Xiu : /State/u
+        str = "@variables $(names)u"
+        eval(Meta.parse(str))
+        varsym = eval(Meta.parse("$(names)u"))
+        push!(E_dSdt, varsym)
+    end
+
+    global Tu
+    @variables Tu
+
+    global u_t
+    @variables u_t
+
+    return (A_dSdt, B_dSds, C_dTds, D_dsdt, Tt, E_dSdt, Tu, u_t)
+
+end
+
+coeficientes = creatingCoeffsForDiffsComplete(M)
+
+    # For substituting I use 'coeficientes' and 'tuplaStringsNums'
+    # Substitute the coefficients in the equation xdot.
+    tuplaStringsNums = (As,Bs,Cs,xdot1_str,derTemporal1)
+    xdot_transformed = copy(xdot)
+    for j in eachindex(xdot_transformed)
+        for i in eachindex(tuplaStringsNums)
+
+            substituyoEsto = tuplaStringsNums[i]
+            porEsto = coeficientes[i]
+
+            varsym = transformVariables(xdot_transformed[j], substituyoEsto, porEsto) 
+            xdot_transformed[j] = varsym
+        end
+        #push!(xdot_transformed, varsym)
+    end
