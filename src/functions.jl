@@ -224,3 +224,16 @@ function getNumerator(eqn3a)
     return NUM, DEN
 
 end
+
+#__________________________________________________________________________________________
+#__________________________________________________________________________________________
+
+# --------------------- es_mayusculas ---------------------
+#Function to know if the whole name is uppercase. Return true if every letter is uppercase
+# -----------------------------------------------------------------------------------------------
+
+function es_mayusculas(str::String)
+    letras = filter(isletter, str)
+    son = all(isuppercase,letras)
+    return son
+end
