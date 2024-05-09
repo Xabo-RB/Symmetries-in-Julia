@@ -65,7 +65,7 @@ ecuaciones = [
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
-function getDeterminingSystemComplete(Model,t)
+#function getDeterminingSystemComplete(Model,t)
 
     #   - States
     St = Num[]
@@ -111,6 +111,19 @@ function getDeterminingSystemComplete(Model,t)
         transf_eqn = transformVariables(equations[i], St, transSt) 
         push!(TrEquations, transf_eqn)
     end
+
+    equationsY = Num[]
+    TrEquationsY = Num[]
+    for i in eachindex(Model.ecuaciones)[end-Model.nSalidas:end]
+        str = Meta.parse(Model.ecuaciones[i])
+        eqn1 = eval(str)
+        push!(equationsY, eqn1)
+
+        transf_eqn = transformVariables(equations[i], St, transSt) 
+        push!(TrEquationsY, transf_eqn)
+    end
+
+
     #To pass variables to the Model Struct
     M = ModelSym(St,transSt,pr,inU,equations)
 
@@ -285,10 +298,10 @@ function getDeterminingSystemComplete(Model,t)
         push!(finalSol1, new1)
     end
 
-    return finalSol, finalSol1
-end
+    #return finalSol, finalSol1
+#end
 
-determiningSystem, determiningSystemExpanded = getDeterminingSystemComplete(CreateModel,t)
+#determiningSystem, determiningSystemExpanded = getDeterminingSystemComplete(CreateModel,t)
 
 coeffs = coefficients(determiningSystem)
 for eq in coeffs
