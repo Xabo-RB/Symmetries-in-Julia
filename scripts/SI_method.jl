@@ -34,6 +34,7 @@ struct ModelSym
     states::Vector{Num}
     TransStates::Vector{Num}
     params::Vector{Num}
+    TransParams::Vector{Num}
     inputs::Vector{Num}
     ode::Vector{Num}
     output::Vector{Num}
@@ -128,7 +129,8 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         eqn1 = eval(str)
         push!(equations, eqn1)
 
-        transf_eqn = transformVariables(equations[i], St, transSt) 
+        transf_eqn1 = transformVariables(equations[i], St, transSt) 
+        transf_eqn = transformVariables(transf_eqn1, pr, prTrans) 
         push!(TrEquations, transf_eqn)
     end
 
@@ -141,16 +143,17 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         eqn1 = eval(str)
         push!(equationsY, eqn1)
 
-        transf_eqn = transformVariables(equationsY[j], St, transSt) 
+        transf_eqn1 = transformVariables(equationsY[j], St, transSt) 
+        transf_eqn = transformVariables(transf_eqn1, pr, prTrans) 
         push!(TrEquationsY, transf_eqn)
         j += 1
     end
 
 
     #To pass variables to the Model Struct
-    M = ModelSym(St,transSt,pr,inU,equations,equationsY)
+    M = ModelSym(St,transSt,pr,prTrans,inU,equations,equationsY)
 
-    # ---------------------- CHAIN DER --------------------- #
+    # ---------------------- CHAIN DER STATES --------------------- #
     estado = M.states
     estM = M.TransStates 
 
@@ -177,6 +180,40 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
     end
 
     xdot = copy(dotx)
+
+    ################################# HASTA AQUÍ ##########################################
+    # ---------------------- CHAIN DER PARAMETERS --------------------- #
+    pars = M.states
+    parsT = M.TransStates 
+
+    dotP = Num[]
+    
+    for (i, value) in enumerate(pars)
+
+        # Define the variables T(t,x1(t)) as Tx1, Tx2, ...
+        str = "@variables T"
+        eval(Meta.parse(str))
+
+        for (j, value1) in enumerate(estado)
+
+            # Partial erivative with respect a estado[i]
+            Dx = Differential(value)
+            derivadaConRespectoEstado = Dx(parsT[i])
+
+        end
+
+        # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
+        dX_dt = Dt(parsT[i]) + Dx(parsT[i]) * Dt(estado[i])
+
+        dotxEle = dX_dt
+
+        push!(dotx, dotxEle)
+
+    end
+
+
+
+
 
     function creatingDifferentialComplete(mod)
         # Vector with all de variable names, states and Mayusculas States as strings
