@@ -1,4 +1,0 @@
-X1*k01 + X1*k21 + X1*k31 + X1*k41 - X1t - X1x1*k01*x1 + X1x1*k12*x2 + X1x1*k13*x3 + X1x1*k14*x4 - X1x1*k21*x1 - X1x1*k31*x1 - X1x1*k41*x1 - X2*k12 - X3*k13 - X4*k14 + u*(X1x1 - 1)
-X1*k21 - X2*k12 - X2t + X2x2*k12*x2 - X2x2*k21*x1
-X1*k31 - X3*k13 - X3t + X3x3*k13*x3 - X3x3*k31*x1
-X1*k41 - X4*k14 - X4t + X4x4*k14*x4 - X4x4*k41*x1

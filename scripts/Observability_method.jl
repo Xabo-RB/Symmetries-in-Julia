@@ -36,6 +36,7 @@ struct ModelSym
     params::Vector{Num}
     inputs::Vector{Num}
     ode::Vector{Num}
+    output::Vector{Num}
 
 end
 
@@ -62,10 +63,32 @@ ecuaciones = [
     "x1"
 ]
 
+# ________________________LLW1987__________________________
+name = "LLW1987"
+
+@variables t
+
+states = ["x1", "x2", "x3"]
+
+salidas = 1
+
+parameters = ["theta1","theta2","theta3","theta4"]
+
+inputs = ["u"]
+
+ecuaciones = [
+    "-theta1*x1 + theta2*u",
+    "-theta3*x2 + theta4*u",
+    "-theta1*x3 - theta3*x3 + theta4*x1*u + theta2*x2*u",
+    "x3"
+]
+
+#_________________________________________________________________________#
+
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
-#function getDeterminingSystemComplete(Model,t)
+function getDeterminingSystemComplete(Model,t)
 
     #   - States
     St = Num[]
@@ -114,18 +137,21 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
     equationsY = Num[]
     TrEquationsY = Num[]
-    for i in eachindex(Model.ecuaciones)[end-Model.nSalidas:end]
+    #for i in eachindex(Model.ecuaciones)[end-Model.nSalidas+1:end]
+    j = 1
+    for i in (length(Model.ecuaciones) - Model.nSalidas + 1):length(Model.ecuaciones)
         str = Meta.parse(Model.ecuaciones[i])
         eqn1 = eval(str)
         push!(equationsY, eqn1)
 
-        transf_eqn = transformVariables(equations[i], St, transSt) 
+        transf_eqn = transformVariables(equationsY[j], St, transSt) 
         push!(TrEquationsY, transf_eqn)
+        j += 1
     end
 
 
     #To pass variables to the Model Struct
-    M = ModelSym(St,transSt,pr,inU,equations)
+    M = ModelSym(St,transSt,pr,inU,equations,equationsY)
 
     # ---------------------- CHAIN DER --------------------- #
     estado = M.states
@@ -208,7 +234,7 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         push!(xdot1_str, expr_simbolica)
     end
 
-    function creatingCoeffsForDiffsComplete(mod)
+    function creatingCoeffsForDiffsObs(mod)
         nombresVar = map(string, mod.states)
         nombresVarT = map(string, mod.TransStates)
 
@@ -246,7 +272,7 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
     end
 
-    coeficientes = creatingCoeffsForDiffsComplete(M)
+    coeficientes = creatingCoeffsForDiffsObs(M)
 
     # For substituting I use 'coeficientes' and 'tuplaStringsNums'
     # Substitute the coefficients in the equation xdot.
@@ -271,7 +297,6 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
     num_str = string.(xdot_transformed)
 
     num_xdotT = Num[]
-    den_xdotT = Num[]
     for i in eachindex(xdot_transformed)
         num = eval(Meta.parse(num_str[i]))
         push!(num_xdotT, num)
@@ -298,10 +323,17 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         push!(finalSol1, new1)
     end
 
-    #return finalSol, finalSol1
-#end
+    for i in eachindex(TrEquationsY)
+        solY = equationsY[i] - TrEquationsY[i]
+        solY1 = expand(solY)
+        push!(finalSol, solY)
+        push!(finalSol1, solY1)
+    end
 
-#determiningSystem, determiningSystemExpanded = getDeterminingSystemComplete(CreateModel,t)
+    return finalSol, finalSol1
+end
+
+determiningSystem, determiningSystemExpanded = getDeterminingSystemComplete(CreateModel,t)
 
 coeffs = coefficients(determiningSystem)
 for eq in coeffs
