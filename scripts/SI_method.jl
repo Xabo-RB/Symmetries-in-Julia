@@ -183,37 +183,36 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
     ################################# HASTA AQUÍ ##########################################
     # ---------------------- CHAIN DER PARAMETERS --------------------- #
-    pars = M.states
-    parsT = M.TransStates 
+    pars = M.params
+    parsT = M.TransParams 
 
-    dotP = Num[]
+    Pdot = Num[]
     
     for (i, value) in enumerate(pars)
+        todasLasDers = Num[]
+        for (j, value1) in enumerate(estado)
+            # Almaceno en este vector las derivadas parciales de un parámetro con 
+            # respecto a todos los estados
+            # Partial derivative with respect a estado[i]
+            Dx = Differential(value1)
+            derivadaConRespectoEstado = Dx(parsT[i])*Dt(estado[j])
+            push!(todasLasDers,derivadaConRespectoEstado)
+        end
 
         # Define the variables T(t,x1(t)) as Tx1, Tx2, ...
         str = "@variables T"
         eval(Meta.parse(str))
 
-        for (j, value1) in enumerate(estado)
-
-            # Partial erivative with respect a estado[i]
-            Dx = Differential(value)
-            derivadaConRespectoEstado = Dx(parsT[i])
-
-        end
-
         # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
-        dX_dt = Dt(parsT[i]) + Dx(parsT[i]) * Dt(estado[i])
+        dTheta_dt = Dt(parsT[i]) + sum(todasLasDers)
+        
+        dotxEle = dTheta_dt
 
-        dotxEle = dX_dt
-
-        push!(dotx, dotxEle)
+        push!(Pdot, dotxEle)
 
     end
 
-
-
-
+    dotP = copy(Pdot)
 
     function creatingDifferentialComplete(mod)
         # Vector with all de variable names, states and Mayusculas States as strings
