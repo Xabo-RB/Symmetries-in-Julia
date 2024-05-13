@@ -6,7 +6,7 @@
 # of section 3. I.e. transformations in chain derivatives (13b).
 # -----------------------------------------------------------------------------------------------
 
-function Observability(CreateModel)
+function Observability(CreateModel, name)
     
 
     #CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
@@ -75,7 +75,7 @@ function Observability(CreateModel)
 
 
         #To pass variables to the Model Struct
-        M = ModelSym(St,transSt,pr,inU,equations,equationsY)
+        M = ModelSymObs(St,transSt,pr,inU,equations,equationsY)
 
         # ---------------------- CHAIN DER --------------------- #
         estado = M.states
