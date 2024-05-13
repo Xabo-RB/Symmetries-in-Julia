@@ -181,7 +181,6 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
     xdot = copy(dotx)
 
-    ################################# HASTA AQUÍ ##########################################
     # ---------------------- CHAIN DER PARAMETERS --------------------- #
     pars = M.params
     parsT = M.TransParams 
@@ -243,7 +242,31 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         return (As, Bs, xdot1)
     end
 
+    function creatingDifferentialComplete2(mod)
+        # Vector with all de variable names, states and Mayusculas States as strings
+        nombresVarS = map(string, mod.states)
+        nombresVarTP = map(string, mod.TransParams)
+
+        # Y's coefficients dKi/dt
+        Ys = []
+        for nombre in nombresVarTP
+            derivada_str = "Differential(t)($(nombre))"
+            push!(Ys, derivada_str)
+        end
+
+        # Z's coefficients dKi/dxi
+        Zs = []
+        for i in eachindex(nombresVarTP)
+            for j in eachindex(nombresVarS)
+                derivada_str = "Differential($(nombresVarS[j]))($(nombresVarTP[i]))"
+                push!(Zs, derivada_str)
+            end
+        end
+        return (Ys, Zs)
+    end
+
     tuplaDerivadas = creatingDifferentialComplete(M)
+    tuplaDerivadas2 = creatingDifferentialComplete2(M)
 
     As = Num[]
     As1 = tuplaDerivadas[1]
@@ -265,6 +288,20 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         expr_julia = Meta.parse(deriv_str)
         expr_simbolica = eval(expr_julia)
         push!(xdot1_str, expr_simbolica)
+    end
+    Ys = Num[]
+    Ys1 = tuplaDerivadas2[1]
+    for deriv_str in Ys1
+        expr_julia = Meta.parse(deriv_str)
+        expr_simbolica = eval(expr_julia)
+        push!(Ys, expr_simbolica)
+    end
+    Zs = Num[]
+    Zs1 = tuplaDerivadas2[2]
+    for deriv_str in Zs1
+        expr_julia = Meta.parse(deriv_str)
+        expr_simbolica = eval(expr_julia)
+        push!(Zs, expr_simbolica)
     end
 
     function creatingCoeffsForDiffsObs(mod)
@@ -304,8 +341,41 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         return (A_dSdt, B_dSds, D_dsdt)
 
     end
+    ################################# HASTA AQUÍ ##########################################
+    function creatingCoeffsForDiffsParams(mod)
+        nombresVarS = map(string, mod.states)
+        nombresVarTP = map(string, mod.TransParams)
 
-    coeficientes = creatingCoeffsForDiffsObs(M)
+        #d(Params)/dt
+        Y_dKdt = Num[]
+        for names in nombresVarTP
+            # Y's: dKi/dt : Kit : /Parameter/t
+            str = "@variables $(names)t"
+            eval(Meta.parse(str))
+            varsym = eval(Meta.parse("$(names)t"))
+            push!(Y_dKdt, varsym)
+        end
+
+        #d(Params)/d(states)
+        Z_dKds = Num[]
+        for i in eachindex(nombresVarTP)
+            # Z's: dKi/dsj : Kisj : /Paramsi//statej/
+            for j in eachindex(nombresVarS)
+                str = "@variables $(nombresVarTP[i]nombresVarS[j])"
+                eval(Meta.parse(str))
+                varsym = eval(Meta.parse("$(nombresVarTP[i]nombresVarS[j])"))
+                push!(Z_dKds, varsym)
+            end
+        end
+
+        return (Y_dKdt, Z_dKds)
+
+    end
+
+    coeficientes1 = creatingCoeffsForDiffsObs(M)
+    coeficientes2 = creatingCoeffsForDiffsParams(M)
+    #coeficientes = (coeficientes1...,coeficientes2...)
+    coeficientes = (coeficientes1,coeficientes2)
 
     # For substituting I use 'coeficientes' and 'tuplaStringsNums'
     # Substitute the coefficients in the equation xdot.
