@@ -379,7 +379,7 @@ function getDeterminingSystemComplete(Model,t)
 
     # For substituting I use 'coeficientes' and 'tuplaStringsNums'
     # Substitute the coefficients in the equation xdot.
-    ################################# HASTA AQUÍ ##########################################
+
     tuplaStringsNums = (As, Bs, xdot1_str, Ys, Zs)
     xdot_transformed = copy(xdot)
     Pdot_transformed = copy(dotP)
