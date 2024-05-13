@@ -64,6 +64,28 @@ ecuaciones = [
     "x1"
 ]
 
+# ________________________LLW1987__________________________
+name = "LLW1987"
+
+@variables t
+
+states = ["x1", "x2", "x3"]
+
+salidas = 1
+
+parameters = ["th1","th2","th3","th4"]
+
+inputs = ["u"]
+
+ecuaciones = [
+    "-th1*x1 + th2*u",
+    "-th3*x2 + th4*u",
+    "-th1*x3 - th3*x3 + th4*x1*u + th2*x2*u",
+    "x3"
+]
+
+#_________________________________________________________________________#
+
 
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
