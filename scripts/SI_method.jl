@@ -90,7 +90,7 @@ ecuaciones = [
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
-function getDeterminingSystemComplete(Model,t)
+function getDeterminingSystemSI(Model,t)
 
     #   - States
     St = Num[]
@@ -492,7 +492,7 @@ function getDeterminingSystemComplete(Model,t)
     return finalSol, finalSol1
 end
 
-determiningSystem, determiningSystemExpanded = getDeterminingSystemComplete(CreateModel,t)
+determiningSystem, determiningSystemExpanded = getDeterminingSystemSI(CreateModel,t)
 
 coeffs = coefficients(determiningSystem)
 for eq in coeffs

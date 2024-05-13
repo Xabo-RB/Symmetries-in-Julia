@@ -100,22 +100,27 @@ ecuaciones = [
 
 #_________________________________________________________________________#
 
+# Which type of transformation do you want to use?
 
+option = 1
+
+#_________________________________________________________________________#
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
+if option == 1
+    # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
+    determiningSystem, determiningSystemExpanded = getDeterminingSystem(CreateModel,t)
+    coeffs = coefficients(determiningSystem)
+    for eq in coeffs
+        latex_expr = latexify(eq)
+        render(latex_expr)
+    end
+    #print(coeffs)
+    convertToMaple(coeffs, name)
+elseif option == 2
+    
+    Observability()
 
-# Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
-determiningSystem, determiningSystemExpanded = getDeterminingSystem(CreateModel,t)
-
-coeffs = coefficients(determiningSystem)
-for eq in coeffs
-    latex_expr = latexify(eq)
-    render(latex_expr)
 end
-
-#print(coeffs)
-
-convertToMaple(coeffs, name)
-
 # _______________________________________________________________
 
 #==
