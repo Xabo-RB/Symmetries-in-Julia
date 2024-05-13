@@ -68,7 +68,7 @@ ecuaciones = [
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
 Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
-#function getDeterminingSystemComplete(Model,t)
+function getDeterminingSystemComplete(Model,t)
 
     #   - States
     St = Num[]
@@ -341,7 +341,7 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         return (A_dSdt, B_dSds, D_dsdt)
 
     end
-    ################################# HASTA AQUÍ ##########################################
+
     function creatingCoeffsForDiffsParams(mod)
         nombresVarS = map(string, mod.states)
         nombresVarTP = map(string, mod.TransParams)
@@ -374,13 +374,15 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
 
     coeficientes1 = creatingCoeffsForDiffsObs(M)
     coeficientes2 = creatingCoeffsForDiffsParams(M)
-    #coeficientes = (coeficientes1...,coeficientes2...)
-    coeficientes = (coeficientes1,coeficientes2)
+    coeficientes = (coeficientes1...,coeficientes2...)
+    #coeficientes = (coeficientes1,coeficientes2)
 
     # For substituting I use 'coeficientes' and 'tuplaStringsNums'
     # Substitute the coefficients in the equation xdot.
-    tuplaStringsNums = (As, Bs, xdot1_str)
+    ################################# HASTA AQUÍ ##########################################
+    tuplaStringsNums = (As, Bs, xdot1_str, Ys, Zs)
     xdot_transformed = copy(xdot)
+    Pdot_transformed = copy(dotP)
     for j in eachindex(xdot_transformed)
         for i in eachindex(tuplaStringsNums)
 
@@ -388,39 +390,68 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
             porEsto = coeficientes[i]
 
             varsym = transformVariables(xdot_transformed[j], substituyoEsto, porEsto) 
+            
             xdot_transformed[j] = varsym
         end
         #push!(xdot_transformed, varsym)
     end
+    for j in eachindex(Pdot_transformed)
+        for i in eachindex(tuplaStringsNums)
+
+            substituyoEsto = tuplaStringsNums[i]
+            porEsto = coeficientes[i]
+
+            varsymP = transformVariables(Pdot_transformed[j], substituyoEsto, porEsto) 
+
+            Pdot_transformed[j] = varsymP
+        end
+    end
+
 
     # A/B = (...) -> A = (...)B -> (...)B - A
     # Firtsly, I need to get A and B from 'xdot_transformed'
     
     #num_str, den_str = getNumerator(xdot_transformed)
     num_str = string.(xdot_transformed)
+    num_strP = string.(Pdot_transformed)
 
     num_xdotT = Num[]
     for i in eachindex(xdot_transformed)
         num = eval(Meta.parse(num_str[i]))
         push!(num_xdotT, num)
     end
+    num_PdotT = Num[]
+    for i in eachindex(Pdot_transformed)
+        num = eval(Meta.parse(num_strP[i]))
+        push!(num_PdotT, num)
+    end
+
 
     #Substitute dxdt por la ecuación diferencial de dicho estado
-    finalNum = Num[]
+    finalNum1 = Num[]
+    finalNum2 = Num[]
     for i in eachindex(num_xdotT)
         # Differential equations
         substituyoEsto = coeficientes[3]
         #dsi/dt
         porEsto = equations
         varsym = transformVariables(num_xdotT[i], substituyoEsto, porEsto) 
-        push!(finalNum, varsym)
+        push!(finalNum1, varsym)
+    end
+    for i in eachindex(num_PdotT)
+        # Differential equations
+        substituyoEsto = coeficientes[3]
+        #dsi/dt
+        porEsto = equations
+        varsym = transformVariables(num_PdotT[i], substituyoEsto, porEsto) 
+        push!(finalNum2, varsym)
     end
 
     # Now: A/B = (...) -> A = (...)B -> (...)B - A
     finalSol = Num[]
     finalSol1 = Num[]
-    for i in eachindex(finalNum)
-        new = TrEquations[i] - finalNum[i]
+    for i in eachindex(finalNum1)
+        new = TrEquations[i] - finalNum1[i]
         new1 = expand(new)
         push!(finalSol, new)
         push!(finalSol1, new1)
@@ -433,10 +464,13 @@ Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
         push!(finalSol1, solY1)
     end
 
-#    return finalSol, finalSol1
-#end
+    finalSol = vcat(finalSol,finalNum2)
+    finalSol1 = vcat(finalSol1,finalNum2)
 
-#determiningSystem, determiningSystemExpanded = getDeterminingSystemComplete(CreateModel,t)
+    return finalSol, finalSol1
+end
+
+determiningSystem, determiningSystemExpanded = getDeterminingSystemComplete(CreateModel,t)
 
 coeffs = coefficients(determiningSystem)
 for eq in coeffs
