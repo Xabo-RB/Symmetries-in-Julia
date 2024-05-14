@@ -11,9 +11,9 @@ include(srcdir("functions.jl"))
 include(srcdir("getDeterminingSystem.jl"))
 include(srcdir("coefficients.jl"))
 include(srcdir("convertToMaple.jl"))
-include("Observability.jl")
-include("GeneralTransformation.jl")
-include("StructuralIdentifiability.jl")
+include(srcdir("Observability.jl"))
+include(srcdir("GeneralTransformation.jl"))
+include(srcdir("StructuralIdentifiability.jl"))
 
 
 
