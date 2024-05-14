@@ -32,3 +32,4 @@ which auto-activate the project and enable local path handling from DrWatson.
 > Run the code
 
 To start the code the "Run.jl" file must be executed, in VSCode this can be done with "Julia: Execute active File in REPL" with the arrow in the right upper corner.
+

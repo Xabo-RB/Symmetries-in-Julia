@@ -1,0 +1,8 @@
+-TH1*X1 - X1t + X1x1*th1*x1 + u*(TH2 - X1x1*th2)
+-TH3*X2 - X2t + X2x2*th3*x2 + u*(TH4 - X2x2*th4)
+-TH1*X3 - TH3*X3 - X3t + X3x3*th1*x3 + X3x3*th3*x3 + u*(TH2*X2 + TH4*X1 - X3x3*th2*x2 - X3x3*th4*x1)
+-X3 + x3
+TH1t - TH1x1*th1*x1 - TH1x2*th3*x2 - TH1x3*th1*x3 - TH1x3*th3*x3 + u*(TH1x1*th2 + TH1x2*th4 + TH1x3*th2*x2 + TH1x3*th4*x1)
+TH2t - TH2x1*th1*x1 - TH2x2*th3*x2 - TH2x3*th1*x3 - TH2x3*th3*x3 + u*(TH2x1*th2 + TH2x2*th4 + TH2x3*th2*x2 + TH2x3*th4*x1)
+TH3t - TH3x1*th1*x1 - TH3x2*th3*x2 - TH3x3*th1*x3 - TH3x3*th3*x3 + u*(TH3x1*th2 + TH3x2*th4 + TH3x3*th2*x2 + TH3x3*th4*x1)
+TH4t - TH4x1*th1*x1 - TH4x2*th3*x2 - TH4x3*th1*x3 - TH4x3*th3*x3 + u*(TH4x1*th2 + TH4x2*th4 + TH4x3*th2*x2 + TH4x3*th4*x1)

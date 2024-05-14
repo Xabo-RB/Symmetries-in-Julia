@@ -1,0 +1,12 @@
+K01*X1 - K12*X2 - K13*X3 - K14*X4 + K21*X1 + K31*X1 + K41*X1 - X1t - X1x1*k01*x1 + X1x1*k12*x2 + X1x1*k13*x3 + X1x1*k14*x4 - X1x1*k21*x1 - X1x1*k31*x1 - X1x1*k41*x1 + u*(X1x1 - 1)
+-K12*X2 + K21*X1 - X2t + X2x2*k12*x2 - X2x2*k21*x1
+-K13*X3 + K31*X1 - X3t + X3x3*k13*x3 - X3x3*k31*x1
+-K14*X4 + K41*X1 - X4t + X4x4*k14*x4 - X4x4*k41*x1
+-X1 + x1
+K01t + K01x1*k01*x1 - K01x1*k12*x2 - K01x1*k13*x3 - K01x1*k14*x4 + K01x1*k21*x1 + K01x1*k31*x1 + K01x1*k41*x1 - K01x1*u - K01x2*k12*x2 + K01x2*k21*x1 - K01x3*k13*x3 + K01x3*k31*x1 - K01x4*k14*x4 + K01x4*k41*x1
+K12t + K12x1*k01*x1 - K12x1*k12*x2 - K12x1*k13*x3 - K12x1*k14*x4 + K12x1*k21*x1 + K12x1*k31*x1 + K12x1*k41*x1 - K12x1*u - K12x2*k12*x2 + K12x2*k21*x1 - K12x3*k13*x3 + K12x3*k31*x1 - K12x4*k14*x4 + K12x4*k41*x1
+K21t + K21x1*k01*x1 - K21x1*k12*x2 - K21x1*k13*x3 - K21x1*k14*x4 + K21x1*k21*x1 + K21x1*k31*x1 + K21x1*k41*x1 - K21x1*u - K21x2*k12*x2 + K21x2*k21*x1 - K21x3*k13*x3 + K21x3*k31*x1 - K21x4*k14*x4 + K21x4*k41*x1
+K13t + K13x1*k01*x1 - K13x1*k12*x2 - K13x1*k13*x3 - K13x1*k14*x4 + K13x1*k21*x1 + K13x1*k31*x1 + K13x1*k41*x1 - K13x1*u - K13x2*k12*x2 + K13x2*k21*x1 - K13x3*k13*x3 + K13x3*k31*x1 - K13x4*k14*x4 + K13x4*k41*x1
+K31t + K31x1*k01*x1 - K31x1*k12*x2 - K31x1*k13*x3 - K31x1*k14*x4 + K31x1*k21*x1 + K31x1*k31*x1 + K31x1*k41*x1 - K31x1*u - K31x2*k12*x2 + K31x2*k21*x1 - K31x3*k13*x3 + K31x3*k31*x1 - K31x4*k14*x4 + K31x4*k41*x1
+K14t + K14x1*k01*x1 - K14x1*k12*x2 - K14x1*k13*x3 - K14x1*k14*x4 + K14x1*k21*x1 + K14x1*k31*x1 + K14x1*k41*x1 - K14x1*u - K14x2*k12*x2 + K14x2*k21*x1 - K14x3*k13*x3 + K14x3*k31*x1 - K14x4*k14*x4 + K14x4*k41*x1
+K41t + K41x1*k01*x1 - K41x1*k12*x2 - K41x1*k13*x3 - K41x1*k14*x4 + K41x1*k21*x1 + K41x1*k31*x1 + K41x1*k41*x1 - K41x1*u - K41x2*k12*x2 + K41x2*k21*x1 - K41x3*k13*x3 + K41x3*k31*x1 - K41x4*k14*x4 + K41x4*k41*x1
