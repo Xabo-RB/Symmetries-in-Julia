@@ -73,11 +73,11 @@ if option == 1
     end
     #print(coeffs)
     convertToMaple(coeffs, name)
-elseif option == 2
+elseif option == 3
     
     Observability(CreateModel, name)
 
-elseif option == 3
+elseif option == 2
 
     GeneralTransformation(CreateModel, name)
 

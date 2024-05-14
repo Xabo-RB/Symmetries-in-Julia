@@ -33,3 +33,11 @@ which auto-activate the project and enable local path handling from DrWatson.
 
 To start the code the "Run.jl" file must be executed, in VSCode this can be done with "Julia: Execute active File in REPL" with the arrow in the right upper corner.
 
+The model to be analyzed must be described in the script "Model.jl", as it appears now in the example. There are other examples in Models folder. 
+
+The user can select the algorithm to be applied in the run file, modifying option variable. 
+
+1. Reid transformation (option = 1)
+2. General transformations (option = 2)
+3. Transformations for Observability (option = 3)
+4. Transformations for Structural identifiability (option = 4)
