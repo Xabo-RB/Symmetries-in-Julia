@@ -12,6 +12,9 @@ include(srcdir("getDeterminingSystem.jl"))
 include(srcdir("coefficients.jl"))
 include(srcdir("convertToMaple.jl"))
 include("Observability.jl")
+include("GeneralTransformation.jl")
+include("StructuralIdentifiability.jl")
+
 
 
 struct userDefined
@@ -29,7 +32,7 @@ struct ModelSym
     params::Vector{Num}
     inputs::Vector{Num}
     ode::Vector{Num}
-    output::Vector{Num}
+
 end
 struct ModelSymObs
 
@@ -41,6 +44,18 @@ struct ModelSymObs
     output::Vector{Num}
 
 end
+struct ModelSymSI
+
+    states::Vector{Num}
+    TransStates::Vector{Num}
+    params::Vector{Num}
+    TransParams::Vector{Num}
+    inputs::Vector{Num}
+    ode::Vector{Num}
+    output::Vector{Num}
+
+end
+
 
 
 
@@ -114,12 +129,11 @@ ecuaciones = [
 
 # Which type of transformation do you want to use?
 
-option = 2
+option = 1
 
 #_________________________________________________________________________#
 CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
-#I1 = Num[]; I2 = Num[]; I3 = Num[]; I4 = Num[]; I5 = Num[]; I6 = Num[]
-#inicializar = ModelSym(I1,I2,I3,I4,I5,I6)
+
 if option == 1
     # Call to the Main function of the algorithm. Right now, its return the equation 3a of the overleaf paper
     determiningSystem, determiningSystemExpanded = getDeterminingSystem(CreateModel,t)
@@ -131,9 +145,16 @@ if option == 1
     #print(coeffs)
     convertToMaple(coeffs, name)
 elseif option == 2
-
     
     Observability(CreateModel, name)
+
+elseif option == 3
+
+    GeneralTransformation(CreateModel, name)
+
+elseif option == 4
+
+    StructuralIdentifiability(CreateModel, name)
 
 end
 # _______________________________________________________________
