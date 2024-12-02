@@ -16,7 +16,14 @@ import SymPy as sp
 
 # Which type of transformation do you want to use?
 
-option = 1
+#==
+1. Reid transformation (option = 1)
+2. General transformations (option = 2)
+3. Transformations for Observability (option = 3)
+4. Transformations for Structural identifiability (option = 4)
+==#
+
+option = 4
 
 
 
@@ -73,13 +80,14 @@ if option == 1
     end
     #print(coeffs)
     convertToMaple(coeffs, name)
-elseif option == 3
-    
-    Observability(CreateModel, name)
 
 elseif option == 2
 
     GeneralTransformation(CreateModel, name)
+
+elseif option == 3
+    
+    Observability(CreateModel, name)
 
 elseif option == 4
 
