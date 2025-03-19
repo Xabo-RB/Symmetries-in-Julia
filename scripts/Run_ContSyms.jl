@@ -18,9 +18,11 @@ stringEcuaciones = CreateModel.ecuaciones;
 
 states = ["x1", "x2", "x3", "x4"]
 
+vars = [ Symbolics.Variable(Symbol(s)) for s in stringEstados ]
+
 # Diccionario con clave = nombre (string), valor = la variable simbólica
 States_dict = Dict{String, Symbolics.Var}()
-for s in states
+for s in stringEstados
     States_dict[s] = Symbolics.Var(Symbol(s))
 end
 
