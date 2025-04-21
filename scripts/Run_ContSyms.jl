@@ -45,6 +45,7 @@ States_dict   = Dict(stringEstados   .=> state_syms)
 Params_dict   = Dict(stringParametros.=> param_syms)
 Inputs_dict   = Dict(stringEntradas  .=> input_syms)
 
+
 # 4. ----------  MAPA SIMBÓLICO PARA SUBSTITUIR O EVALUAR ---------------------
 #    clave = :x1, valor = x1   (ambos son Symbol / Num según convenga)
 symmap = Dict{Symbol, Num}()
@@ -55,13 +56,34 @@ for D in (States_dict, Params_dict, Inputs_dict)   # recorremos cada diccionario
     end
 end
 
-# 5. ---------  OPCIÓN “CON eval” (más corta, pero global) -------------------
-for (name, sym) in [States_dict; Params_dict; Inputs_dict]
-    @eval const $(Symbol(name)) = $sym    # expone x1, k01, u, ...
+# 3.‑‑‑‑‑ sustitución + evaluación del árbol ya sustituido
+function str2num(str, smap)
+    ex  = Meta.parse(str)                 # Expr con :x1, :k21, …
+    ex2 = Symbolics.substitute(ex, smap)  # Expr con Num en vez de Symbol
+    return eval(ex2)                      # Num
 end
-Ecuaciones_symb = [eval(Meta.parse(eq)) for eq in stringEcuaciones]
+
+ecuaciones_symb = [str2num(eq, symmap) for eq in stringEcuaciones]
+
+@show typeof(ecuaciones_symb[1])  # ⇒ Num
 
 #==
+# 5A. ---------  OPCIÓN “SIN eval”: Meta.parse + substitute  ------------------
+ecuaciones_symb = [
+    Symbolics.substitute(Meta.parse(eq), symmap) for eq in stringEcuaciones
+]
+
+# 5. ---------  OPCIÓN “CON eval” (más corta, pero global) -------------------
+for D in (States_dict, Params_dict, Inputs_dict)   # 1º: cada diccionario
+    for (name, sym) in D                           # 2º: cada par clave‑valor
+        @eval const $(Symbol(name)) = $sym         # define x1, k21, u, …
+    end
+end
+==#
+#==
+# Ahora SÍ puedes evaluar las cadenas:
+ecuaciones_symb = [eval(Meta.parse(eq)) for eq in stringEcuaciones]
+
 # 2. Las metemos en un diccionario con clave String / la función 'zip' produce Tuplas (x1,x2)
 States_dict = Dict{String, Num}()           # `Num` es el tipo genérico de Symbolics
 for (s, v) in zip(stringEstados, vars)
