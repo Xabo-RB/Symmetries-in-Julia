@@ -1,5 +1,8 @@
 using DrWatson
-using Symbolics
+using Symbolics            # para Num, etc.
+using ModelingToolkit      # ¡aquí está @parameters!
+using Symbolics: @variables
+using SymbolicUtils: islike
 using Latexify
 
 
@@ -14,6 +17,16 @@ stringParametros = CreateModel.parametros;
 stringEntradas = CreateModel.entradas;
 stringEcuaciones = CreateModel.ecuaciones;
 
+# 2) Declaro dinámicamente mis varias listas
+eval(Meta.parse("@variables "   * join(stringEstados,   " ")))
+eval(Meta.parse("@parameters "  * join(stringParametros, " ")))
+eval(Meta.parse("@variables "   * join(stringEntradas,   " ")))
+
+# 3) Ahora parseo y evalúo directamente
+ecuaciones_symb = [ eval(Meta.parse(eq)) for eq in stringEcuaciones ]
+@show typeof(ecuaciones_symb[1])
+
+#==
 # 2. ----------  CONVERTIMOS CADA STRING → VARIABLE SIMBÓLICA  ----------------
 # Una función que hace la labor de dos funciones:
 make_var(s) = Num(Symbol(s))
@@ -55,17 +68,20 @@ for D in (States_dict, Params_dict, Inputs_dict)   # recorremos cada diccionario
         symmap[Symbol(name)] = sym
     end
 end
-
-# 3.‑‑‑‑‑ sustitución + evaluación del árbol ya sustituido
-function str2num(str, smap)
-    ex  = Meta.parse(str)                 # Expr con :x1, :k21, …
-    ex2 = Symbolics.substitute(ex, smap)  # Expr con Num en vez de Symbol
-    return eval(ex2)                      # Num
+for (name, sym) in symmap
+    @eval const $(name) = $sym
 end
 
-ecuaciones_symb = [str2num(eq, symmap) for eq in stringEcuaciones]
+
+function str2num(str)
+    ex = Meta.parse(str)
+    return eval(ex)        # ya x1, k21, u… están definidos como Num
+end
+
+ecuaciones_symb = [str2num(eq) for eq in stringEcuaciones]
 
 @show typeof(ecuaciones_symb[1])  # ⇒ Num
+==#
 
 #==
 # 5A. ---------  OPCIÓN “SIN eval”: Meta.parse + substitute  ------------------
