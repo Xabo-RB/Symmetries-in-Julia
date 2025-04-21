@@ -40,8 +40,31 @@ for (i, s) in pairs(stringEstados)
 end
 ==#
 
+# 3. ----------  DICCIONARIOS ÚTILES (por nombre de texto) --------------------
+States_dict   = Dict(stringEstados   .=> state_syms)
+Params_dict   = Dict(stringParametros.=> param_syms)
+Inputs_dict   = Dict(stringEntradas  .=> input_syms)
+
+# 4. ----------  MAPA SIMBÓLICO PARA SUBSTITUIR O EVALUAR ---------------------
+#    clave = :x1, valor = x1   (ambos son Symbol / Num según convenga)
+symmap = Dict{Symbol, Num}()
+
+for D in (States_dict, Params_dict, Inputs_dict)   # recorremos cada diccionario
+    for (name, sym) in D                           # ahora sí, cada Pair dentro
+        symmap[Symbol(name)] = sym
+    end
+end
+
+# 5. ---------  OPCIÓN “CON eval” (más corta, pero global) -------------------
+for (name, sym) in [States_dict; Params_dict; Inputs_dict]
+    @eval const $(Symbol(name)) = $sym    # expone x1, k01, u, ...
+end
+Ecuaciones_symb = [eval(Meta.parse(eq)) for eq in stringEcuaciones]
+
+#==
 # 2. Las metemos en un diccionario con clave String / la función 'zip' produce Tuplas (x1,x2)
 States_dict = Dict{String, Num}()           # `Num` es el tipo genérico de Symbolics
 for (s, v) in zip(stringEstados, vars)
     States_dict[s] = v
 end
+==#
