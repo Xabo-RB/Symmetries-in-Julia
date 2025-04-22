@@ -4,7 +4,6 @@ using LaTeXStrings
 import SymPy as sp
 #using SymPy
 
-
 #_________________________________________________________________________#
 #_________________________________________________________________________#
 #_________________________________________________________________________#
@@ -27,15 +26,15 @@ option = 4
 #_________________________________________________________________________#
 #_________________________________________________________________________#
 #_________________________________________________________________________#
-
-include("Model.jl")
-include(srcdir("functions.jl"))
-include(srcdir("getDeterminingSystem.jl"))
-include(srcdir("coefficients.jl"))
-include(srcdir("convertToMaple.jl"))
-include(srcdir("Observability.jl"))
-include(srcdir("GeneralTransformation.jl"))
-include(srcdir("StructuralIdentifiability.jl"))
+srcdir = joinpath(@__DIR__, "..", "src")
+include(joinpath(@__DIR__, "Model.jl"))
+include(joinpath(srcdir, "functions.jl"))
+include(joinpath(srcdir, "getDeterminingSystem.jl"))
+include(joinpath(srcdir, "coefficients.jl"))
+include(joinpath(srcdir, "convertToMaple.jl"))
+include(joinpath(srcdir, "Observability.jl"))
+include(joinpath(srcdir, "GeneralTransformation.jl"))
+include(joinpath(srcdir, "StructuralIdentifiability.jl"))
 
 struct ModelSym
     states::Vector{Num}
