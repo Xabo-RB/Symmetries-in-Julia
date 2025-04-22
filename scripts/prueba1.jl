@@ -7,6 +7,8 @@ using Latexify
 
 include("Model.jl"); 
 
+islike(::Num, ::Type{Number}) = true
+
 # 1) Tus datos de Model.jl
 stringEstados    = CreateModel.estados
 stringParametros = CreateModel.parametros
@@ -47,6 +49,17 @@ for eq in stringEcuaciones
     parsed_expr = Meta.parse(eq)  # Convertir el string en una expresión Julia (Expr)
     symbolic_eq = eval(parsed_expr)  # Evaluar esa expresión usando las variables simbólicas declaradas
     push!(symbolic_expressions, symbolic_eq)  # Añadir la expresión al vector de expresiones simbólicas
+end
+
+make_dx(s) = Num(Symbol("d"*s)) 
+# 2) Construye un vector con esas variables:
+dx_syms = [ make_dx(s) for s in stringEstados ]   
+#    → dx_syms = [Num(:dx1), Num(:dx2), Num(:dx3), Num(:dx4)]
+# 4) gᵢ = dxi – fi 
+g = [ dx_syms[i] - symbolic_expressions[i] for i in 1:length(dx_syms) ]
+
+for (i, gi) in enumerate(g)
+    println("g[$i] = ", gi)
 end
 
 # 5) Construyo el jacobiano de las primeras 4 ecuaciones respecto a los 4 estados:
