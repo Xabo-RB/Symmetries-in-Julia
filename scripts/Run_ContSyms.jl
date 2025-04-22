@@ -1,8 +1,4 @@
-
-using Symbolics            # para Num, etc.
-using ModelingToolkit      # ¡aquí está @parameters!
-using Symbolics: @variables
-using SymbolicUtils: islike
+using Symbolics
 using Latexify
 
 
