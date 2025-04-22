@@ -1,9 +1,11 @@
-using DrWatson
-using Symbolics  
+
+using Symbolics            # para Num, etc.
+using ModelingToolkit      # ¡aquí está @parameters!
+using Symbolics: @variables
+using SymbolicUtils: islike
 using Latexify
 
 
-@quickactivate "Symmetries in Julia"
 
 include("Model.jl"); 
 
