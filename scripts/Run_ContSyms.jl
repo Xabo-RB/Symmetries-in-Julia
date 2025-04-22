@@ -1,8 +1,5 @@
 using DrWatson
-using Symbolics            # para Num, etc.
-using ModelingToolkit      # ¡aquí está @parameters!
-using Symbolics: @variables
-using SymbolicUtils: islike
+using Symbolics  
 using Latexify
 
 
@@ -17,16 +14,8 @@ stringParametros = CreateModel.parametros;
 stringEntradas = CreateModel.entradas;
 stringEcuaciones = CreateModel.ecuaciones;
 
-# 2) Declaro dinámicamente mis varias listas
-eval(Meta.parse("@variables "   * join(stringEstados,   " ")))
-eval(Meta.parse("@parameters "  * join(stringParametros, " ")))
-eval(Meta.parse("@variables "   * join(stringEntradas,   " ")))
 
-# 3) Ahora parseo y evalúo directamente
-ecuaciones_symb = [ eval(Meta.parse(eq)) for eq in stringEcuaciones ]
-@show typeof(ecuaciones_symb[1])
 
-#==
 # 2. ----------  CONVERTIMOS CADA STRING → VARIABLE SIMBÓLICA  ----------------
 # Una función que hace la labor de dos funciones:
 make_var(s) = Num(Symbol(s))
@@ -81,7 +70,7 @@ end
 ecuaciones_symb = [str2num(eq) for eq in stringEcuaciones]
 
 @show typeof(ecuaciones_symb[1])  # ⇒ Num
-==#
+
 
 #==
 # 5A. ---------  OPCIÓN “SIN eval”: Meta.parse + substitute  ------------------
