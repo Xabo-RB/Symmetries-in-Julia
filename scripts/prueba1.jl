@@ -20,7 +20,8 @@ decl = "@variables " *
        join(stringEstados,   " ") * " " *
        join(stringParametros," ") * " " *
        join(stringEntradas,  " ")
-eval(Meta.parse(decl))  # Convierte el string en una expresión Julia y la evalúa para declarar las variables simbólicas
+       decl_dx = decl * " " * join([ "d" * s for s in stringEstados ], " ")
+       eval(Meta.parse(decl_dx))  # Convierte el string en una expresión Julia y la evalúa para declarar las variables simbólicas
 
 
 # 3) Ahora reconstruyo mis vectores con esos mismos objetos Num:
