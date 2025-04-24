@@ -69,5 +69,22 @@ function funcion1era(variables)
         push!(epsi_syms, obj)
     end
 
-    return epsi_syms
+    # Derivadas de g con respecto a cada estado
+    Jg = Symbolics.jacobian(variables.G, variables.S)
+
+    n = size(Jg, 1)
+    m = length(epsi_syms)
+    psiJ = Vector{Num}(undef, n)
+    # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el epsilon 'i'
+    # correspondiente al estado 'i'/eqn 'i'
+    for i in 1:n
+        rest = Vector{Num}(undef, m)
+        for j in 1:m
+            rest[j] =  epsi_syms[j] * Jg[i, j]
+        end
+        psiJ[i] = sum(rest)
+    end
+
+    #return epsi_syms, psiJ, Jg
+    return psiJ
 end

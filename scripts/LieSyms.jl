@@ -23,8 +23,10 @@ islike(::Num, ::Type{Number}) = true
 
 symbols = FunctionForReading(CreateModel);
 
-epsi = funcion1era(symbols)
-
+# Para comprobar:
+#epsi, epsiJg, Jg = funcion1era(symbols)
+# 
+epsiJg = funcion1era(symbols)
 
 
 #==
