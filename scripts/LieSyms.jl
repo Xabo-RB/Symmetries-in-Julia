@@ -21,7 +21,7 @@ end
 
 islike(::Num, ::Type{Number}) = true
 
-(St, Params, Inp, dSt, eqns, eqns_dSt) = FunctionForReading(CreateModel)
+symbols = FunctionForReading(CreateModel)
 
 
 
