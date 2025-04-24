@@ -55,3 +55,19 @@ function FunctionForReading(CreateModel)
     return symbolic_variables(state_syms, param_syms, input_syms, Dstate_syms, symbolic_expressions, g)
 end
 
+function funcion1era(variables)
+    
+    # Creo el vector que contiene las variables simbólicas de Epsilon, una por cada estado epsi_i
+    N = length(variables.S)
+    names = [ "epsi$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    epsi_syms = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(epsi_syms, obj)
+    end
+
+    return epsi_syms
+end

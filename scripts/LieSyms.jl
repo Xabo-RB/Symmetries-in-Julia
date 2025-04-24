@@ -21,7 +21,9 @@ end
 
 islike(::Num, ::Type{Number}) = true
 
-symbols = FunctionForReading(CreateModel)
+symbols = FunctionForReading(CreateModel);
+
+epsi = funcion1era(symbols)
 
 
 
