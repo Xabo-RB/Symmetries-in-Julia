@@ -7,7 +7,6 @@ using Latexify
 
 include("Model.jl"); 
 
-# Reconocer todas las variables del modelo como strings a variables
 
 stringEstados = CreateModel.estados;
 stringParametros = CreateModel.parametros;

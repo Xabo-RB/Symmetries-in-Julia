@@ -6,14 +6,31 @@ using Latexify
 @quickactivate "Symmetries in Julia"
 
 include("Model.jl"); 
+include("functions_conts.jl")
+
+struct symbolic_variables
+
+    S::Vector{Num}
+    P::Vector{Num}
+    I::Vector{Num}
+    DS::Vector{Num}
+    EQ::Vector{Num}
+    G::Vector{Num}
+
+end
 
 islike(::Num, ::Type{Number}) = true
 
+(St, Params, Inp, dSt, eqns, eqns_dSt) = FunctionForReading(CreateModel)
+
+
+
+#==
 # 1) Tus datos de Model.jl
 stringEstados    = CreateModel.estados
 stringParametros = CreateModel.parametros
 stringEntradas   = CreateModel.entradas
-stringEcuaciones = CreateModel.ecuaciones
+stringEcuaciones = CreateModel.ecuaciones[1:4]
 
 # 2) Declarar todas las variables simbólicas a la vez usando el macro @variables y evaluando la cadena generada
 decl = "@variables " *
@@ -55,16 +72,11 @@ for eq in stringEcuaciones
     push!(symbolic_expressions, symbolic_eq)  # Añadir la expresión al vector de expresiones simbólicas
 end
 
-J = Symbolics.jacobian(symbolic_expressions[1:4], state_syms)
-
-
 # 4) gᵢ = dxi – fi 
-g = [ dx_syms[i] - symbolic_expressions[i] for i in 1:length(dx_syms) ]
-
-for (i, gi) in enumerate(g)
-    println("g[$i] = ", gi)
+g = Vector{typeof(Dstate_syms[1])}()
+for i in eachindex(Dstate_syms, symbolic_expressions)
+    push!(g, Dstate_syms[i] - symbolic_expressions[i])
 end
 
-# 5) Construyo el jacobiano de las primeras 4 ecuaciones respecto a los 4 estados:
-
-
+Jg = Symbolics.jacobian(g, state_syms)
+==#
