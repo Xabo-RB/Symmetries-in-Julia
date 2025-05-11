@@ -28,7 +28,10 @@ symbols = FunctionForReading(CreateModel);
 # 
 epsiJg = funcion1era(symbols)
 
-aaa = funcion2da(symbols)
+# d [xdot_i - f_i]/ d xdot_i
+dgdx = funcion2da(symbols)
+
+
 
 #==
 # 1) Tus datos de Model.jl
