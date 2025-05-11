@@ -52,6 +52,8 @@ function FunctionForReading(CreateModel)
         push!(g, Dstate_syms[i] - symbolic_expressions[i])
     end
 
+    #subsmap = Dict(zip(Dstate_syms, symbolic_expressions))
+
     return symbolic_variables(state_syms, param_syms, input_syms, Dstate_syms, symbolic_expressions, g)
 end
 
@@ -101,5 +103,16 @@ function funcion2da(variables)
     end
 
     return result
+
+end
+
+function funcion3era(expr, variables)
+
+    # Diccionario de sustitución
+    subsmap = Dict{Num,Num}( zip(variables.DS, variables.EQ) )
+    # Substituyo
+    expr_subst = substitute(expr, subsmap)
+
+    return expr_subst
 
 end

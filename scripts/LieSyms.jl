@@ -23,13 +23,21 @@ islike(::Num, ::Type{Number}) = true
 
 symbols = FunctionForReading(CreateModel);
 
+# ----------------- 1º FUNCION ----------------- #
 # Para comprobar:
 #epsi, epsiJg, Jg = funcion1era(symbols)
 # 
 epsiJg = funcion1era(symbols)
 
+# ----------------- 2º FUNCION ----------------- #
 # d [xdot_i - f_i]/ d xdot_i
 dgdx = funcion2da(symbols)
+
+# ----------------- 3º FUNCION ----------------- #
+# COMPROBACIÓN, tiene que dar 4
+#expr = symbols.G[1] + 4 + symbols.G[2]
+aaa = funcion3era(expr, symbols)
+
 
 
 
