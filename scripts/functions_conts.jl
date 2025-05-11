@@ -38,7 +38,7 @@ function FunctionForReading(CreateModel)
 
     Dstate_syms = [ eval(Symbol("d"*s))   for s in stringEstados ]
 
-    # 4) Parseo y evalúo cada ecuación (ya usan exactamente esos x1,x2,…):
+    # 4) Leo el string y evalúo cada ecuación (ya usan exactamente esos x1,x2,…):
     symbolic_expressions = Num[]
     for eq in stringEcuaciones
         parsed_expr = Meta.parse(eq)  # Convertir el string en una expresión Julia (Expr)
@@ -87,4 +87,19 @@ function funcion1era(variables)
 
     #return epsi_syms, psiJ, Jg
     return psiJ
+end
+
+
+function funcion2da(variables)
+
+    # Derivadas de g con respecto a la derivada de cada estado
+    Jg = Symbolics.jacobian(variables.G, variables.DS)
+    m = length(variables.DS)
+    result = Vector{Num}(undef, m)
+    for i in 1:m
+        result[i] = Jg[i,i]
+    end
+
+    return result
+
 end
