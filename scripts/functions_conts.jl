@@ -4,7 +4,10 @@ function FunctionForReading(CreateModel)
     stringEstados    = CreateModel.estados
     stringParametros = CreateModel.parametros
     stringEntradas   = CreateModel.entradas
-    stringEcuaciones = CreateModel.ecuaciones[1:4]
+    nEq = length(CreateModel.ecuaciones)
+    stringEcuaciones = CreateModel.ecuaciones[1:(nEq-CreateModel.nSalidas)]
+    stringEcuacionesOut = CreateModel.ecuaciones[(nEq-CreateModel.nSalidas)+1:end]
+
 
     # 2) Declarar todas las variables simbólicas a la vez usando el macro @variables y evaluando la cadena generada
     decl = "@variables " *
@@ -52,9 +55,17 @@ function FunctionForReading(CreateModel)
         push!(g, Dstate_syms[i] - symbolic_expressions[i])
     end
 
+    # 4) Leo el string y evalúo cada ecuación de salida:
+    symbolic_expressionsOut = Num[]
+    for eq in stringEcuacionesOut
+        parsed_expr = Meta.parse(eq)  # Convertir el string en una expresión Julia (Expr)
+        symbolic_eq = eval(parsed_expr)  # Evaluar esa expresión usando las variables simbólicas declaradas
+        push!(symbolic_expressionsOut, symbolic_eq)  # Añadir la expresión al vector de expresiones simbólicas
+    end
+
     #subsmap = Dict(zip(Dstate_syms, symbolic_expressions))
 
-    return symbolic_variables(state_syms, param_syms, input_syms, Dstate_syms, symbolic_expressions, g)
+    return symbolic_variables(state_syms, param_syms, input_syms, Dstate_syms, symbolic_expressions, g, symbolic_expressionsOut)
 end
 
 function funcion1era(variables)
@@ -132,7 +143,7 @@ function funcion4ta(variables, whatIs)
     end
 
     if whatIs
-        # Derivadas de g con respecto a cada estado
+        # Derivadas de g con respecto a cada Parámetro
         Jg = Symbolics.jacobian(variables.G, variables.P)
 
         n = size(Jg, 1)
@@ -152,6 +163,7 @@ function funcion4ta(variables, whatIs)
 
 
     end
+
     #return epsi_syms, psiJ, Jg
     return psiJ
 end

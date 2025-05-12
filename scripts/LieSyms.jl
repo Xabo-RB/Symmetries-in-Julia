@@ -16,6 +16,7 @@ struct symbolic_variables
     DS::Vector{Num}
     EQ::Vector{Num}
     G::Vector{Num}
+    Y::Vector{Num}
 
 end
 
