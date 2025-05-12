@@ -42,7 +42,7 @@ dgdx = funcion2da(symbols)
 # ----------------- 4º FUNCION ----------------- #
 # whatIs = 1 -> analiza las ecuaciones de estado
 # whatIs = 0 -> analiza las ecuaciones de salida
-whatIs = 1
+whatIs = 0
 (epsi_syms, psiJ, Jg) = funcion4ta(symbols, whatIs)
 
 
