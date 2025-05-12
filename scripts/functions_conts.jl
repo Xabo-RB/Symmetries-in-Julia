@@ -142,7 +142,7 @@ function funcion4ta(variables, whatIs)
         push!(zeta_syms, obj)
     end
 
-    if whatIs
+    if whatIs == 1
         # Derivadas de g con respecto a cada Parámetro
         Jg = Symbolics.jacobian(variables.G, variables.P)
 
@@ -160,10 +160,24 @@ function funcion4ta(variables, whatIs)
         end
     else
 
+        # Derivadas del Output con respecto a cada Parámetro
+        Jg = Symbolics.jacobian(variables.Y, variables.P)
 
+        n = size(Jg, 1)
+        m = length(zeta_syms)
+        zetaJ = Vector{Num}(undef, n)
+        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
+        # correspondiente al estado 'i'/eqn 'i'
+        for i in 1:n
+            rest = Vector{Num}(undef, m)
+            for j in 1:m
+                rest[j] =  zeta_syms[j] * Jg[i, j]
+            end
+            zetaJ[i] = sum(rest)
+        end
 
     end
 
-    #return epsi_syms, psiJ, Jg
-    return psiJ
+    return zeta_syms, zetaJ, Jg
+    #return zetaJ
 end

@@ -37,7 +37,13 @@ dgdx = funcion2da(symbols)
 # ----------------- 3º FUNCION ----------------- #
 # COMPROBACIÓN, tiene que dar 4
 #expr = symbols.G[1] + 4 + symbols.G[2]
-expr_subsDX = funcion3era(expr, symbols)
+#expr_subsDX = funcion3era(expr, symbols)
+
+# ----------------- 4º FUNCION ----------------- #
+# whatIs = 1 -> analiza las ecuaciones de estado
+# whatIs = 0 -> analiza las ecuaciones de salida
+whatIs = 1
+(epsi_syms, psiJ, Jg) = funcion4ta(symbols, whatIs)
 
 
 
