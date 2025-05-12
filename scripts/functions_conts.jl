@@ -116,3 +116,42 @@ function funcion3era(expr, variables)
     return expr_subst
 
 end
+
+function funcion4ta(variables, whatIs)
+    
+    # Creo el vector que contiene las variables simbólicas de Zeta, una por cada estado Zeta_i
+    N = length(variables.P)
+    names = [ "Zeta$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    zeta_syms = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(zeta_syms, obj)
+    end
+
+    if whatIs
+        # Derivadas de g con respecto a cada estado
+        Jg = Symbolics.jacobian(variables.G, variables.P)
+
+        n = size(Jg, 1)
+        m = length(zeta_syms)
+        zetaJ = Vector{Num}(undef, n)
+        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
+        # correspondiente al estado 'i'/eqn 'i'
+        for i in 1:n
+            rest = Vector{Num}(undef, m)
+            for j in 1:m
+                rest[j] =  zeta_syms[j] * Jg[i, j]
+            end
+            zetaJ[i] = sum(rest)
+        end
+    else
+
+
+
+    end
+    #return epsi_syms, psiJ, Jg
+    return psiJ
+end

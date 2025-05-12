@@ -36,7 +36,9 @@ dgdx = funcion2da(symbols)
 # ----------------- 3º FUNCION ----------------- #
 # COMPROBACIÓN, tiene que dar 4
 #expr = symbols.G[1] + 4 + symbols.G[2]
-aaa = funcion3era(expr, symbols)
+expr_subsDX = funcion3era(expr, symbols)
+
+
 
 
 
