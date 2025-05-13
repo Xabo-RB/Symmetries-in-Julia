@@ -68,6 +68,9 @@ function FunctionForReading(CreateModel)
     return symbolic_variables(state_syms, param_syms, input_syms, Dstate_syms, symbolic_expressions, g, symbolic_expressionsOut)
 end
 
+# ---------- EPSI es XI pero al principio me equvoqué de nombre, por eso muchas veces se llaman las 
+# ---------- variables EPSI dentro del código
+
 function funcion1era(variables, queDerivo)
     
     # Creo el vector que contiene las variables simbólicas de Epsilon, una por cada estado epsi_i

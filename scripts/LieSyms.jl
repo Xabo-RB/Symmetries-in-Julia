@@ -9,6 +9,7 @@ using LaTeXStrings
 
 include("Model.jl"); 
 include("functions_conts.jl")
+include(srcdir("convertToMaple.jl"))
 
 struct symbolic_variables
 
@@ -65,6 +66,7 @@ for i in 1:n
 end
 
 convertToMaple(states_Obs, name, 0)
+convertToLatex(states_Obs, name, 0)
 
 #==
 # 1) Tus datos de Model.jl
