@@ -68,7 +68,7 @@ function FunctionForReading(CreateModel)
     return symbolic_variables(state_syms, param_syms, input_syms, Dstate_syms, symbolic_expressions, g, symbolic_expressionsOut)
 end
 
-function funcion1era(variables)
+function funcion1era(variables, queDerivo)
     
     # Creo el vector que contiene las variables simbólicas de Epsilon, una por cada estado epsi_i
     N = length(variables.S)
@@ -82,20 +82,40 @@ function funcion1era(variables)
         push!(epsi_syms, obj)
     end
 
-    # Derivadas de g con respecto a cada estado
-    Jg = Symbolics.jacobian(variables.G, variables.S)
+    if queDerivo == 1
+        # Derivadas de g con respecto a cada estado
+        Jg = Symbolics.jacobian(variables.G, variables.S)
 
-    n = size(Jg, 1)
-    m = length(epsi_syms)
-    psiJ = Vector{Num}(undef, n)
-    # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el epsilon 'i'
-    # correspondiente al estado 'i'/eqn 'i'
-    for i in 1:n
-        rest = Vector{Num}(undef, m)
-        for j in 1:m
-            rest[j] =  epsi_syms[j] * Jg[i, j]
+        n = size(Jg, 1)
+        m = length(epsi_syms)
+        psiJ = Vector{Num}(undef, n)
+        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el epsilon 'i'
+        # correspondiente al estado 'i'/eqn 'i'
+        for i in 1:n
+            rest = Vector{Num}(undef, m)
+            for j in 1:m
+                rest[j] =  epsi_syms[j] * Jg[i, j]
+            end
+            psiJ[i] = sum(rest)
         end
-        psiJ[i] = sum(rest)
+    else
+
+        # Derivadas de h con respecto a cada estado
+        Jg = Symbolics.jacobian(variables.Y, variables.S)
+
+        n = size(Jg, 1)
+        m = length(epsi_syms)
+        psiJ = Vector{Num}(undef, n)
+        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el epsilon 'i'
+        # correspondiente al estado 'i'/eqn 'i'
+        for i in 1:n
+            rest = Vector{Num}(undef, m)
+            for j in 1:m
+                rest[j] =  epsi_syms[j] * Jg[i, j]
+            end
+            psiJ[i] = sum(rest)
+        end
+
     end
 
     #return epsi_syms, psiJ, Jg
@@ -109,6 +129,8 @@ function funcion2da(variables)
     Jg = Symbolics.jacobian(variables.G, variables.DS)
     m = length(variables.DS)
     result = Vector{Num}(undef, m)
+    # ** Estoy cogiendo la diagonal, pero debería ser la matriz jacobiana, dado que para cada expresión
+    # G se deriva con respecto a cada dx_i, no sólo con respecto al correspondiente **
     for i in 1:m
         result[i] = Jg[i,i]
     end
@@ -215,6 +237,9 @@ function observability(variables, fun1, fun2, fun3)
         push!(eqn1, obj)
     end
 
-    return eqn1
+    H_or_G = 0
+    eqn2_obs = funcion1era(variables, H_or_G)
+
+    return eqn1, eqn2_obs
 
 end

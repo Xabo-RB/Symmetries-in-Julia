@@ -28,7 +28,9 @@ symbols = FunctionForReading(CreateModel);
 # Para comprobar:
 #epsi, epsiJg, Jg = funcion1era(symbols)
 # 
-epsiJg = funcion1era(symbols)
+# H_or_G = 1, with respect to G // H_or_G not 1, with respect to Y
+H_or_G = 1
+epsiJg = funcion1era(symbols, H_or_G)
 
 # ----------------- 2º FUNCION ----------------- #
 # d [xdot_i - f_i]/ d xdot_i
@@ -45,7 +47,7 @@ dgdx = funcion2da(symbols)
 whatIs = 0
 (epsi_syms, psiJ, Jg) = funcion4ta(symbols, whatIs)
 
-aaa = observability(symbols, epsiJg, dgdx, epsi_syms)
+(states_Obs, outputs_Obs) = observability(symbols, epsiJg, dgdx, epsi_syms)
 
 
 
