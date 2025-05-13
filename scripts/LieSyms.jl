@@ -49,7 +49,7 @@ dgdx = funcion2da(symbols)
 whatIs = 0
 (epsi_syms, psiJ, Jg) = funcion4ta(symbols, whatIs)
 
-(states_Obs, outputs_Obs) = observability(symbols, epsiJg, dgdx, epsi_syms)
+(states_Obs, outputs_Obs) = observabilityContinous(symbols, epsiJg, dgdx, epsi_syms)
 
 # Convertir cada Num a su cadena LaTeX
 n = length(states_Obs)

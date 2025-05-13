@@ -79,7 +79,7 @@ if option == 1
         render(latex_expr)
     end
     #print(coeffs)
-    convertToMaple(coeffs, name)
+    convertToMaple(coeffs, name, 1)
 
 elseif option == 2
 

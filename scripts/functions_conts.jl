@@ -204,7 +204,7 @@ function funcion4ta(variables, whatIs)
     #return zetaJ
 end
 
-function observability(variables, fun1, fun2, fun3)
+function observabilityContinous(variables, fun1, fun2, fun3)
 
     # CREO Epsilon_x_i
     N = length(variables.S)
