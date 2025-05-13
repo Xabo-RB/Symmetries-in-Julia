@@ -49,6 +49,27 @@ whatIs = 0
 
 (states_Obs, outputs_Obs) = observability(symbols, epsiJg, dgdx, epsi_syms)
 
+# Convertir cada Num a su cadena LaTeX
+n = length(states_Obs)
+latex_strings = Vector{String}(undef, n)
+for i in 1:n
+    # latexify devuelve un objeto LatexString, lo convertimos a String
+    ls = latexify(states_Obs[i])
+    latex_strings[i] = string(ls)
+end
+
+# Reemplazar "epsi" por "\epsilon" en cada cadena
+latex_custom = Vector{String}(undef, n)
+for i in 1:n
+    s = latex_strings[i]
+    # raw"\epsilon" inserta literal \epsilon en la cadena
+    latex_custom[i] = replace(s, "epsi" => raw"\xi")
+end
+
+for i in 1:n
+    println(latex_custom[i])
+end
+
 
 
 
