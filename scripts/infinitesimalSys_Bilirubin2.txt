@@ -1,16 +1,5 @@
-\begin{equation}
-\xi_{t\_1} + \xi_{1} \left(  - k01 - k21 - k31 - k41 \right) + \xi_{2} k12 + \xi_{3} k13 + \xi_{4} k14 + \xi_{x\_1} \left(  - u - \left(  - k01 - k21 - k31 - k41 \right) x1 - k12 x2 - k13 x3 - k14 x4 \right)
-\end{equation}
-
-\begin{equation}
-\xi_{t\_2} - \xi_{1} k21 + \xi_{2} k12 + \xi_{x\_2} \left(  - k12 x2 + k21 x1 \right)
-\end{equation}
-
-\begin{equation}
-\xi_{t\_3} - \xi_{1} k31 + \xi_{3} k13 + \xi_{x\_3} \left(  - k13 x3 + k31 x1 \right)
-\end{equation}
-
-\begin{equation}
-\xi_{t\_4} - \xi_{1} k41 + \xi_{4} k14 + \xi_{x\_4} \left(  - k14 x4 + k41 x1 \right)
-\end{equation}
-
+epsi_t_1 + epsi_1*(-k01 - k21 - k31 - k41) + epsi_2*k12 + epsi_3*k13 + epsi_4*k14 + epsi_x_1*(-u - (-k01 - k21 - k31 - k41)*x1 - k12*x2 - k13*x3 - k14*x4)
+epsi_t_2 - epsi_1*k21 + epsi_2*k12 + epsi_x_2*(-k12*x2 + k21*x1)
+epsi_t_3 - epsi_1*k31 + epsi_3*k13 + epsi_x_3*(-k13*x3 + k31*x1)
+epsi_t_4 - epsi_1*k41 + epsi_4*k14 + epsi_x_4*(-k14*x4 + k41*x1)
+epsi_1
