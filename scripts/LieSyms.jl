@@ -64,7 +64,7 @@ for i in 1:n
     render(LaTeXString(latex_custom[i]))
 end
 
-
+convertToMaple(states_Obs, name, 0)
 
 #==
 # 1) Tus datos de Model.jl
