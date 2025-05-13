@@ -196,13 +196,25 @@ function observability(variables, fun1, fun2, fun3)
         push!(epsi_x_syms, obj)
     end
 
-    m = length(fun1)
-    result = Num[]
-    for i in 1:m
-        obj = fun1[i] + epsi_x_syms[i]
-        push!(result, obj)
+    # CREO Epsilon_i_t
+    N = length(variables.S)
+    names = [ "epsi_t_$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    epsi_t_syms = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(epsi_t_syms, obj)
     end
 
-    return result
+    m = length(fun1)
+    eqn1 = Num[]
+    for i in 1:m
+        obj = fun1[i] + (epsi_t_syms[i] + epsi_x_syms[i]*variables.DS[i])*fun2[i]
+        push!(eqn1, obj)
+    end
+
+    return eqn1
 
 end
