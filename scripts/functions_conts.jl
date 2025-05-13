@@ -181,3 +181,28 @@ function funcion4ta(variables, whatIs)
     return zeta_syms, zetaJ, Jg
     #return zetaJ
 end
+
+function observability(variables, fun1, fun2, fun3)
+
+    # CREO Epsilon_x_i
+    N = length(variables.S)
+    names = [ "epsi_x$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    epsi_x_syms = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(epsi_x_syms, obj)
+    end
+
+    m = length(fun1)
+    result = Num[]
+    for i in 1:m
+        obj = fun1[i] + epsi_x_syms[i]
+        push!(result, obj)
+    end
+
+    return result
+
+end

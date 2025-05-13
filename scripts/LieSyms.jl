@@ -45,7 +45,7 @@ dgdx = funcion2da(symbols)
 whatIs = 0
 (epsi_syms, psiJ, Jg) = funcion4ta(symbols, whatIs)
 
-
+aaa = observability(symbols, epsiJg, dgdx, epsi_syms)
 
 
 
