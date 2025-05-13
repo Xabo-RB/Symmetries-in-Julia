@@ -230,16 +230,30 @@ function observability(variables, fun1, fun2, fun3)
         push!(epsi_t_syms, obj)
     end
 
+    # Construyo la ecuación 1era de Delta_j
     m = length(fun1)
     eqn1 = Num[]
     for i in 1:m
         obj = fun1[i] + (epsi_t_syms[i] + epsi_x_syms[i]*variables.DS[i])*fun2[i]
         push!(eqn1, obj)
     end
+    # Substituyo las derivadas de los estados por su ecuación correspondiente de estado (las odes)
+    eqn1subst = Num[]
+    for i in 1:m
+        obj = funcion3era(eqn1[i], variables)
+        push!(eqn1subst, obj)
+    end
 
     H_or_G = 0
     eqn2_obs = funcion1era(variables, H_or_G)
+    m = length(eqn2_obs)
+    # Substituyo las derivadas de los estados por su ecuación correspondiente de estado (las odes)
+    eqn2_obsSubst = Num[]
+    for i in 1:m
+        obj = funcion3era(eqn2_obs[i], variables)
+        push!(eqn2_obsSubst, obj)
+    end
 
-    return eqn1, eqn2_obs
+    return eqn1subst, eqn2_obsSubst
 
 end
