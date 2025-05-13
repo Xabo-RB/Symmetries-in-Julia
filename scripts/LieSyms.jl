@@ -1,6 +1,8 @@
 using DrWatson
 using Symbolics, SymbolicUtils
 using Latexify
+using LaTeXStrings
+
 
 
 @quickactivate "Symmetries in Julia"
@@ -52,24 +54,15 @@ whatIs = 0
 # Convertir cada Num a su cadena LaTeX
 n = length(states_Obs)
 latex_strings = Vector{String}(undef, n)
+latex_custom = Vector{String}(undef, n)
 for i in 1:n
     # latexify devuelve un objeto LatexString, lo convertimos a String
     ls = latexify(states_Obs[i])
     latex_strings[i] = string(ls)
-end
-
-# Reemplazar "epsi" por "\epsilon" en cada cadena
-latex_custom = Vector{String}(undef, n)
-for i in 1:n
-    s = latex_strings[i]
     # raw"\epsilon" inserta literal \epsilon en la cadena
-    latex_custom[i] = replace(s, "epsi" => raw"\xi")
+    latex_custom[i] = replace(latex_strings[i], "epsi" => raw"\xi")
+    render(LaTeXString(latex_custom[i]))
 end
-
-for i in 1:n
-    println(latex_custom[i])
-end
-
 
 
 

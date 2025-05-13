@@ -72,7 +72,7 @@ function funcion1era(variables, queDerivo)
     
     # Creo el vector que contiene las variables simbólicas de Epsilon, una por cada estado epsi_i
     N = length(variables.S)
-    names = [ "epsi$i" for i in 1:N ]   # ["z1","z2",…]
+    names = [ "epsi_$i" for i in 1:N ]   # ["z1","z2",…]
     decl = "@variables " * join(names,   " ")
     eval(Meta.parse(decl))
     epsi_syms = Num[]
@@ -154,7 +154,7 @@ function funcion4ta(variables, whatIs)
     
     # Creo el vector que contiene las variables simbólicas de Zeta, una por cada estado Zeta_i
     N = length(variables.P)
-    names = [ "Zeta$i" for i in 1:N ]   # ["z1","z2",…]
+    names = [ "Zeta_$i" for i in 1:N ]   # ["z1","z2",…]
     decl = "@variables " * join(names,   " ")
     eval(Meta.parse(decl))
     zeta_syms = Num[]
@@ -208,7 +208,7 @@ function observability(variables, fun1, fun2, fun3)
 
     # CREO Epsilon_x_i
     N = length(variables.S)
-    names = [ "epsi_x$i" for i in 1:N ]   # ["z1","z2",…]
+    names = [ "epsi_x_$i" for i in 1:N ]   # ["z1","z2",…]
     decl = "@variables " * join(names,   " ")
     eval(Meta.parse(decl))
     epsi_x_syms = Num[]
