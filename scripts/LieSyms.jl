@@ -66,7 +66,7 @@ for i in 1:n
 end
 
 convertToMaple(states_Obs, name, 0)
-convertToLatex(states_Obs, name, 0)
+convertToLatex(latex_custom, name, 0)
 
 #==
 # 1) Tus datos de Model.jl
