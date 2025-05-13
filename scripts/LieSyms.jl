@@ -59,10 +59,11 @@ fullSystemObs = vcat(states_Obs,outputs_Obs)
 n = length(fullSystemObs)
 latex_strings = Vector{String}(undef, n)
 latex_custom = Vector{String}(undef, n)
+eqs = Vector{Equation}(undef, n)
 for i in 1:n
-    eq = Equation(fullSystemObs[i], 0)
+    eqs[i] = Equation(fullSystemObs[i], 0)
     # latexify devuelve un objeto LatexString, lo convertimos a String
-    ls = latexify(eq)
+    ls = latexify(eqs[i])
     latex_strings[i] = string(ls)
     # raw"\epsilon" inserta literal \epsilon en la cadena
     latex_custom[i] = replace(latex_strings[i], "epsi" => raw"\xi")
