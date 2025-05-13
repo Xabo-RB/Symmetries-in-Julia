@@ -60,9 +60,10 @@ n = length(fullSystemObs)
 latex_strings = Vector{String}(undef, n)
 latex_custom = Vector{String}(undef, n)
 for i in 1:n
+    eq = Equation(fullSystemObs[i], 0)
     # latexify devuelve un objeto LatexString, lo convertimos a String
-    ls = latexify(fullSystemObs[i])
-    latex_strings[i] = string(ls* " = 0")
+    ls = latexify(eq)
+    latex_strings[i] = string(ls)
     # raw"\epsilon" inserta literal \epsilon en la cadena
     latex_custom[i] = replace(latex_strings[i], "epsi" => raw"\xi")
     render(LaTeXString(latex_custom[i]))
