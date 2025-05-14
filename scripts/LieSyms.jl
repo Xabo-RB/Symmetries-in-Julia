@@ -8,7 +8,7 @@ using LaTeXStrings
 @quickactivate "Symmetries in Julia"
 
 include("Model.jl"); 
-include("functions_conts.jl")
+include(srcdir("functions_conts.jl"))
 include(srcdir("convertToMaple.jl"))
 include(srcdir("convertToLatex.jl"))
 

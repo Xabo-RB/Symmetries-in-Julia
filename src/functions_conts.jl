@@ -260,3 +260,37 @@ function observabilityContinous(variables, fun1, fun2, fun3)
     return eqn1subst, eqn2_obsSubst
 
 end
+
+function funcion5ta(variables, whatIs)
+    
+    # Creo el vector que contiene las variables simbólicas de Zeta, una por cada estado Zeta_i
+    N = length(variables.P)
+    names = [ "Zeta_t_$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    zeta_syms = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(zeta_syms, obj)
+    end
+
+    # Derivadas de g con respecto a cada Parámetro
+    Jg = Symbolics.jacobian(variables.G, variables.P)
+
+    n = size(Jg, 1)
+    m = length(zeta_syms)
+    zetaJ = Vector{Num}(undef, n)
+    # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
+    # correspondiente al estado 'i'/eqn 'i'
+    for i in 1:n
+        rest = Vector{Num}(undef, m)
+        for j in 1:m
+            rest[j] =  zeta_syms[j] * Jg[i, j]
+        end
+        zetaJ[i] = sum(rest)
+    end
+
+    return zeta_syms, zetaJ, Jg
+    #return zetaJ
+end
