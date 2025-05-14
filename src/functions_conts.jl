@@ -153,61 +153,7 @@ function funcion3era(expr, variables)
 
 end
 
-function funcion4ta(variables, whatIs)
-    
-    # Creo el vector que contiene las variables simbólicas de Zeta, una por cada estado Zeta_i
-    N = length(variables.P)
-    names = [ "Zeta_$i" for i in 1:N ]   # ["z1","z2",…]
-    decl = "@variables " * join(names,   " ")
-    eval(Meta.parse(decl))
-    zeta_syms = Num[]
-    for p in names
-        simb = Symbol(p)
-        obj  = eval(simb)
-        push!(zeta_syms, obj)
-    end
-
-    if whatIs == 1
-        # Derivadas de g con respecto a cada Parámetro
-        Jg = Symbolics.jacobian(variables.G, variables.P)
-
-        n = size(Jg, 1)
-        m = length(zeta_syms)
-        zetaJ = Vector{Num}(undef, n)
-        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
-        # correspondiente al estado 'i'/eqn 'i'
-        for i in 1:n
-            rest = Vector{Num}(undef, m)
-            for j in 1:m
-                rest[j] =  zeta_syms[j] * Jg[i, j]
-            end
-            zetaJ[i] = sum(rest)
-        end
-    else
-
-        # Derivadas del Output con respecto a cada Parámetro
-        Jg = Symbolics.jacobian(variables.Y, variables.P)
-
-        n = size(Jg, 1)
-        m = length(zeta_syms)
-        zetaJ = Vector{Num}(undef, n)
-        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
-        # correspondiente al estado 'i'/eqn 'i'
-        for i in 1:n
-            rest = Vector{Num}(undef, m)
-            for j in 1:m
-                rest[j] =  zeta_syms[j] * Jg[i, j]
-            end
-            zetaJ[i] = sum(rest)
-        end
-
-    end
-
-    return zeta_syms, zetaJ, Jg
-    #return zetaJ
-end
-
-function observabilityContinous(variables, fun1, fun2, fun3)
+function observabilityContinous(variables, fun1, fun2)
 
     # CREO Epsilon_x_i
     N = length(variables.S)
@@ -261,7 +207,109 @@ function observabilityContinous(variables, fun1, fun2, fun3)
 
 end
 
-function funcion5ta(variables, whatIs)
+function storageResultsObs(variables)
+    
+    # ----------------- 1º FUNCION ----------------- #
+    # Para comprobar:
+    #epsi, epsiJg, Jg = funcion1era(symbols)
+    # 
+    # H_or_G = 1, with respect to G // H_or_G not 1, with respect to Y
+    H_or_G = 1
+    epsiJg = funcion1era(variables, H_or_G)
+
+    # ----------------- 2º FUNCION ----------------- #
+    # d [xdot_i - f_i]/ d xdot_i
+    dgdx = funcion2da(variables)
+
+    return epsiJg, dgdx
+
+end
+
+function mainObsCont(variables)
+
+    # Resultados primeras 2 funciones
+    (f1, f2) = storageResultsObs(variables)
+    # Función que recopila y construye las ecuaciones de observabilidad
+    (states_Obs, outputs_Obs) = observabilityContinous(variables, f1, f2)
+    # Concatena las ecuaciones del sistema correspondientes a los estados y a las salidas
+    fullSystemObs = vcat(states_Obs,outputs_Obs)
+
+    # Convertir cada Num a su cadena LaTeX
+    n = length(fullSystemObs)
+    latex_strings = Vector{String}(undef, n)
+    latex_custom = Vector{String}(undef, n)
+    eqs = Vector{Equation}(undef, n)
+    for i in 1:n
+        eqs[i] = Equation(fullSystemObs[i], 0)
+        # latexify devuelve un objeto LatexString, lo convertimos a String
+        ls = latexify(eqs[i])
+        latex_strings[i] = string(ls)
+        # raw"\epsilon" inserta literal \epsilon en la cadena
+        latex_custom[i] = replace(latex_strings[i], "epsi" => raw"\xi")
+        render(LaTeXString(latex_custom[i]))
+    end
+
+    convertToMaple(fullSystemObs, name, 0)
+    convertToLatex(latex_custom, name, 0)
+
+    return fullSystemObs, latex_custom
+end
+
+function funcion4ta(variables, whatIs)
+    
+    # Creo el vector que contiene las variables simbólicas de Zeta, una por cada estado Zeta_i
+    N = length(variables.P)
+    names = [ "Zeta_$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    zeta_syms = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(zeta_syms, obj)
+    end
+
+    if whatIs == 1
+        # Derivadas de g con respecto a cada Parámetro
+        Jg = Symbolics.jacobian(variables.G, variables.P)
+
+        n = size(Jg, 1)
+        m = length(zeta_syms)
+        zetaJ = Vector{Num}(undef, n)
+        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
+        # correspondiente al estado 'i'/eqn 'i'
+        for i in 1:n
+            rest = Vector{Num}(undef, m)
+            for j in 1:m
+                rest[j] =  zeta_syms[j] * Jg[i, j]
+            end
+            zetaJ[i] = sum(rest)
+        end
+    else
+
+        # Derivadas del Output con respecto a cada Parámetro
+        Jg = Symbolics.jacobian(variables.Y, variables.P)
+
+        n = size(Jg, 1)
+        m = length(zeta_syms)
+        zetaJ = Vector{Num}(undef, n)
+        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
+        # correspondiente al estado 'i'/eqn 'i'
+        for i in 1:n
+            rest = Vector{Num}(undef, m)
+            for j in 1:m
+                rest[j] =  zeta_syms[j] * Jg[i, j]
+            end
+            zetaJ[i] = sum(rest)
+        end
+
+    end
+
+    #return zeta_syms, zetaJ, Jg
+    return zetaJ
+end
+
+function funcion5ta(variables)
     
     # Creo el vector que contiene las variables simbólicas de Zeta, una por cada estado Zeta_i
     N = length(variables.P)
@@ -275,11 +323,17 @@ function funcion5ta(variables, whatIs)
         push!(zeta_syms, obj)
     end
 
-    # Derivadas de g con respecto a cada Parámetro
-    Jg = Symbolics.jacobian(variables.G, variables.P)
+    names = [ "Zeta_x_$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    zeta_syms1 = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(zeta_syms1, obj)
+    end
 
-    n = size(Jg, 1)
-    m = length(zeta_syms)
+    m = length(variables.EQ)
     zetaJ = Vector{Num}(undef, n)
     # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
     # correspondiente al estado 'i'/eqn 'i'
