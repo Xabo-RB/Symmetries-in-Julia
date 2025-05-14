@@ -29,6 +29,7 @@ islike(::Num, ::Type{Number}) = true
 
 symbols = FunctionForReading(CreateModel);
 
+
 # ----------------- 1º FUNCION ----------------- #
 # Para comprobar:
 #epsi, epsiJg, Jg = funcion1era(symbols)
