@@ -333,6 +333,7 @@ function funcion5ta(variables)
         push!(zeta_syms1, obj)
     end
 
+    #==
     m = length(variables.EQ)
     zetaJ = Vector{Num}(undef, n)
     # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
@@ -347,4 +348,5 @@ function funcion5ta(variables)
 
     return zeta_syms, zetaJ, Jg
     #return zetaJ
+    ==#
 end

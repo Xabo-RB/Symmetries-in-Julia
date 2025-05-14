@@ -38,8 +38,6 @@ symbols = FunctionForReading(CreateModel);
 (Julia_result, latex_result)  = mainObsCont(symbols)
 
 
-
-
 # ----------------- 4º FUNCION ----------------- #
 # whatIs = 1 -> analiza las ecuaciones de estado
 # whatIs = 0 -> analiza las ecuaciones de salida
