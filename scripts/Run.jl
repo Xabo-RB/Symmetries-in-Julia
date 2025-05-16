@@ -7,7 +7,7 @@ using SymbolicUtils
 
 @quickactivate "Symmetries in Julia"
 
-Discrete_Or_Continous = 'C'
+Discrete_Or_Continous = 'D'
 
 if Discrete_Or_Continous == 'D'
 
@@ -21,7 +21,7 @@ if Discrete_Or_Continous == 'D'
     4. Transformations for Structural identifiability (option = 4)
     ==#
 
-    option = 4
+    option = 3
     let
         include("DiscreteSyms.jl");
     end

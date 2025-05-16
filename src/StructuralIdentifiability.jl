@@ -420,6 +420,6 @@ function StructuralIdentifiability(CreateModel,name)
 
     #print(coeffs)
 
-    convertToMaple(coeffs, name)
+    convertToMaple(coeffs, name, 1)
 
 end
