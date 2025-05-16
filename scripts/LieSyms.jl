@@ -35,17 +35,21 @@ symbols = FunctionForReading(CreateModel);
 #expr_subsDX = funcion3era(expr, symbols)
 
 
-(Julia_result, latex_result)  = mainObsCont(symbols)
+#(Julia_result, latex_result)  = mainObsCont(symbols)
 
 
 # ----------------- 4º FUNCION ----------------- #
 # whatIs = 1 -> analiza las ecuaciones de estado
 # whatIs = 0 -> analiza las ecuaciones de salida
-whatIs = 0
+whatIs = 1
 epsi_syms = funcion4ta(symbols, whatIs)
 
 # ----------------- 5º FUNCION ----------------- #
 condicion2 = funcion5ta(symbols)
 
 H_or_G = 1
-f1 = funcion1era(variables, H_or_G)
+f1 = funcion1era(symbols, H_or_G)
+f2 = funcion2da(variables)
+
+
+(xx, yy) = FirstIdentEqn(f1, f2, epsi_syms, variables)

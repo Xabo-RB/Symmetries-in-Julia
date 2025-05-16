@@ -277,7 +277,7 @@ function funcion4ta(variables, whatIs)
         n = size(Jg, 1)
         m = length(zeta_syms)
         zetaJ = Vector{Num}(undef, n)
-        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
+        # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto theta_j de j = 1 a n) por el Zeta 'i'
         # correspondiente al estado 'i'/eqn 'i'
         for i in 1:n
             rest = Vector{Num}(undef, m)
@@ -342,4 +342,44 @@ function funcion5ta(variables)
         push!(eqnfnc5, obj)
     end
     return eqnfnc5
+end
+
+function FirstIdentEqn(f1, f2, f4, variables)
+
+    # Función para construir la primera ecuación del sistema delta_j
+
+    # CREO Epsilon_x_i
+    N = length(variables.S)
+    names = [ "epsi_x_$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    epsi_x_syms = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(epsi_x_syms, obj)
+    end
+
+    # CREO Epsilon_i_t
+    names = [ "epsi_t_$i" for i in 1:N ]   # ["z1","z2",…]
+    decl = "@variables " * join(names,   " ")
+    eval(Meta.parse(decl))
+    epsi_t_syms = Num[]
+    for p in names
+        simb = Symbol(p)
+        obj  = eval(simb)
+        push!(epsi_t_syms, obj)
+    end
+
+    eqn1_Ident = Num[]
+    eqn1_IdentSubst = Num[]
+    for i in 1:N
+        obj = f1[i] + f4[i] + (epsi_t_syms[i] + (epsi_x_syms[i] - 1)*variables.DS[i])*f2[i]
+        push!(eqn1_Ident, obj)
+        obj1 = funcion3era(eqn1_Ident[i], variables)
+        push!(eqn1_IdentSubst, obj1)
+    end
+
+    return eqn1_IdentSubst, eqn1_Ident
+
 end
