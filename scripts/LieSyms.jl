@@ -37,6 +37,7 @@ symbols = FunctionForReading(CreateModel);
 
 #(Julia_result, latex_result)  = mainObsCont(symbols)
 
-(a1, a2, a3) = mainIdentCont(symbols)
+#(a1, a2, a3) = mainIdentCont(symbols)
+(Julia_result, latex_result)  = mainIdentCont(symbols)
 
 

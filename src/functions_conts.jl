@@ -260,7 +260,7 @@ function funcion4ta(variables, whatIs)
     
     # Creo el vector que contiene las variables simbólicas de Zeta, una por cada estado Zeta_i
     N = length(variables.P)
-    names = [ "Zeta_$i" for i in 1:N ]   # ["z1","z2",…]
+    names = [ "zeta_$i" for i in 1:N ]   # ["z1","z2",…]
     decl = "@variables " * join(names,   " ")
     eval(Meta.parse(decl))
     zeta_syms = Num[]
@@ -314,7 +314,7 @@ function funcion5ta(variables)
     
     # Creo el vector que contiene las variables simbólicas de Zeta_t, una por cada parametro theta_i
     N = length(variables.P)
-    names = [ "Zeta_t_$i" for i in 1:N ]   # ["z1","z2",…]
+    names = [ "zeta_t_$i" for i in 1:N ]   # ["z1","z2",…]
     decl = "@variables " * join(names,   " ")
     eval(Meta.parse(decl))
     zeta_syms = Num[]
@@ -325,7 +325,7 @@ function funcion5ta(variables)
     end
 
     # Creo el vector que contiene las variables simbólicas de Zeta_x, una por cada parametro theta_i
-    names = [ "Zeta_x_$i" for i in 1:N ]   # ["z1","z2",…]
+    names = [ "zeta_x_$i" for i in 1:N ]   # ["z1","z2",…]
     decl = "@variables " * join(names,   " ")
     eval(Meta.parse(decl))
     zeta_syms1 = Num[]
@@ -417,5 +417,28 @@ function mainIdentCont(variables)
         push!(eqn3_simetria, obj)
     end
 
-    return eqn1_simetria, eqn2_simetria, eqn3_simetria
+    # Concatena las ecuaciones del sistema correspondientes a los estados y a las salidas
+    fullSystemIdent = vcat(eqn1_simetria,eqn2_simetria,eqn3_simetria)
+
+    # Convertir cada Num a su cadena LaTeX
+    n = length(fullSystemIdent)
+    latex_strings = Vector{String}(undef, n)
+    latex_custom = Vector{String}(undef, n)
+    eqs = Vector{Equation}(undef, n)
+    for i in 1:n
+        eqs[i] = Equation(fullSystemIdent[i], 0)
+        # latexify devuelve un objeto LatexString, lo convertimos a String
+        ls = latexify(eqs[i])
+        latex_strings[i] = string(ls)
+        # raw"\epsilon" inserta literal \epsilon en la cadena
+        latex_custom[i] = replace(latex_strings[i], "epsi" => raw"\xi", "zeta" => raw"\zeta")
+        render(LaTeXString(latex_custom[i]))
+    end
+
+    convertToMaple(fullSystemIdent, name, 0)
+    convertToLatex(latex_custom, name, 0)
+
+    return fullSystemIdent, latex_custom
+    #return eqn1_simetria, eqn2_simetria, eqn3_simetria
+
 end
