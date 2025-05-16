@@ -383,3 +383,39 @@ function FirstIdentEqn(f1, f2, f4, variables)
     return eqn1_IdentSubst
 
 end
+
+function mainIdentCont(variables)
+
+    # ----------------- 4º FUNCION ----------------- #
+    # Derivada con respecto de los parámetros
+    # whatIs = 1 -> analiza las ecuaciones de estado
+    # whatIs = 0 -> analiza las ecuaciones de salida
+    whatIs = 1
+    f4 = funcion4ta(variables, whatIs)
+
+    # ----------------- 5º FUNCION ----------------- #
+    # Calcula la segunda ecuación de la simetría: zeta_t + zeta_x * f
+    eqn2_simetria = funcion5ta(variables)    
+
+    # Calcula para [g = dotx- f]
+    H_or_G = 1
+    f1 = funcion1era(variables, H_or_G)
+    f2 = funcion2da(variables)
+    # Calcula la primera ecuación de la simetría
+    eqn1_simetria = FirstIdentEqn(f1, f2, f4, variables)
+
+    # Calcula la 3 ecuación de la simetría
+    N = length(variables.Y)
+    H_or_G = 0
+    f1Y = funcion1era(variables, H_or_G)
+    whatIs = 0
+    f4Y = funcion4ta(variables, whatIs)
+    N = length(f4Y)
+    eqn3_simetria = Num[]
+    for i = 1:N
+        obj = f1Y[i] + f4Y[i]
+        push!(eqn3_simetria, obj)
+    end
+
+    return eqn1_simetria, eqn2_simetria, eqn3_simetria
+end

@@ -37,30 +37,6 @@ symbols = FunctionForReading(CreateModel);
 
 #(Julia_result, latex_result)  = mainObsCont(symbols)
 
+(a1, a2, a3) = mainIdentCont(symbols)
 
-# ----------------- 4º FUNCION ----------------- #
-# whatIs = 1 -> analiza las ecuaciones de estado
-# whatIs = 0 -> analiza las ecuaciones de salida
-whatIs = 1
-epsi_syms = funcion4ta(symbols, whatIs)
 
-# ----------------- 5º FUNCION ----------------- #
-condicion2 = funcion5ta(symbols)
-
-H_or_G = 1
-f1 = funcion1era(symbols, H_or_G)
-f2 = funcion2da(symbols)
-
-xx = FirstIdentEqn(f1, f2, epsi_syms, symbols)
-
-N = length(symbols.Y)
-H_or_G = 0
-f1 = funcion1era(symbols, H_or_G)
-whatIs = 0
-f4 = funcion4ta(symbols, whatIs)
-N = length(f4)
-condicion3 = Num[]
-for i = 1:N
-    obj = f1[i] + f4[i]
-    push!(condicion3, obj)
-end
