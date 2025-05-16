@@ -333,6 +333,14 @@ function funcion5ta(variables)
         push!(zeta_syms1, obj)
     end
 
+    m = length(variables.EQ)
+    eqnfnc5 = Vector{Num}(undef, m)
+    for j in 1:m
+        for i in 1:N
+            obj = zeta_syms[j] + zeta_syms1[j]*variables.EQ[i]
+        end
+    end
+
     #==
     m = length(variables.EQ)
     zetaJ = Vector{Num}(undef, n)
