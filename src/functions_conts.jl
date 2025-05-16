@@ -72,7 +72,8 @@ end
 # ---------- variables EPSI dentro del código
 
 function funcion1era(variables, queDerivo)
-    
+
+    # queDerivo = 1, with respect to G // queDerivo not 1, with respect to Y
     # Creo el vector que contiene las variables simbólicas de Epsilon, una por cada estado epsi_i
     N = length(variables.S)
     names = [ "epsi_$i" for i in 1:N ]   # ["z1","z2",…]
@@ -311,7 +312,7 @@ end
 
 function funcion5ta(variables)
     
-    # Creo el vector que contiene las variables simbólicas de Zeta, una por cada estado Zeta_i
+    # Creo el vector que contiene las variables simbólicas de Zeta_t, una por cada parametro theta_i
     N = length(variables.P)
     names = [ "Zeta_t_$i" for i in 1:N ]   # ["z1","z2",…]
     decl = "@variables " * join(names,   " ")
@@ -323,6 +324,7 @@ function funcion5ta(variables)
         push!(zeta_syms, obj)
     end
 
+    # Creo el vector que contiene las variables simbólicas de Zeta_x, una por cada parametro theta_i
     names = [ "Zeta_x_$i" for i in 1:N ]   # ["z1","z2",…]
     decl = "@variables " * join(names,   " ")
     eval(Meta.parse(decl))
@@ -340,21 +342,4 @@ function funcion5ta(variables)
         push!(eqnfnc5, obj)
     end
     return eqnfnc5
-
-    #==
-    m = length(variables.EQ)
-    zetaJ = Vector{Num}(undef, n)
-    # Multiplicar cada fila 'i' (derivadas de eqn'i' con respecto x_j de j = 1 a n) por el Zeta 'i'
-    # correspondiente al estado 'i'/eqn 'i'
-    for i in 1:n
-        rest = Vector{Num}(undef, m)
-        for j in 1:m
-            rest[j] =  zeta_syms[j] * Jg[i, j]
-        end
-        zetaJ[i] = sum(rest)
-    end
-
-    return zeta_syms, zetaJ, Jg
-    #return zetaJ
-    ==#
 end

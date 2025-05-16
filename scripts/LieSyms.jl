@@ -47,3 +47,5 @@ epsi_syms = funcion4ta(symbols, whatIs)
 # ----------------- 5º FUNCION ----------------- #
 condicion2 = funcion5ta(symbols)
 
+H_or_G = 1
+f1 = funcion1era(variables, H_or_G)
