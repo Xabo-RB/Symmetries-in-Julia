@@ -1,11 +1,4 @@
-using DrWatson
-using Symbolics, SymbolicUtils
-using Latexify
-using LaTeXStrings
 
-
-
-@quickactivate "Symmetries in Julia"
 
 include("Model.jl"); 
 include(srcdir("functions_conts.jl"))
@@ -29,15 +22,15 @@ islike(::Num, ::Type{Number}) = true
 
 symbols = FunctionForReading(CreateModel);
 
-# ----------------- 3º FUNCION ----------------- #
-# COMPROBACIÓN, tiene que dar 4
-#expr = symbols.G[1] + 4 + symbols.G[2]
-#expr_subsDX = funcion3era(expr, symbols)
 
+if option == 1
 
-#(Julia_result, latex_result)  = mainObsCont(symbols)
+    (Julia_result, latex_result)  = mainObsCont(symbols)
 
-#(a1, a2, a3) = mainIdentCont(symbols)
-(Julia_result, latex_result)  = mainIdentCont(symbols)
+elseif option == 2
+
+    (Julia_result, latex_result)  = mainIdentCont(symbols)
+
+end
 
 
