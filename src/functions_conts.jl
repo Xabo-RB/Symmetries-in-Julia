@@ -380,6 +380,6 @@ function FirstIdentEqn(f1, f2, f4, variables)
         push!(eqn1_IdentSubst, obj1)
     end
 
-    return eqn1_IdentSubst, eqn1_Ident
+    return eqn1_IdentSubst
 
 end
