@@ -1,20 +1,40 @@
 \begin{equation}
-\xi_{t\_1} + \xi_{1} \left(  - k01 - k21 - k31 - k41 \right) + \xi_{2} k12 + \xi_{3} k13 + \xi_{4} k14 + \xi_{x\_1} \left(  - u - \left(  - k01 - k21 - k31 - k41 \right) x1 - k12 x2 - k13 x3 - k14 x4 \right) = 0
+\xi_{t\_1} + \xi_{1} \left(  - k01 - k21 - k31 - k41 \right) + \xi_{2} k12 + \xi_{3} k13 + \xi_{4} k14 - x1 \zeta_{1} - x1 \zeta_{3} - x1 \zeta_{5} - x1 \zeta_{7} + x2 \zeta_{2} + x3 \zeta_{4} + x4 \zeta_{6} + \left( -1 + \xi_{x\_1} \right) \left(  - u - \left(  - k01 - k21 - k31 - k41 \right) x1 - k12 x2 - k13 x3 - k14 x4 \right) = 0
 \end{equation}
 
 
 \begin{equation}
-\xi_{t\_2} - \xi_{1} k21 + \xi_{2} k12 + \xi_{x\_2} \left(  - k12 x2 + k21 x1 \right) = 0
+\xi_{t\_2} - \xi_{1} k21 + \xi_{2} k12 - x1 \zeta_{3} + x2 \zeta_{2} + \left( -1 + \xi_{x\_2} \right) \left(  - k12 x2 + k21 x1 \right) = 0
 \end{equation}
 
 
 \begin{equation}
-\xi_{t\_3} - \xi_{1} k31 + \xi_{3} k13 + \xi_{x\_3} \left(  - k13 x3 + k31 x1 \right) = 0
+\xi_{t\_3} - \xi_{1} k31 + \xi_{3} k13 - x1 \zeta_{5} + x3 \zeta_{4} + \left( -1 + \xi_{x\_3} \right) \left(  - k13 x3 + k31 x1 \right) = 0
 \end{equation}
 
 
 \begin{equation}
-\xi_{t\_4} - \xi_{1} k41 + \xi_{4} k14 + \xi_{x\_4} \left(  - k14 x4 + k41 x1 \right) = 0
+\xi_{t\_4} - \xi_{1} k41 + \xi_{4} k14 - x1 \zeta_{7} + x4 \zeta_{6} + \left( -1 + \xi_{x\_4} \right) \left(  - k14 x4 + k41 x1 \right) = 0
+\end{equation}
+
+
+\begin{equation}
+\zeta_{t\_1} + \zeta_{t\_2} + \zeta_{t\_3} + \zeta_{t\_4} + \zeta_{t\_5} + \zeta_{t\_6} + \zeta_{t\_7} + \left(  - u - \left(  - k01 - k21 - k31 - k41 \right) x1 - k12 x2 - k13 x3 - k14 x4 \right) \left( \zeta_{x\_1} + \zeta_{x\_2} + \zeta_{x\_3} + \zeta_{x\_4} + \zeta_{x\_5} + \zeta_{x\_6} + \zeta_{x\_7} \right) = 0
+\end{equation}
+
+
+\begin{equation}
+\zeta_{t\_1} + \zeta_{t\_2} + \zeta_{t\_3} + \zeta_{t\_4} + \zeta_{t\_5} + \zeta_{t\_6} + \zeta_{t\_7} + \left(  - k12 x2 + k21 x1 \right) \left( \zeta_{x\_1} + \zeta_{x\_2} + \zeta_{x\_3} + \zeta_{x\_4} + \zeta_{x\_5} + \zeta_{x\_6} + \zeta_{x\_7} \right) = 0
+\end{equation}
+
+
+\begin{equation}
+\zeta_{t\_1} + \zeta_{t\_2} + \zeta_{t\_3} + \zeta_{t\_4} + \zeta_{t\_5} + \zeta_{t\_6} + \zeta_{t\_7} + \left(  - k13 x3 + k31 x1 \right) \left( \zeta_{x\_1} + \zeta_{x\_2} + \zeta_{x\_3} + \zeta_{x\_4} + \zeta_{x\_5} + \zeta_{x\_6} + \zeta_{x\_7} \right) = 0
+\end{equation}
+
+
+\begin{equation}
+\zeta_{t\_1} + \zeta_{t\_2} + \zeta_{t\_3} + \zeta_{t\_4} + \zeta_{t\_5} + \zeta_{t\_6} + \zeta_{t\_7} + \left(  - k14 x4 + k41 x1 \right) \left( \zeta_{x\_1} + \zeta_{x\_2} + \zeta_{x\_3} + \zeta_{x\_4} + \zeta_{x\_5} + \zeta_{x\_6} + \zeta_{x\_7} \right) = 0
 \end{equation}
 
 

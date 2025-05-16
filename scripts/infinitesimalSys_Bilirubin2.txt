@@ -1,5 +1,9 @@
-epsi_t_1 + epsi_1*(-k01 - k21 - k31 - k41) + epsi_2*k12 + epsi_3*k13 + epsi_4*k14 + epsi_x_1*(-u - (-k01 - k21 - k31 - k41)*x1 - k12*x2 - k13*x3 - k14*x4)
-epsi_t_2 - epsi_1*k21 + epsi_2*k12 + epsi_x_2*(-k12*x2 + k21*x1)
-epsi_t_3 - epsi_1*k31 + epsi_3*k13 + epsi_x_3*(-k13*x3 + k31*x1)
-epsi_t_4 - epsi_1*k41 + epsi_4*k14 + epsi_x_4*(-k14*x4 + k41*x1)
+epsi_t_1 + epsi_1*(-k01 - k21 - k31 - k41) + epsi_2*k12 + epsi_3*k13 + epsi_4*k14 - x1*zeta_1 - x1*zeta_3 - x1*zeta_5 - x1*zeta_7 + x2*zeta_2 + x3*zeta_4 + x4*zeta_6 + (-1 + epsi_x_1)*(-u - (-k01 - k21 - k31 - k41)*x1 - k12*x2 - k13*x3 - k14*x4)
+epsi_t_2 - epsi_1*k21 + epsi_2*k12 - x1*zeta_3 + x2*zeta_2 + (-1 + epsi_x_2)*(-k12*x2 + k21*x1)
+epsi_t_3 - epsi_1*k31 + epsi_3*k13 - x1*zeta_5 + x3*zeta_4 + (-1 + epsi_x_3)*(-k13*x3 + k31*x1)
+epsi_t_4 - epsi_1*k41 + epsi_4*k14 - x1*zeta_7 + x4*zeta_6 + (-1 + epsi_x_4)*(-k14*x4 + k41*x1)
+zeta_t_1 + zeta_t_2 + zeta_t_3 + zeta_t_4 + zeta_t_5 + zeta_t_6 + zeta_t_7 + (-u - (-k01 - k21 - k31 - k41)*x1 - k12*x2 - k13*x3 - k14*x4)*(zeta_x_1 + zeta_x_2 + zeta_x_3 + zeta_x_4 + zeta_x_5 + zeta_x_6 + zeta_x_7)
+zeta_t_1 + zeta_t_2 + zeta_t_3 + zeta_t_4 + zeta_t_5 + zeta_t_6 + zeta_t_7 + (-k12*x2 + k21*x1)*(zeta_x_1 + zeta_x_2 + zeta_x_3 + zeta_x_4 + zeta_x_5 + zeta_x_6 + zeta_x_7)
+zeta_t_1 + zeta_t_2 + zeta_t_3 + zeta_t_4 + zeta_t_5 + zeta_t_6 + zeta_t_7 + (-k13*x3 + k31*x1)*(zeta_x_1 + zeta_x_2 + zeta_x_3 + zeta_x_4 + zeta_x_5 + zeta_x_6 + zeta_x_7)
+zeta_t_1 + zeta_t_2 + zeta_t_3 + zeta_t_4 + zeta_t_5 + zeta_t_6 + zeta_t_7 + (-k14*x4 + k41*x1)*(zeta_x_1 + zeta_x_2 + zeta_x_3 + zeta_x_4 + zeta_x_5 + zeta_x_6 + zeta_x_7)
 epsi_1
