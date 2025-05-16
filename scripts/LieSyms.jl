@@ -43,3 +43,7 @@ symbols = FunctionForReading(CreateModel);
 # whatIs = 0 -> analiza las ecuaciones de salida
 whatIs = 0
 epsi_syms = funcion4ta(symbols, whatIs)
+
+# ----------------- 5º FUNCION ----------------- #
+condicion2 = funcion5ta(symbols)
+

@@ -334,12 +334,12 @@ function funcion5ta(variables)
     end
 
     m = length(variables.EQ)
-    eqnfnc5 = Vector{Num}(undef, m)
+    eqnfnc5 = Num[]
     for j in 1:m
-        for i in 1:N
-            obj = zeta_syms[j] + zeta_syms1[j]*variables.EQ[i]
-        end
+        obj = sum(zeta_syms) + sum(zeta_syms1)*variables.EQ[j]
+        push!(eqnfnc5, obj)
     end
+    return eqnfnc5
 
     #==
     m = length(variables.EQ)
