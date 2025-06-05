@@ -1,0 +1,6 @@
+-X1*X3*beta1 - X1t + X1x1*beta1*x1*x3
+X1*X3*beta1 - X2*nu1 - X2t - X2x2*beta1*x1*x3 + X2x2*nu1*x2
+X2*nu1 + X3*gamma1*psi1 - X3*gamma1 - X3*psi1 - X3t - X3x3*gamma1*psi1*x3 + X3x3*gamma1*x3 - X3x3*nu1*x2 + X3x3*psi1*x3
+X3*psi1 - X4*gamma1 - X4t + X4x4*gamma1*x4 - X4x4*psi1*x3
+-X3*gamma1*psi1 + X3*gamma1 + X4*gamma1 - X5t + X5x5*gamma1*psi1*x3 - X5x5*gamma1*x3 - X5x5*gamma1*x4
+-X4 + x4

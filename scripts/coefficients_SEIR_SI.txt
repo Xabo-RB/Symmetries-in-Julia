@@ -1,0 +1,10 @@
+-BETA1*X1*X3 - X1t + X1x1*beta1*x1*x3
+BETA1*X1*X3 - NU1*X2 - X2t - X2x2*beta1*x1*x3 + X2x2*nu1*x2
+GAMMA1*PSI1*X3 - GAMMA1*X3 + NU1*X2 - PSI1*X3 - X3t - X3x3*gamma1*psi1*x3 + X3x3*gamma1*x3 - X3x3*nu1*x2 + X3x3*psi1*x3
+-GAMMA1*X4 + PSI1*X3 - X4t + X4x4*gamma1*x4 - X4x4*psi1*x3
+-GAMMA1*PSI1*X3 + GAMMA1*X3 + GAMMA1*X4 - X5t + X5x5*gamma1*psi1*x3 - X5x5*gamma1*x3 - X5x5*gamma1*x4
+-X4 + x4
+BETA1t - BETA1x1*beta1*x1*x3 + BETA1x2*beta1*x1*x3 - BETA1x2*nu1*x2 + BETA1x3*gamma1*psi1*x3 - BETA1x3*gamma1*x3 + BETA1x3*nu1*x2 - BETA1x3*psi1*x3 - BETA1x4*gamma1*x4 + BETA1x4*psi1*x3 - BETA1x5*gamma1*psi1*x3 + BETA1x5*gamma1*x3 + BETA1x5*gamma1*x4
+NU1t - NU1x1*beta1*x1*x3 + NU1x2*beta1*x1*x3 - NU1x2*nu1*x2 + NU1x3*gamma1*psi1*x3 - NU1x3*gamma1*x3 + NU1x3*nu1*x2 - NU1x3*psi1*x3 - NU1x4*gamma1*x4 + NU1x4*psi1*x3 - NU1x5*gamma1*psi1*x3 + NU1x5*gamma1*x3 + NU1x5*gamma1*x4
+PSI1t - PSI1x1*beta1*x1*x3 + PSI1x2*beta1*x1*x3 - PSI1x2*nu1*x2 + PSI1x3*gamma1*psi1*x3 - PSI1x3*gamma1*x3 + PSI1x3*nu1*x2 - PSI1x3*psi1*x3 - PSI1x4*gamma1*x4 + PSI1x4*psi1*x3 - PSI1x5*gamma1*psi1*x3 + PSI1x5*gamma1*x3 + PSI1x5*gamma1*x4
+GAMMA1t - GAMMA1x1*beta1*x1*x3 + GAMMA1x2*beta1*x1*x3 - GAMMA1x2*nu1*x2 + GAMMA1x3*gamma1*psi1*x3 - GAMMA1x3*gamma1*x3 + GAMMA1x3*nu1*x2 - GAMMA1x3*psi1*x3 - GAMMA1x4*gamma1*x4 + GAMMA1x4*psi1*x3 - GAMMA1x5*gamma1*psi1*x3 + GAMMA1x5*gamma1*x3 + GAMMA1x5*gamma1*x4

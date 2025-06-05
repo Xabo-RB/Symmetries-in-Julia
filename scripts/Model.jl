@@ -33,18 +33,20 @@ states = ["x1", "x2", "x3", "x4", "x5"]
 
 salidas = 1
 
-parameters = ["beta","nu","psi","gamma"]
+parameters = ["beta1","nu1","psi1","gamma1"]
 
 inputs = []
 
 ecuaciones = [
-    "-beta*x1*x3",
-    "beta*x1*x3 - nu*x2",
-    "nu*x2 - psi*x3 - (1-psi)*gamma*x3",
-    "psi*x3 - gamma*x4",
-    "(1-psi)*gamma*x3 + gamma*x4",
+    "-beta1*x1*x3",
+    "beta1*x1*x3 - nu1*x2",
+    "nu1*x2 - psi1*x3 - (1-psi1)*gamma1*x3",
+    "psi1*x3 - gamma1*x4",
+    "(1-psi1)*gamma1*x3 + gamma1*x4",
     "x4"
 ]
+
+
 
 #_________________________________________________________________________#
 
