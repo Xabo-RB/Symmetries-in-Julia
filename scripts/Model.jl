@@ -1,7 +1,6 @@
 #_____________________________ User defined _____________________________#
 
-
-
+#==
 # ________________________Bilirubin2__________________________
 name = "Bilirubin2"
 
@@ -23,6 +22,29 @@ ecuaciones = [
     "x1"
 ]
 
+==#
+
+# ________________________Example 4.3__________________________
+name = "SEIR"
+
+@variables t
+
+states = ["x1", "x2", "x3", "x4", "x5"]
+
+salidas = 1
+
+parameters = ["beta","nu","psi","gamma"]
+
+inputs = []
+
+ecuaciones = [
+    "-beta*x1*x3",
+    "beta*x1*x3 - nu*x2",
+    "nu*x2 - psi*x3 - (1-psi)*gamma*x3",
+    "psi*x3 - gamma*x4",
+    "(1-psi)*gamma*x3 + gamma*x4",
+    "x4"
+]
 
 #_________________________________________________________________________#
 
