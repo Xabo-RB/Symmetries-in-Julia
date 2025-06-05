@@ -35,7 +35,7 @@ To start the code the "Run.jl" file must be executed, in VSCode this can be done
 
 The model to be analyzed must be described in the script "Model.jl", as it appears now in the example. There are other examples in Models folder. 
 
-The user can select the algorithm to be applied in the run file, modifying two options variables, "Discrete_Or_Continous" and "option". Discrete_Or_Continous selects which type of determining system to be computed: 'D' for finite, 'C' for 'infinite'.
+The user can select the algorithm to be applied in the run file, modifying two options variables, "Discrete_Or_Continous" and "option". "Discrete_Or_Continous" selects which type of determining system to be computed: 'D' for finite, 'C' for 'infinite'.
 
 Method for finding the Finite Determining system:
 
