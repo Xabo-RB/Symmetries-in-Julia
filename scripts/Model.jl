@@ -22,7 +22,7 @@ ecuaciones = [
     "x1"
 ]
 
-==#
+
 
 # ________________________Example 4.3__________________________
 name = "SEIR"
@@ -45,6 +45,7 @@ ecuaciones = [
     "(1-psi1)*gamma1*x3 + gamma1*x4",
     "x4"
 ]
+==#
 
 # ________________________Example 4.3 New__________________________
 name = "SEIRT"
@@ -55,17 +56,17 @@ states = ["x1", "x2", "x3", "x4"]
 
 salidas = 1
 
-parameters = ["b","alph","lamb"]
+parameters = ["k1", "k2", "k3"]
+#parameters = ["b","alph","lamb"]
 
 inputs = []
 
 ecuaciones = [
-    "-beta1*x1*x3",
-    "beta1*x1*x3 - nu1*x2",
-    "nu1*x2 - psi1*x3 - (1-psi1)*gamma1*x3",
-    "psi1*x3 - gamma1*x4",
-    "(1-psi1)*gamma1*x3 + gamma1*x4",
-    "x4"
+    "-k1*x1*x3",
+    "k1*x1*x3 - k2*x2",
+    "k2*x2 - k3*x3",
+    "k3*x3",
+    "x3"
 ]
 
 

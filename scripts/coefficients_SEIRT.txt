@@ -1,0 +1,8 @@
+-K1*X1*X3 - X1t + X1x1*k1*x1*x3
+K1*X1*X3 - K2*X2 - X2t - X2x2*k1*x1*x3 + X2x2*k2*x2
+K2*X2 - K3*X3 - X3t - X3x3*k2*x2 + X3x3*k3*x3
+K3*X3 - X4t - X4x4*k3*x3
+-X3 + x3
+K1t - K1x1*k1*x1*x3 + K1x2*k1*x1*x3 - K1x2*k2*x2 + K1x3*k2*x2 - K1x3*k3*x3 + K1x4*k3*x3
+K2t - K2x1*k1*x1*x3 + K2x2*k1*x1*x3 - K2x2*k2*x2 + K2x3*k2*x2 - K2x3*k3*x3 + K2x4*k3*x3
+K3t - K3x1*k1*x1*x3 + K3x2*k1*x1*x3 - K3x2*k2*x2 + K3x3*k2*x2 - K3x3*k3*x3 + K3x4*k3*x3
