@@ -37,7 +37,7 @@ function coefficients(detsys)
     # Add the collected expression to the list of coefficients
     for eqq in ecuacionesString
 
-        expr_sympy  = sp.sympify(eqq, locals = varsSymbol)
+        expr_sympy  = sp.sympify(eqq, locals = Dict(k => v.o for (k, v) in varsSymbol))
         expr_sympy1 = sp.expand(expr_sympy)
         expr_collect = sp.collect(expr_sympy1, u_sym)
         push!(coeffsCollected, expr_collect)
