@@ -2,8 +2,7 @@
 
 julia_version = "1.11.5"
 manifest_format = "2.0"
-project_hash = "51d59d90ba4639f605a4bd695c07fbb80c31a1b5"
-
+project_hash = "1ed9d72f969fa9be5cbd75db262d3f8f9e17b10e"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "be7ae030256b8ef14a441726c4c37766b90b93a3"
@@ -223,13 +222,6 @@ deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 version = "1.11.0"
 
-[[deps.DiffResults]]
-deps = ["StaticArraysCore"]
-git-tree-sha1 = "782dd5f4561f5d267313f23853baaaa4c52ea621"
-uuid = "163ba53b-c6d8-5494-b064-1a9d43ac40c5"
-version = "1.1.0"
-
-
 [[deps.DiffRules]]
 deps = ["IrrationalConstants", "LogExpFunctions", "NaNMath", "Random", "SpecialFunctions"]
 git-tree-sha1 = "23163d55f885173722d1e4cf0f6110cdbaf7e272"
@@ -414,11 +406,14 @@ uuid = "82899510-4779-5014-852e-03e436cf321d"
 version = "1.0.0"
 
 [[deps.JLD2]]
-deps = ["FileIO", "MacroTools", "Mmap", "OrderedCollections", "PrecompileTools", "Requires", "TranscodingStreams"]
-git-tree-sha1 = "89e1e5c3d43078d42eed2306cab2a11b13e5c6ae"
+deps = ["FileIO", "MacroTools", "Mmap", "OrderedCollections", "PrecompileTools", "ScopedValues", "TranscodingStreams"]
+git-tree-sha1 = "d97791feefda45729613fafeccc4fbef3f539151"
 uuid = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
-version = "0.4.54"
+version = "0.5.15"
+weakdeps = ["UnPack"]
 
+    [deps.JLD2.extensions]
+    UnPackExt = "UnPack"
 
 [[deps.JLLWrappers]]
 deps = ["Artifacts", "Preferences"]
@@ -515,12 +510,6 @@ version = "0.3.29"
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
 version = "1.11.0"
 
-[[deps.MLStyle]]
-git-tree-sha1 = "bc38dff0548128765760c79eb7388a4b37fae2c8"
-uuid = "d8e11817-5142-5d16-987a-aa16d5891078"
-version = "0.4.17"
-
-
 [[deps.MacroTools]]
 git-tree-sha1 = "1e0228a030642014fe5cfe68c2c0a818f9e3f522"
 uuid = "1914dd2f-81c6-5fcd-8719-6d5c9610ff09"
@@ -551,7 +540,6 @@ deps = ["ExproniconLite", "Jieko"]
 git-tree-sha1 = "d5198869af7a8aec7354dc8559ae71aba77a625a"
 uuid = "2e0e35c7-a2e4-4343-998d-7ef72827ed2d"
 version = "0.3.6"
-
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
@@ -625,19 +613,6 @@ version = "2.8.3"
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "Random", "SHA", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 version = "1.11.0"
-
-    [deps.Pkg.extensions]
-    REPLExt = "REPL"
-
-    [deps.Pkg.weakdeps]
-    REPL = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
-
-[[deps.PreallocationTools]]
-deps = ["Adapt", "ArrayInterface", "ForwardDiff"]
-git-tree-sha1 = "6c62ce45f268f3f958821a1e5192cf91c75ae89c"
-uuid = "d236fae5-4411-538c-8e31-a6e3d9e00b46"
-version = "0.4.24"
-
 
     [deps.Pkg.extensions]
     REPLExt = "REPL"
@@ -877,11 +852,14 @@ uuid = "1e83bf80-4336-4d27-bf5d-d5a4f845583c"
 version = "1.4.3"
 
 [[deps.Statistics]]
-deps = ["LinearAlgebra", "SparseArrays"]
-git-tree-sha1 = "83850190e0f902ae1673d63ae349fc2a36dc6afb"
+deps = ["LinearAlgebra"]
+git-tree-sha1 = "ae3bb1eb3bba077cd276bc5cfc337cc65c3075c0"
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-version = "1.11.0"
+version = "1.11.1"
+weakdeps = ["SparseArrays"]
 
+    [deps.Statistics.extensions]
+    SparseArraysExt = ["SparseArrays"]
 
 [[deps.StatsAPI]]
 deps = ["LinearAlgebra"]
@@ -1026,7 +1004,6 @@ version = "1.11.0"
 git-tree-sha1 = "43044b737fa70bc12f6105061d3da38f881a3e3c"
 uuid = "b718987f-49a8-5099-9789-dcd902bef87d"
 version = "1.0.2"
-
 
 [[deps.TimerOutputs]]
 deps = ["ExprTools", "Printf"]

@@ -37,15 +37,17 @@ function coefficients(detsys)
     # Add the collected expression to the list of coefficients
     for eqq in ecuacionesString
 
+        #==
         if THIS_SCRIPT == "Run.jl"
             expr_sympy  = sp.sympify(eqq, locals = Dict(k => v.o for (k, v) in varsSymbol))
         elseif THIS_SCRIPT == "RunX.jl"
-            expr_sympy  = sp.sympify(eqq, locals = Dict(k => v for (k, v) in varsSymbol))
+            expr_sympy  = sp.sympify(eqq, locals = Dict(k => v.o for (k, v) in varsSymbol))
         else
             # Just in case, when running from the terminal, this variable comes up empty
             expr_sympy  = sp.sympify(eqq, locals = Dict(k => v.o for (k, v) in varsSymbol))
         end
-
+        ==#
+        expr_sympy  = sp.sympify(eqq, locals = Dict(k => v.o for (k, v) in varsSymbol))
         expr_sympy1 = sp.expand(expr_sympy)
         expr_collect = sp.collect(expr_sympy1, u_sym)
         push!(coeffsCollected, expr_collect)
