@@ -1,0 +1,5 @@
+-X1*X3*k1 - X1t + X1x1*k1*x1*x3
+X1*X3*k1 - X2*k2 - X2t - X2x2*k1*x1*x3 + X2x2*k2*x2
+X2*k2 - X3*k4 - X3*k5 - X3t - X3x3*k2*x2 + X3x3*k4*x3 + X3x3*k5*x3
+X3*k4 - X4*k6 - X4t - X4x4*k4*x3 + X4x4*k6*x4
+-X3*k5 + k5*x3
