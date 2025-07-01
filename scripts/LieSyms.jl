@@ -1,6 +1,3 @@
-
-
-include("Model.jl"); 
 include(srcdir("functions_conts.jl"))
 include(srcdir("convertToMaple.jl"))
 include(srcdir("convertToLatex.jl"))

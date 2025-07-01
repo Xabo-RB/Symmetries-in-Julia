@@ -6,12 +6,14 @@ import SymPy as sp
 using SymbolicUtils
 using ArgParse
 
+#________ Handle Parsed Arguments _________#
+
 function parse_commandline()
     s = ArgParseSettings()
 
     @add_arg_table s begin
         "--option"
-            help = "symmetry option"
+            help = "symmetry option, see README"
 	    default = 1
 	    arg_type = Int
         "--discrete"
@@ -33,11 +35,29 @@ end
 
 option = parsed_args["option"]
 discrete = parsed_args["discrete"]
+model = parsed_args["model"]
+
+#________ Define Model _________#
+
+include(model)
+
+struct userDefined
+
+    estados::Vector{String}
+    nSalidas::Int
+    parametros::Vector{String}
+    entradas::Vector{String}
+    ecuaciones::Vector{String}
+
+end
+
+CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
+
+#________ Run Code _________#
 
 @quickactivate "Symmetries in Julia"
 
 if discrete
-
 
     # Which type of transformation do you want to use?
 

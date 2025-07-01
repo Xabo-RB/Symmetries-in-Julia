@@ -1,5 +1,4 @@
 
-include("Model.jl")
 include(srcdir("functions.jl"))
 include(srcdir("getDeterminingSystem.jl"))
 include(srcdir("coefficients.jl"))
