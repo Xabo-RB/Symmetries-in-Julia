@@ -14,4 +14,4 @@ Unicode = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
 [compat]
 DrWatson = "2.12.7"
-julia = "1.9.3"
+julia = "1.9, 1.10, 1.11"
