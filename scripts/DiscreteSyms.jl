@@ -1,4 +1,3 @@
-
 include(srcdir("functions.jl"))
 include(srcdir("getDeterminingSystem.jl"))
 include(srcdir("coefficients.jl"))
@@ -35,6 +34,10 @@ struct ModelSymSI
     ode::Vector{Num}
     output::Vector{Num}
 
+end
+
+if THIS_SCRIPT == "RunX.jl"
+    include("Model.jl"); 
 end
 
 if option == 1

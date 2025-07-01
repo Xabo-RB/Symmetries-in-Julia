@@ -7,6 +7,8 @@ using SymbolicUtils
 
 @quickactivate "Symmetries in Julia"
 
+const THIS_SCRIPT = "RunX.jl"
+
 Discrete_Or_Continous = 'D'
 
 if Discrete_Or_Continous == 'D'

@@ -26,7 +26,7 @@ function parse_commandline()
 
     return parse_args(s)
 end
-
+const THIS_SCRIPT = "Run.jl"
 parsed_args = parse_commandline()
 println("Parsed args:")
 for (arg,val) in parsed_args

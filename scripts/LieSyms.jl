@@ -15,6 +15,10 @@ struct symbolic_variables
 
 end
 
+if THIS_SCRIPT == "RunX.jl"
+    include("Model.jl"); 
+end
+
 islike(::Num, ::Type{Number}) = true
 
 symbols = FunctionForReading(CreateModel);
