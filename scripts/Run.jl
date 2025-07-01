@@ -4,12 +4,39 @@ using Latexify
 using LaTeXStrings
 import SymPy as sp
 using SymbolicUtils
+using ArgParse
+
+function parse_commandline()
+    s = ArgParseSettings()
+
+    @add_arg_table s begin
+        "--option"
+            help = "symmetry option"
+	    default = 1
+	    arg_type = Int
+        "--discrete"
+            help = "enable discrete symmetry"
+            action = :store_true
+        "model"
+            help = "model file"
+            required = true
+    end
+
+    return parse_args(s)
+end
+
+parsed_args = parse_commandline()
+println("Parsed args:")
+for (arg,val) in parsed_args
+    println("  $arg  =>  $val")
+end
+
+option = parsed_args["option"]
+discrete = parsed_args["discrete"]
 
 @quickactivate "Symmetries in Julia"
 
-Discrete_Or_Continous = 'D'
-
-if Discrete_Or_Continous == 'D'
+if discrete
 
 
     # Which type of transformation do you want to use?
@@ -26,9 +53,7 @@ if Discrete_Or_Continous == 'D'
         include("DiscreteSyms.jl");
     end
 
-
-
-elseif Discrete_Or_Continous == 'C'
+else
 
     # Which type of transformation do you want to use?
 
