@@ -68,7 +68,6 @@ if discrete
     4. Transformations for Structural identifiability (option = 4)
     ==#
 
-    option = 4
     let
         include("DiscreteSyms.jl");
     end
@@ -82,7 +81,6 @@ else
     2. Transformations for Structural identifiability (option = 2)
     ==#
 
-    option = 2
     let
         include("LieSyms.jl");
     end
