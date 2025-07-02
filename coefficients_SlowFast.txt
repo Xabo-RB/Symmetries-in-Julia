@@ -1,0 +1,5 @@
+-XA*k1 - XAt + XAxA*k1*xA
+XA*k1 - XB*k2 - XBt - XBxB*k1*xA + XBxB*k2*xB
+XB*k2 - XCt - XCxC*k2*xB
+-XC + xC
+-XA*u1 - XB*eB - XC*u2 + eB*xB + u1*xA + u2*xC
