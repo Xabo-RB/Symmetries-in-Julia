@@ -415,10 +415,21 @@ function FirstIdentEqn(f1, f2, f4, variables)
         push!(epsi_t_syms, obj)
     end
 
+    #== CORRECCIÓN ERROR EN LA EQN PARA S.Id. 
     eqn1_Ident = Num[]
     eqn1_IdentSubst = Num[]
     for i in 1:N
         obj = f1[i] + f4[i] + (epsi_t_syms[i] + (epsi_x_syms[i] - 1)*variables.DS[i])*f2[i]
+        push!(eqn1_Ident, obj)
+        obj1 = funcion3era(eqn1_Ident[i], variables)
+        push!(eqn1_IdentSubst, obj1)
+    end
+    ==#
+
+    eqn1_Ident = Num[]
+    eqn1_IdentSubst = Num[]
+    for i in 1:N
+        obj = f1[i] + f4[i] + (epsi_t_syms[i] + epsi_x_syms[i]*variables.DS[i])*f2[i]
         push!(eqn1_Ident, obj)
         obj1 = funcion3era(eqn1_Ident[i], variables)
         push!(eqn1_IdentSubst, obj1)
