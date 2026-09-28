@@ -23,9 +23,9 @@ if Discrete_Or_Continous == 'D'
     4. Transformations for Structural identifiability (option = 4)
     ==#
 
-    option = 3
+    option = 2
     let
-        include("DiscreteSyms.jl");
+        include("DiscreteSyms.jl")
     end
 
 
@@ -41,7 +41,7 @@ elseif Discrete_Or_Continous == 'C'
 
     option = 2
     let
-        include("LieSyms.jl");
+        include("LieSyms.jl")
     end
 
 
