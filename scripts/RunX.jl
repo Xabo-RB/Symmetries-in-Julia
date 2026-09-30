@@ -26,7 +26,7 @@ if Discrete_Or_Continous == 'D'
     6. SIO, full chain rule, T and input dependence (option = 6)
     ==#
 
-    option = 2
+    option = 4
     let
         include("DiscreteSyms.jl")
     end
