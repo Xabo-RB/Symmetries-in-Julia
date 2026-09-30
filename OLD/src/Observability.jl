@@ -95,8 +95,6 @@ function Observability(CreateModel, name)
             eval(Meta.parse(str))
 
             # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
-            # WARNING: only the derivative w.r.t. estado[i] is included (ansatz X_i(t, x_i)).
-            # The full chain rule needs sum_j d/dx_j * dx_j/dt. See src/FiniteDeterminingSystem.jl
             dX_dt = Dt(estM[i]) + Dx(estM[i]) * Dt(estado[i])
 
             dotxEle = dX_dt

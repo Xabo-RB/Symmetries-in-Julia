@@ -78,6 +78,8 @@ function GeneralTransformation(CreateModel, name)
             eval(Meta.parse(str))
 
             # Ojo aquí en la u, si hubiera varias variables control habría que cambiarlo
+            # WARNING: only the derivative w.r.t. estado[i] is included (ansatz X_i(t, x_i)).
+            # The full chain rule needs sum_j d/dx_j * dx_j/dt. See src/FiniteDeterminingSystem.jl
             dT_dt = Dt(T) + Dx(T) * Dt(estado[i]) + Du(T)*Dt(u)
 
 

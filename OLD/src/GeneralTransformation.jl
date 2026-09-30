@@ -1,16 +1,12 @@
 #__________________________________________________________________________________________
 #__________________________________________________________________________________________
 
-# --------------------- Method for Observability ---------------------
-# This script is to obtain the coefficients of the determinig system corresponding to equation (15)
-# of section 3. I.e. transformations in chain derivatives (13b).
+# --------------------- General_method ---------------------
+# This script is to obtain the coefficients of the determinig system corresponding to equation (4)
+# of section 2. I.e. complete transformations in chain derivative (2b).
 # -----------------------------------------------------------------------------------------------
 
-function Observability(CreateModel, name)
-    
-
-    #CreateModel = userDefined(states,salidas,parameters,inputs,ecuaciones)
-    #Model = userDefined(states,salidas,parameters,inputs,ecuaciones)
+function GeneralTransformation(CreateModel, name)
 
     function getDeterminingSystemComplete(Model,t)
 
@@ -58,31 +54,18 @@ function Observability(CreateModel, name)
             transf_eqn = transformVariables(equations[i], St, transSt) 
             push!(TrEquations, transf_eqn)
         end
-
-        equationsY = Num[]
-        TrEquationsY = Num[]
-        #for i in eachindex(Model.ecuaciones)[end-Model.nSalidas+1:end]
-        j = 1
-        for i in (length(Model.ecuaciones) - Model.nSalidas + 1):length(Model.ecuaciones)
-            str = Meta.parse(Model.ecuaciones[i])
-            eqn1 = eval(str)
-            push!(equationsY, eqn1)
-
-            transf_eqn = transformVariables(equationsY[j], St, transSt) 
-            push!(TrEquationsY, transf_eqn)
-            j += 1
-        end
-
-
         #To pass variables to the Model Struct
-        M = ModelSymObs(St,transSt,pr,inU,equations,equationsY)
+        M = ModelSym(St,transSt,pr,inU,equations)
 
-        # ---------------------- CHAIN DER --------------------- #
+
         estado = M.states
         estM = M.TransStates 
 
         # Creates the differential operators
         Dt = Differential(t)
+        # --- Hacer esto para varias salidas de control posibles --- #
+        Du = Differential(inU)
+        Du = Differential(u)
 
         dotx = Num[]
 
@@ -94,12 +77,14 @@ function Observability(CreateModel, name)
             str = "@variables T"
             eval(Meta.parse(str))
 
-            # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
-            # WARNING: only the derivative w.r.t. estado[i] is included (ansatz X_i(t, x_i)).
-            # The full chain rule needs sum_j d/dx_j * dx_j/dt. See src/FiniteDeterminingSystem.jl
-            dX_dt = Dt(estM[i]) + Dx(estM[i]) * Dt(estado[i])
+            # Ojo aquí en la u, si hubiera varias variables control habría que cambiarlo
+            dT_dt = Dt(T) + Dx(T) * Dt(estado[i]) + Du(T)*Dt(u)
 
-            dotxEle = dX_dt
+
+            # Calculate the total derivative of X with respect to time. estM = X1, X2, ...
+            dX_dt = Dt(estM[i]) + Dx(estM[i]) * Dt(estado[i]) + Du(estM[i])*Dt(u)
+
+            dotxEle = dX_dt/dT_dt
 
             push!(dotx, dotxEle)
 
@@ -126,6 +111,13 @@ function Observability(CreateModel, name)
                 push!(Bs, derivada_str)
             end
 
+            # C's coefficients dT/dxi
+            Cs = []
+            for i in eachindex(nombresVarT)
+                derivada_str = "Differential($(nombresVar[i]))(T)"
+                push!(Cs, derivada_str)
+            end    
+
             # derivadas primera coefficients dxi/dt
             xdot1 = []
             for i in eachindex(nombresVarT)
@@ -133,7 +125,21 @@ function Observability(CreateModel, name)
                 push!(xdot1, derivada_str)
             end 
 
-            return (As, Bs, xdot1)
+            derTemporal = "Differential(t)(T)"
+
+            # --- NEW --- #
+            # E's coefficients dXi/du
+            Es = []
+            for nombre in nombresVarT
+                derivada_str = "Differential(u)($(nombre))"
+                push!(Es, derivada_str)
+            end
+
+            derTemporalU = "Differential(u)(T)"
+
+            udot = "Differential(t)(u)"
+
+            return (As, Bs, Cs, xdot1, derTemporal, Es, derTemporalU, udot)
         end
 
         tuplaDerivadas = creatingDifferentialComplete(M)
@@ -152,15 +158,37 @@ function Observability(CreateModel, name)
             expr_simbolica = eval(expr_julia)
             push!(Bs, expr_simbolica)
         end
+        Cs = Num[]
+        Cs1 = tuplaDerivadas[3]
+        for deriv_str in Cs1
+            expr_julia = Meta.parse(deriv_str)
+            expr_simbolica = eval(expr_julia)
+            push!(Cs, expr_simbolica)
+        end
         xdot1_str = Num[]
-        xdot11 = tuplaDerivadas[3]
+        xdot11 = tuplaDerivadas[4]
         for deriv_str in xdot11
             expr_julia = Meta.parse(deriv_str)
             expr_simbolica = eval(expr_julia)
             push!(xdot1_str, expr_simbolica)
-        end
+        end  
+        derTemporal1 = Num[]
+        push!(derTemporal1, eval(Meta.parse(tuplaDerivadas[5])))
 
-        function creatingCoeffsForDiffsObs(mod)
+        # ------ NEW -------- #
+        Es = Num[]
+        Es1 = tuplaDerivadas[6]
+        for deriv_str in Es1
+            expr_julia = Meta.parse(deriv_str)
+            expr_simbolica = eval(expr_julia)
+            push!(Es, expr_simbolica)
+        end
+        derTemporalU = Num[]
+        push!(derTemporalU, eval(Meta.parse(tuplaDerivadas[7])))
+        udot = Num[]
+        push!(udot, eval(Meta.parse(tuplaDerivadas[8])))
+
+        function creatingCoeffsForDiffsComplete(mod)
             nombresVar = map(string, mod.states)
             nombresVarT = map(string, mod.TransStates)
 
@@ -184,6 +212,16 @@ function Observability(CreateModel, name)
                 push!(B_dSds, varsym)
             end
 
+            #dT/d(states)
+            C_dTds = Num[]
+            for i in eachindex(nombresVarT)
+                # C's: dT/dsi : Tsi : T/statei/
+                str = "@variables T$(nombresVar[i])"
+                eval(Meta.parse(str))
+                varsym = eval(Meta.parse("T$(nombresVar[i])"))
+                push!(C_dTds, varsym)
+            end
+
             #d(states)/dt
             D_dsdt = Num[]
             for i in eachindex(nombresVarT)
@@ -194,15 +232,35 @@ function Observability(CreateModel, name)
                 push!(D_dsdt, varsym)
             end
 
-            return (A_dSdt, B_dSds, D_dsdt)
+            global Tt
+            @variables Tt
+
+            # ------ NEW -------- #
+            #d(States)/du
+            E_dSdt = Num[]
+            for names in nombresVarT
+                # E's: dXi/du : Xiu : /State/u
+                str = "@variables $(names)u"
+                eval(Meta.parse(str))
+                varsym = eval(Meta.parse("$(names)u"))
+                push!(E_dSdt, varsym)
+            end
+
+            global Tu
+            @variables Tu
+
+            global u_t
+            @variables u_t
+
+            return (A_dSdt, B_dSds, C_dTds, D_dsdt, Tt, E_dSdt, Tu, u_t)
 
         end
 
-        coeficientes = creatingCoeffsForDiffsObs(M)
+        coeficientes = creatingCoeffsForDiffsComplete(M)
 
         # For substituting I use 'coeficientes' and 'tuplaStringsNums'
         # Substitute the coefficients in the equation xdot.
-        tuplaStringsNums = (As, Bs, xdot1_str)
+        tuplaStringsNums = (As, Bs, Cs, xdot1_str, derTemporal1, Es, derTemporalU, udot)
         xdot_transformed = copy(xdot)
         for j in eachindex(xdot_transformed)
             for i in eachindex(tuplaStringsNums)
@@ -218,42 +276,38 @@ function Observability(CreateModel, name)
 
         # A/B = (...) -> A = (...)B -> (...)B - A
         # Firtsly, I need to get A and B from 'xdot_transformed'
-        
-        #num_str, den_str = getNumerator(xdot_transformed)
-        num_str = string.(xdot_transformed)
-
+        num_str, den_str = getNumerator(xdot_transformed)
         num_xdotT = Num[]
+        den_xdotT = Num[]
         for i in eachindex(xdot_transformed)
             num = eval(Meta.parse(num_str[i]))
+            den = eval(Meta.parse(den_str[i]))
             push!(num_xdotT, num)
+            push!(den_xdotT, den)
         end
 
         #Substitute dxdt por la ecuación diferencial de dicho estado
         finalNum = Num[]
+        finalDen = Num[]
         for i in eachindex(num_xdotT)
             # Differential equations
-            substituyoEsto = coeficientes[3]
+            substituyoEsto = coeficientes[4]
             #dsi/dt
             porEsto = equations
             varsym = transformVariables(num_xdotT[i], substituyoEsto, porEsto) 
+            varsym1 = transformVariables(den_xdotT[i], substituyoEsto, porEsto) 
             push!(finalNum, varsym)
+            push!(finalDen, varsym1)
         end
 
         # Now: A/B = (...) -> A = (...)B -> (...)B - A
         finalSol = Num[]
         finalSol1 = Num[]
-        for i in eachindex(finalNum)
-            new = TrEquations[i] - finalNum[i]
+        for i in eachindex(finalDen)
+            new = TrEquations[i]*finalDen[i] - finalNum[i]
             new1 = expand(new)
             push!(finalSol, new)
             push!(finalSol1, new1)
-        end
-
-        for i in eachindex(TrEquationsY)
-            solY = equationsY[i] - TrEquationsY[i]
-            solY1 = expand(solY)
-            push!(finalSol, solY)
-            push!(finalSol1, solY1)
         end
 
         return finalSol, finalSol1
@@ -262,7 +316,6 @@ function Observability(CreateModel, name)
     determiningSystem, determiningSystemExpanded = getDeterminingSystemComplete(CreateModel,t)
 
     coeffs = coefficients(determiningSystem)
-    
     for eq in coeffs
         latex_expr = latexify(eq)
         render(latex_expr)

@@ -5,7 +5,6 @@ include(srcdir("convertToMaple.jl"))
 include(srcdir("Observability.jl"))
 include(srcdir("GeneralTransformation.jl"))
 include(srcdir("StructuralIdentifiability.jl"))
-include(srcdir("FiniteDeterminingSystem.jl"))   # full chain rule (options 5 and 6)
 
 struct ModelSym
     states::Vector{Num}
@@ -63,16 +62,6 @@ elseif option == 3
 elseif option == 4
 
     StructuralIdentifiability(CreateModel, name)
-
-elseif option == 5
-    # SIO, ECC setting: T = t; X(t,x,p), P(t,x,p); full chain rule; parameters and output included
-    runFiniteDeterminingSystem(CreateModel, name; time_transform = false,
-                               input_dependence = false, transform_params = true)
-
-elseif option == 6
-    # SIO with time and input dependence: T, X, P may depend on (t, x, u, p); full chain rule
-    runFiniteDeterminingSystem(CreateModel, name; time_transform = true,
-                               input_dependence = true, transform_params = true)
 
 end
 # _______________________________________________________________

@@ -43,12 +43,6 @@ Method for finding the Finite Determining system:
 2. General transformations (option = 2)
 3. Transformations for Observability (option = 3)
 4. Transformations for Structural identifiability (option = 4)
-5. SIO, full chain rule, T = t, parameters and output included — ECC setting (option = 5)
-6. SIO, full chain rule, T and all unknowns may depend on the inputs (option = 6)
-
-Options 1–4 use the ansatz X_i(t, x_i): only the diagonal of the Jacobian enters the chain rule,
-so symmetries that mix states (permutations, x2 -> x2 + a*x1, ...) cannot be found. Options 5 and 6
-(src/FiniteDeterminingSystem.jl) use the full chain rule. See FIX_NOTES.md.
 
 Method for finding the Infinite Determining system:
 

@@ -21,9 +21,6 @@ if Discrete_Or_Continous == 'D'
     2. General transformations (option = 2)
     3. Transformations for Observability (option = 3)
     4. Transformations for Structural identifiability (option = 4)
-       NOTE: options 1-4 use the ansatz X_i(t, x_i) (only the diagonal of the Jacobian).
-    5. SIO, full chain rule, T = t (ECC setting) (option = 5)
-    6. SIO, full chain rule, T and input dependence (option = 6)
     ==#
 
     option = 2
