@@ -43,10 +43,8 @@ Method for finding the Finite Determining system:
 2. General transformations (option = 2)
 3. Transformations for Observability (option = 3)
 4. Transformations for Structural identifiability (option = 4)
-5. Structural identifiability, full chain rule, T = t — ECC setting (option = 5)
-6. Structural identifiability, full chain rule, T and input dependence (option = 6)
-7. Observability, full chain rule, T = t (option = 7)
-8. General transformation T, X, U, no output — draft Section 2 (option = 8)
+5. SIO, full chain rule, T = t, parameters and output included — ECC setting (option = 5)
+6. SIO, full chain rule, T and all unknowns may depend on the inputs (option = 6)
 
 Options 1–4 use the ansatz X_i(t, x_i): only the diagonal of the Jacobian enters the chain rule,
 so symmetries that mix states (permutations, x2 -> x2 + a*x1, ...) cannot be found. Options 5 and 6
@@ -56,7 +54,3 @@ Method for finding the Infinite Determining system:
 
 1. Transformations for Observability (option = 1)
 2. Transformations for Structural identifiability (option = 2)
-3. Observability, full chain rule (option = 3)
-4. Structural identifiability, full chain rule, tau = 0 — ECC setting (option = 4)
-5. Structural identifiability, full chain rule, tau and input dependence (option = 5)
-6. General transformation tau, xi, eta, no output — draft Section 2 (option = 6)

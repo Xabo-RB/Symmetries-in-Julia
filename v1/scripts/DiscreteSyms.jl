@@ -65,26 +65,14 @@ elseif option == 4
     StructuralIdentifiability(CreateModel, name)
 
 elseif option == 5
-    # Structural identifiability, ECC setting: T = t; X(t,x,p), P(t,x,p); output included
-    runDeterminingSystem(CreateModel, name, "SI"; time_transform = false,
-                         input_dependence = false, transform_params = true)
+    # SIO, ECC setting: T = t; X(t,x,p), P(t,x,p); full chain rule; parameters and output included
+    runFiniteDeterminingSystem(CreateModel, name; time_transform = false,
+                               input_dependence = false, transform_params = true)
 
 elseif option == 6
-    # Structural identifiability with time and input dependence: T, X, P depend on (t, x, u, p)
-    runDeterminingSystem(CreateModel, name, "SI_timeT_udep"; time_transform = true,
-                         input_dependence = true, transform_params = true)
-
-elseif option == 7
-    # Observability: T = t; X(t,x); parameters fixed; output included
-    runDeterminingSystem(CreateModel, name, "Obs"; time_transform = false,
-                         input_dependence = false, transform_params = false)
-
-elseif option == 8
-    # General transformation (draft, Section 2, eq. (4)): T, X, U depend on (t, x, u);
-    # no parameters transformed and no output (symmetries of the state equation only)
-    runDeterminingSystem(CreateModel, name, "General"; time_transform = true,
-                         input_dependence = true, transform_params = false,
-                         transform_inputs = true, include_output = false)
+    # SIO with time and input dependence: T, X, P may depend on (t, x, u, p); full chain rule
+    runFiniteDeterminingSystem(CreateModel, name; time_transform = true,
+                               input_dependence = true, transform_params = true)
 
 end
 # _______________________________________________________________
