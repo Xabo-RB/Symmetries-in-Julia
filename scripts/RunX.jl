@@ -29,7 +29,7 @@ if Discrete_Or_Continous == 'D'
     8. General transformation T, X, U, no output (draft Section 2) (option = 8)
     ==#
 
-    option = 5
+    option = 6
     let
         include("DiscreteSyms.jl")
     end
